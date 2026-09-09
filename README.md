@@ -1,12 +1,12 @@
-# QvacHackaton
+# QvacHackaton - MacroCounter para Personas con Diabetes
 
-Prototipo desarrollado para hackatón. Este repositorio contiene la base para interactuar y desarrollar sobre un **agente Qvac en entorno local** utilizando **Node.js**.
+Prototipo desarrollado para hackatón: **Aplicación de conteo de macros asistida por un agente Qvac en local para personas con diabetes**.
 
 ---
 
-## 🎯 Objetivo
+## 🎯 Propuesta y Objetivo
 
-Construir y validar rápidamente un prototipo funcional con un **agente Qvac ejecutándose en local**, orquestado mediante **Node.js**. Enfoque 100% práctico y directo.
+Desarrollar y validar rápidamente un prototipo funcional que ayude a personas diabéticas en el cálculo y control de sus macronutrientes (especialmente carbohidratos/insulina) utilizando un **agente Qvac ejecutándose en local**, orquestado mediante **Node.js**. Enfoque 100% práctico y directo.
 
 ---
 
