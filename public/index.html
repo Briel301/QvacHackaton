@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <title>DIA - Dashboard Nutricional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="tailwind-generated.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="tailwind.config.js"></script>
+    <script src="tailwind.cdn.js" defer></script>
+    <script src="components/views.js"></script>
+    <script src="components/navigation.js"></script>
+    <script src="components/settings.js"></script>
+    <script src="components/Js/main.js" type="module"></script>
+  </head>
+  <body class="bg-surface font-body-md text-body-md text-on-surface flex min-h-screen">
+    
+    <!-- MODAL DE ONBOARDING (PRIMER INGRESO Y EDICIÓN) -->
+    <div id="onboarding-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-300" style="display: none;">
+      <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-full overflow-hidden relative transform transition-transform duration-300 scale-100">
+        <div class="h-3 w-full bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+        <div class="px-6 sm:px-8 pt-8 pb-4 text-center relative">
+          <!-- Botón cerrar (Solo visible al editar) -->
+          <button id="btn-cerrar-onboarding" class="hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+          
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-inner">
+            <span class="material-symbols-outlined text-[32px]">waving_hand</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">¡Bienvenido a DIA! ✨</h2>
+          <p class="text-sm sm:text-base text-slate-500 mt-2 leading-relaxed">
+            Para calcular tus macros diarios ideales y ofrecerte sugerencias de insulina precisas, necesitamos conocerte un poco más.
+          </p>
+        </div>
+        <div class="px-6 sm:px-8 pb-6 sm:pb-8 overflow-y-auto">
+          <form id="onboarding-form" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="nombre" class="text-sm font-bold text-slate-700">¿Cómo te llamas?</label>
+              <input type="text" id="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium" />
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="edad" class="text-sm font-bold text-slate-700">Edad</label>
+                <input type="number" id="edad" required min="1" placeholder="Años" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="altura" class="text-sm font-bold text-slate-700">Altura</label>
+                <input type="number" id="altura" required min="50" step="0.01" placeholder="Metros" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="peso" class="text-sm font-bold text-slate-700">Peso</label>
+                <input type="number" id="peso" required min="10" step="0.1" placeholder="Libras" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="genero" class="text-sm font-bold text-slate-700">Género</label>
+                <select id="genero" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                  <option value="" disabled selected>Selecciona...</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="tipo_diabetes" class="text-sm font-bold text-slate-700">Tipo de Diabetes</label>
+                <select id="tipo_diabetes" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                  <option value="" disabled selected>Selecciona...</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-2 flex items-center p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 cursor-pointer hover:bg-emerald-50 transition-colors" onclick="document.getElementById('insulina').click()">
+              <div class="flex items-center h-5">
+                <input id="insulina" type="checkbox" class="w-5 h-5 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer" />
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="insulina" class="font-bold text-slate-800 cursor-pointer">Utilizo insulina frecuentemente</label>
+                <p class="text-slate-500 text-xs mt-0.5">Activa esta opción para recibir cálculos sugeridos de dosis.</p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+          <button type="submit" form="onboarding-form" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-[0_4px_14px_rgba(16,185,129,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2">
+            <span>Guardar mis datos</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <app-sidebar></app-sidebar>
+
+    <div class="flex-1 flex flex-col min-w-0 min-h-screen">
+      <!-- TOPBAR FUNCIONAL CON PERFIL SUPERIOR DERECHO -->
+      <header class="h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-end bg-surface border-b border-surface-container-high/30">
+        <div class="flex items-center gap-3">
+          <button aria-label="Notificaciones" class="relative w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[22px]">notifications</span>
+            <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+          </button>
+          <button class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[22px]">settings</span>
+          </button>
+          
+          <!-- Perfil superior derecho interactivo -->
+          <div id="user-profile-header-area" class="flex items-center gap-3 cursor-pointer bg-surface-container-lowest px-3.5 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-all border border-surface-container-high/40" title="Editar Perfil">
+            <div class="flex flex-col text-right">
+              <span id="top-right-saludo" class="text-[11px] text-on-surface-variant font-medium">¡Buenos días!</span>
+              <span id="top-right-nombre" class="font-bold text-xs text-on-surface">[Nombre del Usuario]</span>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center overflow-hidden shadow-xs">
+              <span class="material-symbols-outlined text-[20px]">person</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="flex-1 px-4 sm:px-6 lg:px-8 py-5 lg:py-7 max-w-7xl w-full mx-auto pb-28 lg:pb-12">
+        
+        <!-- HEADER MÓVIL -->
+        <div class="lg:hidden flex items-center justify-between pt-safe pb-5">
+          <div id="user-profile-header-area-mobile" class="flex items-center gap-space-sm cursor-pointer">
+            <div class="relative w-12 h-12 rounded-full overflow-hidden shadow-sm bg-surface-container ring-2 ring-primary/25 hover:ring-primary/50 transition-all flex items-center justify-center text-primary" title="Editar Perfil">
+              <span class="material-symbols-outlined text-[24px]">person</span>
+            </div>
+            <div class="flex flex-col">
+              <span id="mobile-saludo" class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+                ¡Buenos días!
+                <span class="inline-block animate-pulse text-xs">✨</span>
+              </span>
+              <span class="font-headline-md text-headline-md text-on-surface" id="header-nombre-movil">Usuario</span>
+            </div>
+          </div>
+          <!-- Acciones Rápidas Móviles -->
+          <div class="flex items-center gap-space-xs">
+            <button aria-label="Notificaciones" class="relative w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[22px]">notifications</span>
+              <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary-container rounded-full ring-2 ring-surface-container-lowest"></span>
+            </button>
+            <button class="btn-editar-perfil w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[22px]">settings</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ENCABEZADO ESCRITORIO -->
+        <div class="hidden lg:flex items-center justify-between mb-6">
+          <div class="flex flex-col">
+            <h1 class="font-headline-xl text-2xl xl:text-3xl text-on-surface flex items-center gap-2">
+              <span id="desktop-saludo">¡Buenos días</span>, <span id="header-nombre-desktop">Usuario</span>! <span class="text-xl">✨</span>
+            </h1>
+            <p class="font-body-md text-on-surface-variant mt-1">
+              Estás a <span class="font-bold text-primary px-2.5 py-0.5 rounded-full bg-primary-fixed/40">460 kcal</span> de completar tu objetivo del día
+            </p>
+          </div>
+          
+          <!-- Acciones Principales -->
+          <div class="flex items-center gap-3">
+            <a href="asistente.html" class="px-4 py-2.5 rounded-full bg-surface-container-lowest border border-primary-container/30 text-on-surface hover:bg-surface-container-low font-headline-md text-sm flex items-center gap-2 shadow-sm active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-primary text-[20px]">photo_camera</span>
+              <span class="text-primary font-bold">Escanear con IA</span>
+              <span class="material-symbols-outlined text-on-surface-variant text-[16px]">chevron_right</span>
+            </a>
+            <a href="asistente.html" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm flex items-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[20px]">add</span>
+              <span>Registrar Comida</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CUADRÍCULA -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
+          
+          <!-- COLUMNA PRINCIPAL -->
+          <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+            
+            <!-- 1. Tarjeta de Racha Diaria & Progreso -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-fixed via-primary-container to-secondary p-card-padding shadow-[0_12px_28px_-6px_rgba(16,185,129,0.3)]">
+              <div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-white/20 blur-2xl pointer-events-none"></div>
+              <div class="relative z-10 flex items-center justify-between">
+                <div class="flex flex-col gap-space-2xs max-w-[62%] sm:max-w-[70%]">
+                  <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/30 backdrop-blur-md w-fit">
+                    <span class="material-symbols-outlined text-on-primary-container text-[16px]">bolt</span>
+                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider font-bold">Racha diaria</span>
+                  </div>
+                  <h2 class="font-headline-lg text-lg sm:text-xl lg:text-2xl text-on-primary-container pt-1 font-extrabold">
+                    Tu progreso: 15 DÍAS de racha activa 🔥
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-on-primary-container/85 leading-relaxed">
+                    ¡Completaste el <strong>85%</strong> de tu meta calórica de hoy! Mantén la consistencia para alcanzar tu récord personal de 21 días consecutivos.
+                  </p>
+                </div>
+                <div class="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
+                    <circle cx="44" cy="44" fill="none" r="36" stroke="rgba(255,255,255,0.3)" stroke-width="7"></circle>
+                    <circle cx="44" cy="44" fill="none" r="36" stroke="#ffffff" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" stroke-width="7"></circle>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span class="text-[10px] font-bold text-on-primary uppercase tracking-tight">85% META</span>
+                    <div class="flex items-center justify-center gap-0.5 mt-0.5">
+                      <span class="font-numeric-hero text-xl sm:text-2xl text-on-primary font-black leading-none">15</span>
+                      <span class="material-symbols-outlined text-[16px] text-tertiary-fixed fill-current" style="font-variation-settings: &quot;FILL&quot; 1">local_fire_department</span>
+                    </div>
+                    <span class="font-label-sm text-[10px] text-on-primary/90 font-semibold uppercase tracking-wide">días</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Sección Calendario Semanal -->
+            <div class="flex flex-col gap-space-sm">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-on-surface-variant text-[20px]">calendar_today</span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">Septiembre 2026</h3>
+                  <span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Semana 37</span>
+                </div>
+                <div class="flex items-center gap-space-xs">
+                  <span class="hidden sm:inline font-title-sm text-body-sm text-on-surface-variant font-medium">06 – 12 Sep</span>
+                  <div class="flex items-center gap-1 bg-surface-container-low rounded-full p-0.5">
+                    <button aria-label="Semana anterior" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+                      <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                    </button>
+                    <button aria-label="Semana siguiente" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+                      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tira Semanal de Días -->
+              <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30">
+                <div class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center">
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">DOM</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">06</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">LUN</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">07</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">MAR</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">08</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1 py-2 rounded-2xl bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(16,185,129,0.4)] scale-105">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-on-primary/90">● HOY</span>
+                    <span class="font-title-sm text-title-sm text-on-primary font-extrabold">09</span>
+                    <span class="text-[11px] font-bold text-on-primary/95">1,640 kcal</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">JUE</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">10</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">VIE</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">11</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">SÁB</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">12</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col gap-space-sm mt-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div>
+                  <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Bitácora Diaria</span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">Mis comidas de hoy</h3>
+                </div>
+                <div class="flex flex-col sm:items-end">
+                  <div class="flex items-center gap-1">
+                    <span class="consumed-calories-val font-headline-md text-lg text-primary font-black">1,640</span>
+                    <span class="target-calories-total font-body-md text-on-surface-variant font-medium">/ 2,100 kcal</span>
+                  </div>
+                  <div class="w-36 h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+                    <div class="h-full bg-primary-container rounded-full" style="width: 78%;"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Lista de Comidas del Día -->
+              <div id="mis-comidas-container" class="flex flex-col gap-space-sm">
+                <!-- Card: Desayuno -->
+                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
+                  <div class="flex items-center gap-space-md">
+                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
+                      <img alt="[Foto de comida: Desayuno]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <div class="flex items-center gap-2">
+                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Desayuno</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
+                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
+                          Registrado con éxito
+                        </span>
+                      </div>
+                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del plato / Ingredientes del desayuno]</p>
+                      <div class="flex items-center gap-3 text-tertiary pt-1">
+                        <div class="flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
+                          <span class="font-body-sm text-[12px] font-bold text-tertiary">480 – 520 kcal</span>
+                        </div>
+                        <span class="text-on-surface-variant/40 text-xs">•</span>
+                        <span class="font-body-sm text-[12px] text-on-surface-variant">08:30 AM</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button aria-label="Ver detalles de desayuno" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                  </button>
+                </div>
+
+                <!-- Card: Almuerzo -->
+                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
+                  <div class="flex items-center gap-space-md">
+                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
+                      <img alt="[Foto de comida: Almuerzo]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <div class="flex items-center gap-2">
+                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Almuerzo</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
+                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
+                          Registrado con éxito
+                        </span>
+                      </div>
+                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del plato / Ingredientes del almuerzo]</p>
+                      <div class="flex items-center gap-3 text-tertiary pt-1">
+                        <div class="flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
+                          <span class="font-body-sm text-[12px] font-bold text-tertiary">650 – 710 kcal</span>
+                        </div>
+                        <span class="text-on-surface-variant/40 text-xs">•</span>
+                        <span class="font-body-sm text-[12px] text-on-surface-variant">01:45 PM</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button aria-label="Ver detalles de almuerzo" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                  </button>
+                </div>
+
+                <!-- Card: Snack / Refacción -->
+                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
+                  <div class="flex items-center gap-space-md">
+                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
+                      <img alt="[Foto de comida: Snack]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <div class="flex items-center gap-2">
+                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Refacción / Snack</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
+                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
+                          Registrado con éxito
+                        </span>
+                      </div>
+                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del snack / Ingredientes de la refacción]</p>
+                      <div class="flex items-center gap-3 text-tertiary pt-1">
+                        <div class="flex items-center gap-1">
+                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
+                          <span class="font-body-sm text-[12px] font-bold text-tertiary">210 – 240 kcal</span>
+                        </div>
+                        <span class="text-on-surface-variant/40 text-xs">•</span>
+                        <span class="font-body-sm text-[12px] text-on-surface-variant">05:15 PM</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button aria-label="Ver detalles de refacción" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                  </button>
+                </div>
+                
+                <!-- Card: Cena -->
+                <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-card-padding bg-surface-container-low/40 rounded-2xl border-2 border-dashed border-surface-container-high hover:border-primary-container/60 hover:bg-surface-container-lowest transition-all gap-4">
+                  <div class="flex items-center gap-space-md">
+                    <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-on-surface-variant flex-shrink-0">
+                      <span class="material-symbols-outlined text-[28px] text-primary">restaurant</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <div class="flex items-center gap-2">
+                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Cena</span>
+                      </div>
+                      <p class="font-body-sm text-[13px] text-on-surface-variant mt-0.5">Aún no registrada</p>
+                    </div>
+                  </div>
+                  <a href="asistente.html" class="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary/90 active:scale-95 transition-all self-end sm:self-center shrink-0">
+                    <span class="material-symbols-outlined text-[16px]">add</span>
+                    <span>Registrar cena</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Botón Destacado CTA -->
+              <div class="pt-2">
+                <a href="asistente.html" class="w-full py-3.5 px-card-padding rounded-2xl bg-primary-container hover:bg-secondary text-on-primary font-headline-md text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] active:scale-[0.99] transition-all">
+                  <span class="material-symbols-outlined text-[22px]">add_circle</span>
+                  <span>Registrar Comida</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA LATERAL DERECHA -->
+          <div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+            
+            <!-- PANEL 1: "Mi progreso" -->
+            <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-surface-container-high/50 pb-3">
+                <div class="flex flex-col">
+                  <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Balance Nutricional</span>
+                  <h3 class="font-headline-md text-lg text-on-surface font-bold">Mi progreso</h3>
+                </div>
+                <a href="mi_progreso.html" aria-label="Ir a Mi progreso" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-container/15 text-primary hover:bg-primary-container hover:text-on-primary transition-all font-title-sm text-xs font-bold group">
+                  <span class="material-symbols-outlined text-[18px]">trending_up</span>
+                  <span>Mi progreso</span>
+                  <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+                </a>
+              </div>
+
+              <!-- Calorías Restantes -->
+              <div class="flex items-center justify-between bg-surface-container-low/70 rounded-xl p-3">
+                <div class="flex flex-col">
+                  <span class="font-body-sm text-xs text-on-surface-variant">Calorías restantes</span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span class="remaining-calories-val font-headline-lg text-2xl font-black text-primary">460</span>
+                    <span class="remaining-calories-unit font-body-sm text-xs text-on-surface-variant font-semibold">kcal libres</span>
+                  </div>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-primary-container/20 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">flag</span>
+                </div>
+              </div>
+
+              <!-- Gráfico Donut de Calorías -->
+              <div class="relative w-40 h-40 mx-auto my-1 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#f2f3ff" stroke-width="10"></circle>
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#ffb95f" stroke-dasharray="251.2" stroke-dashoffset="200" stroke-linecap="round" stroke-width="10" transform="rotate(270 50 50)"></circle>
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#6bff8f" stroke-dasharray="251.2" stroke-dashoffset="175" stroke-linecap="round" stroke-width="10" transform="rotate(160 50 50)"></circle>
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#10b981" stroke-dasharray="251.2" stroke-dashoffset="125" stroke-linecap="round" stroke-width="10"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span class="font-label-sm text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Total</span>
+                  <span class="consumed-calories-val font-headline-md text-xl font-black text-on-surface leading-tight">1,640</span>
+                  <span class="consumed-calories-unit font-body-sm text-[11px] text-on-surface-variant font-semibold">kcal consumidas</span>
+                </div>
+              </div>
+
+              <!-- Desglose de Macronutrientes -->
+              <div class="flex flex-col gap-2.5 pt-1">
+                <!-- Carbohidratos -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Carbohidratos</span>
+                    </div>
+                    <span class="macro-carbs-val font-title-sm font-bold text-on-surface">220g <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-[#10b981] rounded-full" style="width: 50%;"></div>
+                  </div>
+                </div>
+
+                <!-- Proteínas -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#6bff8f]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Proteínas</span>
+                    </div>
+                    <span class="macro-prot-val font-title-sm font-bold text-on-surface">135g <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-[#6bff8f] rounded-full" style="width: 30%;"></div>
+                  </div>
+                </div>
+
+                <!-- Grasas -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#ffb95f]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Grasas</span>
+                    </div>
+                    <span class="macro-fat-val font-title-sm font-bold text-on-surface">52g <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div class="h-full bg-[#ffb95f] rounded-full" style="width: 20%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 3: "Platos Favoritos" -->
+            <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-3">
+              <div class="flex items-center justify-between border-b border-surface-container-high/40 pb-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[20px]">bookmark</span>
+                  <h3 class="font-headline-md text-base text-on-surface font-bold">Platos Favoritos</h3>
+                </div>
+                <a href="mis_platos.html" class="font-label-sm text-xs text-primary hover:underline font-bold">Ver todos</a>
+              </div>
+
+              <!-- Lista de 3 Platos Favoritos -->
+              <div class="flex flex-col gap-2.5">
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
+                      <img alt="[Foto de plato favorito 1]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 1]</span>
+                      <span class="font-body-sm text-[11px] text-tertiary font-bold">380 kcal</span>
+                    </div>
+                  </div>
+                  <button aria-label="Agregar [Plato Favorito 1]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                  </button>
+                </div>
+
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
+                      <img alt="[Foto de plato favorito 2]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 2]</span>
+                      <span class="font-body-sm text-[11px] text-tertiary font-bold">510 kcal</span>
+                    </div>
+                  </div>
+                  <button aria-label="Agregar [Plato Favorito 2]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                  </button>
+                </div>
+
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
+                      <img alt="[Foto de plato favorito 3]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 3]</span>
+                      <span class="font-body-sm text-[11px] text-tertiary font-bold">290 kcal</span>
+                    </div>
+                  </div>
+                  <button aria-label="Agregar [Plato Favorito 3]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <app-bottom-nav></app-bottom-nav>
+
+    <!-- ======================================================== -->
+    <!-- MODAL DE CONFIGURACIONES DE LA APLICACIÓN -->
+    <!-- ======================================================== -->
+    <div id="dia-settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="dia-settings-title">
+      <div id="dia-settings-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300"></div>
+
+      <div class="relative w-full max-w-xl bg-surface-container-lowest rounded-3xl p-5 sm:p-7 shadow-2xl border border-surface-container-high/80 z-10 flex flex-col max-h-[92vh] overflow-y-auto transition-transform duration-300 scale-95">
+        
+        <!-- HEADER DEL MODAL -->
+        <div class="flex items-center justify-between pb-4 border-b border-surface-container-high/60">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/25">
+              <span class="material-symbols-outlined text-[24px]">settings</span>
+            </div>
+            <div>
+              <h2 id="dia-settings-title" class="font-headline-md text-lg sm:text-xl text-on-surface font-extrabold">Configuraciones de DIA</h2>
+              <p id="dia-settings-subtitle" class="font-body-sm text-xs text-on-surface-variant">Personaliza tu experiencia, unidades de medida y preferencias.</p>
+            </div>
+          </div>
+          <button id="btn-close-settings-modal" type="button" aria-label="Cerrar modal" class="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[22px]">close</span>
+          </button>
+        </div>
+
+        <!-- CUERPO DE OPCIONES (Sincronizado por settings.js) -->
+        <div id="dia-settings-body" class="flex flex-col gap-6 py-5"></div>
+
+        <!-- PIE DE ACCIONES -->
+        <div class="pt-4 border-t border-surface-container-high/60 flex items-center justify-end">
+          <button id="btn-done-settings" type="button" class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-secondary text-on-primary font-bold text-sm shadow-md shadow-primary-container/25 active:scale-95 transition-all cursor-pointer">
+            Listo
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+name: DIA NutriBot CI
+
+on:
+  push:
+    branches: [ main, desarrollo ]
+  pull_request:
+    branches: [ main, desarrollo ]
+
+jobs:
+  validate:
+    name: Validar Proyecto y Sintaxis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar que no existan archivos prohibidos (node_modules o .env)
+        run: |
+          echo "Comprobando que no haya archivos sensibles o dependencias committeadas..."
+          if git ls-files | grep -E '(^node_modules/|^\.env$|^server/\.env$)'; then
+            echo "::error::Se detectó node_modules/ o archivo .env en el repositorio. Por favor elimínalos del índice con git rm --cached."
+            exit 1
+          fi
+          echo "Estructura de archivos limpia."
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias limpias
+        run: npm ci
+
+      - name: Validar sintaxis del código JavaScript
+        run: |
+          node --check server/server.js
+          node --check server/qvac.js
+          node --check public/components/settings.js
+          node --check public/components/navigation.js
+          node --check public/components/views.js
+          node --check public/components/historial.js
+          node --check public/components/mis_platos.js
+          node --check public/components/Js/asistente.js
+          node --check public/components/Js/main.js

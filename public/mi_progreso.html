@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+    <title>DIA - Mi Progreso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="stylesheet" href="tailwind-generated.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="tailwind.config.js"></script>
+    <script src="tailwind.cdn.js" defer></script>
+    <script src="components/views.js"></script>
+    <script src="components/navigation.js"></script>
+    <script src="components/settings.js"></script>
+    <script src="components/Js/main.js" type="module"></script>
+    <style>
+      .bar-segment {
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, filter 0.2s ease;
+        transform-origin: bottom center;
+        cursor: pointer;
+      }
+      .bar-segment:hover {
+        filter: brightness(1.12);
+      }
+      .bar-group:hover .bar-segment {
+        opacity: 0.92;
+      }
+      .metric-card {
+        position: relative;
+        isolation: isolate;
+      }
+      .metric-card::before {
+        content: '';
+        position: absolute;
+        top: -20%;
+        right: -20%;
+        width: 130px;
+        height: 130px;
+        background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 9999px;
+        pointer-events: none;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body class="bg-surface font-body-md text-body-md text-on-surface flex min-h-screen">
+    
+    <!-- MODAL DE ONBOARDING Y EDICIÓN DE PERFIL -->
+    <div id="onboarding-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-300" style="display: none;">
+      <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-full overflow-hidden relative transform transition-transform duration-300 scale-100">
+        <div class="h-3 w-full bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
+        <div class="px-6 sm:px-8 pt-8 pb-4 text-center relative">
+          <button id="btn-cerrar-onboarding" class="hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-inner">
+            <span class="material-symbols-outlined text-[32px]">waving_hand</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">Editar Perfil ✨</h2>
+          <p class="text-sm sm:text-base text-slate-500 mt-2 leading-relaxed">
+            Actualiza tus datos para mantener tus cálculos nutricionales precisos.
+          </p>
+        </div>
+        <div class="px-6 sm:px-8 pb-6 sm:pb-8 overflow-y-auto">
+          <form id="onboarding-form" class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="nombre" class="text-sm font-bold text-slate-700">¿Cómo te llamas?</label>
+              <input type="text" id="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium" />
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="edad" class="text-sm font-bold text-slate-700">Edad</label>
+                <input type="number" id="edad" required min="1" placeholder="Años" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="altura" class="text-sm font-bold text-slate-700">Altura</label>
+                <input type="number" id="altura" required min="50" step="0.01" placeholder="Metros" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="peso" class="text-sm font-bold text-slate-700">Peso</label>
+                <input type="number" id="peso" required min="10" step="0.1" placeholder="Libras" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label for="genero" class="text-sm font-bold text-slate-700">Género</label>
+                <select id="genero" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                  <option value="" disabled selected>Selecciona...</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label for="tipo_diabetes" class="text-sm font-bold text-slate-700">Tipo de Diabetes</label>
+                <select id="tipo_diabetes" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                  <option value="" disabled selected>Selecciona...</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-2 flex items-center p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 cursor-pointer hover:bg-emerald-50 transition-colors" onclick="document.getElementById('insulina').click()">
+              <div class="flex items-center h-5">
+                <input id="insulina" type="checkbox" class="w-5 h-5 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer" />
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="insulina" class="font-bold text-slate-800 cursor-pointer">Utilizo insulina frecuentemente</label>
+                <p class="text-slate-500 text-xs mt-0.5">Activa esta opción para recibir cálculos sugeridos de dosis.</p>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+          <button type="submit" form="onboarding-form" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-[0_4px_14px_rgba(16,185,129,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <span>Guardar mis datos</span>
+            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA LATERAL IZQUIERDA COMPARTIDA -->
+    <app-sidebar></app-sidebar>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="flex-1 flex flex-col min-w-0 min-h-screen">
+      
+      <!-- TOPBAR CON PERFIL SUPERIOR DERECHO -->
+      <header class="h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-end bg-surface border-b border-surface-container-high/30">
+        <div class="flex items-center gap-3">
+          <button aria-label="Notificaciones" class="relative w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[22px]">notifications</span>
+            <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+          </button>
+          <button class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[22px]">settings</span>
+          </button>
+          
+          <!-- Perfil superior derecho interactivo -->
+          <div id="user-profile-header-area" class="flex items-center gap-3 cursor-pointer bg-surface-container-lowest px-3.5 py-1.5 rounded-full shadow-sm hover:bg-surface-container transition-all border border-surface-container-high/40" title="Editar Perfil">
+            <div class="flex flex-col text-right">
+              <span id="top-right-saludo" class="text-[11px] text-on-surface-variant font-medium">¡Buenos días!</span>
+              <span id="top-right-nombre" class="font-bold text-xs text-on-surface">[Nombre del Usuario]</span>
+            </div>
+            <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center overflow-hidden shadow-xs">
+              <span class="material-symbols-outlined text-[20px]">person</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- HEADER MÓVIL (< lg) -->
+      <div class="lg:hidden flex items-center justify-between px-4 pt-safe py-3 bg-surface/90 backdrop-blur-md sticky top-0 z-30 border-b border-surface-container-high/60">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/20">
+            <span class="material-symbols-outlined text-[22px]">trending_up</span>
+          </div>
+          <div>
+            <h1 class="font-headline-md text-base font-bold text-on-surface">Mi Progreso</h1>
+            <p class="text-[11px] font-medium text-on-surface-variant">Monitoreo y balance nutricional</p>
+          </div>
+        </div>
+
+        <button id="btn-today-mobile" type="button" aria-label="Ir a hoy" class="px-3 py-1.5 rounded-xl bg-primary-container/15 text-primary text-xs font-bold flex items-center gap-1 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[16px]">today</span>
+          <span>Hoy</span>
+        </button>
+      </div>
+
+      <!-- CONTENIDO DE LA PÁGINA -->
+      <main class="flex-1 px-4 sm:px-6 lg:px-8 py-5 lg:py-7 max-w-7xl w-full mx-auto pb-28 lg:pb-12 space-y-6">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 bg-surface-container-lowest rounded-3xl border border-surface-container-high/50 shadow-sm">
+          <div class="hidden sm:flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-container to-secondary text-on-primary flex items-center justify-center shadow-md shadow-primary-container/30">
+              <span class="material-symbols-outlined text-[28px]">trending_up</span>
+            </div>
+            <div>
+              <h1 class="text-xl lg:text-2xl font-bold font-headline-xl text-on-surface">Mi Progreso</h1>
+              <p class="text-xs text-on-surface-variant">Calorías consumidas, macronutrientes e hidratación</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-center bg-surface-container-low p-1.5 rounded-2xl border border-surface-container-high/50 w-full sm:w-auto shadow-inner">
+            <button id="tab-dia" type="button" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-primary-container text-on-primary shadow-sm">Día</button>
+            <button id="tab-semana" type="button" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-all">Semana</button>
+            <button id="tab-mes" type="button" class="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-all">Mes</button>
+          </div>
+
+          <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+            <div class="flex items-center bg-surface-container-low rounded-2xl p-1 border border-surface-container-high/40 shadow-xs">
+              <button id="btn-prev-period" aria-label="Período anterior" class="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest active:scale-90 transition-all shadow-xs" title="Retroceder">
+                <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+              </button>
+              <div class="flex items-center gap-1.5 px-3 min-w-[150px] sm:min-w-[180px] justify-center select-none">
+                <span id="period-icon" class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+                <span id="period-display-label" class="font-headline-md text-xs sm:text-sm font-bold text-on-surface text-center whitespace-nowrap">Miércoles, 9 Sep</span>
+              </div>
+              <button id="btn-next-period" aria-label="Período siguiente" class="w-9 h-9 rounded-xl flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-lowest active:scale-90 transition-all shadow-xs" title="Avanzar">
+                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+              </button>
+            </div>
+            <button id="btn-reset-today" type="button" class="hidden sm:inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-surface-container-low hover:bg-primary-container hover:text-on-primary text-on-surface-variant text-xs font-bold transition-all border border-surface-container-high/40 shadow-xs" title="Volver a la fecha actual">
+              <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+              <span>Hoy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-surface-container-high/50 shadow-sm flex flex-col gap-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-surface-container-high/40 pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 id="chart-main-title" class="font-headline-md text-lg sm:text-xl font-bold text-on-surface">Distribución de Macronutrientes por Comida</h2>
+                <span id="chart-badge-period" class="px-2.5 py-0.5 rounded-full bg-primary-fixed/30 text-primary text-[11px] font-bold">Vista Diaria</span>
+              </div>
+              <p id="chart-sub-title" class="text-xs text-on-surface-variant mt-0.5">Desglose calórico y gramos consumidos en cada momento del día</p>
+            </div>
+            <div class="flex items-center flex-wrap gap-2 sm:gap-3 text-xs font-semibold">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low border border-surface-container-high/40">
+                <span class="w-3 h-3 rounded-full bg-[#10b981] shadow-xs"></span>
+                <span class="text-on-surface">Proteínas</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low border border-surface-container-high/40">
+                <span class="w-3 h-3 rounded-full bg-[#0284c7] shadow-xs"></span>
+                <span class="text-on-surface">Carbohidratos</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low border border-surface-container-high/40">
+                <span class="w-3 h-3 rounded-full bg-[#f59e0b] shadow-xs"></span>
+                <span class="text-on-surface">Grasas</span>
+              </div>
+            </div>
+          </div>
+          <div class="relative w-full overflow-x-auto no-scrollbar py-2">
+            <div id="chart-svg-wrapper" class="min-w-[500px] md:min-w-0 w-full"></div>
+            <div id="chart-tooltip" class="absolute z-20 pointer-events-none opacity-0 transition-opacity duration-200 bg-surface-container-lowest text-on-surface rounded-2xl p-3 shadow-xl border border-surface-container-high/70 text-xs flex flex-col gap-1 min-w-[160px]"></div>
+          </div>
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-2 border-t border-surface-container-high/40 text-xs">
+            <div class="flex items-center gap-2 text-on-surface-variant font-medium">
+              <span class="material-symbols-outlined text-primary text-[18px]">info</span>
+              <span id="chart-footnote-text">Toca o pasa el cursor sobre una barra para ver gramos exactos y porcentaje.</span>
+            </div>
+            <div class="flex items-center gap-1.5 font-bold">
+              <span class="text-on-surface-variant">Calorías en este período:</span>
+              <span id="chart-total-kcal" class="text-primary text-sm font-black">1,640 kcal</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-4 px-1">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[22px]">grid_view</span>
+              <h2 class="font-headline-md text-lg sm:text-xl font-bold text-on-surface">Métricas y Macronutrientes</h2>
+            </div>
+            <span class="text-xs text-on-surface-variant font-medium">Actualizado en tiempo real</span>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-5">
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#ff5e62] via-[#ff7844] to-[#f97316] text-white shadow-[0_12px_24px_-6px_rgba(249,115,22,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Calorías</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">local_fire_department</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-calorias-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">1,640</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">kcal</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-calorias-sub">78% Meta</span>
+                  <span id="card-calorias-goal" class="font-bold">Meta 2,100</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-calorias-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 78%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#10b981] via-[#059669] to-[#047857] text-white shadow-[0_12px_24px_-6px_rgba(16,185,129,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Proteínas</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">fitness_center</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-proteinas-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">135</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">g</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-proteinas-sub">90% Meta</span>
+                  <span id="card-proteinas-goal" class="font-bold">Meta 150g</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-proteinas-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 90%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#0284c7] via-[#0369a1] to-[#075985] text-white shadow-[0_12px_24px_-6px_rgba(2,132,199,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Carbohidratos</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">grain</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-carbs-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">220</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">g</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-carbs-sub">88% Meta</span>
+                  <span id="card-carbs-goal" class="font-bold">Meta 250g</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-carbs-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 88%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#f59e0b] via-[#d97706] to-[#b45309] text-white shadow-[0_12px_24px_-6px_rgba(245,158,11,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Grasas</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">opacity</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-grasas-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">52</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">g</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-grasas-sub">80% Meta</span>
+                  <span id="card-grasas-goal" class="font-bold">Meta 65g</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-grasas-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#8b5cf6] via-[#7c3aed] to-[#6d28d9] text-white shadow-[0_12px_24px_-6px_rgba(139,92,246,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Fibra</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">psychiatry</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-fibra-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">28</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">g</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-fibra-sub">87% Meta</span>
+                  <span id="card-fibra-goal" class="font-bold">Meta 32g</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-fibra-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 87%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#06b6d4] via-[#0891b2] to-[#0e7490] text-white shadow-[0_12px_24px_-6px_rgba(6,182,212,0.35)] flex flex-col justify-between min-h-[145px] sm:min-h-[165px]">
+              <div class="flex items-start justify-between relative z-10">
+                <span class="font-title-sm text-xs sm:text-sm font-bold text-white/95 tracking-wide">Agua</span>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center text-white shadow-inner shrink-0">
+                  <span class="material-symbols-outlined text-[22px] sm:text-[24px]">water_drop</span>
+                </div>
+              </div>
+              <div class="my-2 relative z-10">
+                <div class="flex items-baseline gap-1">
+                  <span id="card-agua-val" class="font-numeric-hero text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-none tracking-tight">2.4</span>
+                  <span class="text-xs sm:text-sm font-bold text-white/90">L</span>
+                </div>
+              </div>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between text-[11px] sm:text-xs text-white/90 font-medium">
+                  <span id="card-agua-sub">80% Meta</span>
+                  <span id="card-agua-goal" class="font-bold">Meta 3.0 L</span>
+                </div>
+                <div class="w-full h-1.5 bg-black/15 rounded-full overflow-hidden mt-1.5">
+                  <div id="card-agua-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <app-bottom-nav></app-bottom-nav>
+  </body>
+</html>

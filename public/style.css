@@ -1,0 +1,490 @@
+@layer base {
+  html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  /* Dimensiones y visualización directa de la barra lateral compartida */
+  app-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    app-sidebar {
+      display: block;
+      width: 16rem; /* w-64 */
+      flex-shrink: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    app-sidebar {
+      width: 18rem; /* xl:w-72 */
+    }
+  }
+
+  /* Barra superior compartida para PC (Fija arriba al hacer scroll) */
+  app-topbar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    app-topbar {
+      display: block;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      width: 100%;
+    }
+  }
+
+  /* Barra de navegación inferior móvil */
+  app-bottom-nav {
+    display: block;
+  }
+
+  @media (min-width: 1024px) {
+    app-bottom-nav {
+      display: none;
+    }
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Scrollbar moderno, fino y accesible para PC */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Utilidad para ocultar scrollbar donde sea necesario */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Efecto transform para tarjetas del historial de chats (crece suavemente al pasar el mouse) */
+.chat-history-card {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, background-color 0.28s ease;
+  will-change: transform;
+}
+
+.chat-history-card:hover {
+  transform: translateY(-4px) scale(1.025);
+}
+
+@media (hover: none) {
+  .chat-history-card:hover {
+    transform: none;
+  }
+  .chat-history-card:active {
+    transform: scale(0.985);
+  }
+}
+
+/* ==========================================================================
+   ESTILOS DE MODO OSCURO (html.dark)
+   ========================================================================== */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark,
+html.dark body {
+  background-color: #0b1120 !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark .bg-surface {
+  background-color: #0b1120 !important;
+}
+
+html.dark .bg-surface-container-lowest {
+  background-color: #131d33 !important;
+}
+
+html.dark .bg-surface-container-low {
+  background-color: #17233d !important;
+}
+
+html.dark .bg-surface-container-low\/70,
+html.dark .bg-surface-container-low\/60,
+html.dark .bg-surface-container-low\/40 {
+  background-color: rgba(23, 35, 61, 0.7) !important;
+}
+
+html.dark .bg-surface-container {
+  background-color: #1c2b48 !important;
+}
+
+html.dark .bg-surface-container-high {
+  background-color: #243557 !important;
+}
+
+html.dark .text-on-surface {
+  color: #f8fafc !important;
+}
+
+html.dark .text-on-surface-variant {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-primary {
+  color: #4edea3 !important;
+}
+
+html.dark .text-tertiary {
+  color: #ffb95f !important;
+}
+
+html.dark .text-tertiary\/80 {
+  color: rgba(255, 185, 95, 0.9) !important;
+}
+
+html.dark [class*="bg-primary-fixed"] {
+  background-color: rgba(78, 222, 163, 0.18) !important;
+}
+
+html.dark [class*="bg-primary-container/15"] {
+  background-color: rgba(78, 222, 163, 0.16) !important;
+}
+
+html.dark [class*="bg-tertiary-fixed"] {
+  background-color: rgba(255, 185, 95, 0.15) !important;
+}
+
+html.dark [class*="border-tertiary-fixed"] {
+  border-color: rgba(255, 185, 95, 0.45) !important;
+}
+
+/* Badge indicativo de Modo Oscuro / Modo Claro en modal de configuración */
+html.dark #dia-theme-current-label {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+  color: #6ffbbe !important;
+  border-color: rgba(111, 251, 190, 0.45) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+html.dark [class*="border-surface-container-high"] {
+  border-color: rgba(51, 65, 85, 0.6) !important;
+}
+
+html.dark app-sidebar aside {
+  background-color: #0f172a !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Cuadro / Banner del Asistente IA en Sidebar (Modo Oscuro) */
+html.dark .sidebar-assistant-banner,
+html.dark #sidebar-assistant-banner,
+html.dark app-sidebar a[href="asistente.html"].group {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(23, 35, 61, 0.95) 55%, rgba(15, 23, 42, 0.98) 100%) !important;
+  border: 1.5px solid rgba(78, 222, 163, 0.45) !important;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.dark .sidebar-assistant-banner:hover,
+html.dark #sidebar-assistant-banner:hover,
+html.dark app-sidebar a[href="asistente.html"].group:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(30, 46, 79, 0.98) 55%, rgba(23, 35, 61, 1) 100%) !important;
+  border-color: #4edea3 !important;
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.35), 0 8px 24px -4px rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+html.dark .sidebar-assistant-banner h4,
+html.dark #sidebar-assistant-banner h4,
+html.dark app-sidebar a[href="asistente.html"].group h4 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease !important;
+}
+
+html.dark .sidebar-assistant-banner:hover h4,
+html.dark #sidebar-assistant-banner:hover h4,
+html.dark app-sidebar a[href="asistente.html"].group:hover h4 {
+  color: #6ffbbe !important;
+  text-shadow: 0 0 12px rgba(111, 251, 190, 0.5) !important;
+}
+
+html.dark .sidebar-assistant-banner p,
+html.dark #sidebar-assistant-banner p,
+html.dark app-sidebar a[href="asistente.html"].group p {
+  color: #e2e8f0 !important;
+  font-weight: 500 !important;
+  transition: color 0.2s ease !important;
+}
+
+html.dark .sidebar-assistant-banner:hover p,
+html.dark #sidebar-assistant-banner:hover p,
+html.dark app-sidebar a[href="asistente.html"].group:hover p {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+html.dark .sidebar-assistant-banner .text-tertiary-fixed-dim,
+html.dark #sidebar-assistant-banner .text-tertiary-fixed-dim,
+html.dark app-sidebar a[href="asistente.html"].group .text-tertiary-fixed-dim {
+  color: #fbbf24 !important;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6));
+  transition: transform 0.25s ease, filter 0.25s ease !important;
+}
+
+html.dark .sidebar-assistant-banner:hover .text-tertiary-fixed-dim,
+html.dark #sidebar-assistant-banner:hover .text-tertiary-fixed-dim,
+html.dark app-sidebar a[href="asistente.html"].group:hover .text-tertiary-fixed-dim {
+  color: #fde047 !important;
+  filter: drop-shadow(0 0 12px rgba(253, 224, 71, 0.9)) !important;
+  transform: scale(1.15) rotate(8deg);
+}
+
+/* Hover de links de navegación en sidebar para modo oscuro */
+html.dark app-sidebar .nav-link:hover:not([aria-current="page"]) {
+  background-color: rgba(36, 53, 87, 0.75) !important;
+  color: #4edea3 !important;
+}
+
+html.dark app-sidebar .nav-link:hover:not([aria-current="page"]) .material-symbols-outlined {
+  color: #4edea3 !important;
+}
+
+/* Hover de contenedores de superficie en modo oscuro (evita fondos blancos accidentales) */
+html.dark .hover\:bg-surface-container-low:hover,
+html.dark .hover\:bg-surface-container:hover,
+html.dark .hover\:bg-surface-container-lowest:hover {
+  background-color: #243557 !important;
+}
+
+html.dark .hover\:bg-surface-container-low\/60:hover {
+  background-color: rgba(36, 53, 87, 0.65) !important;
+}
+
+html.dark .hover\:text-primary:hover {
+  color: #4edea3 !important;
+}
+
+/* Tarjeta / Acceso Rápido Asistente IA en Dashboard */
+html.dark #asistente-ia {
+  background: linear-gradient(135deg, rgba(23, 35, 61, 0.9) 0%, rgba(19, 29, 51, 0.95) 55%, rgba(16, 185, 129, 0.15) 100%) !important;
+  border-color: rgba(78, 222, 163, 0.35) !important;
+}
+
+html.dark app-topbar header {
+  background-color: rgba(11, 17, 32, 0.9) !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+}
+
+html.dark app-bottom-nav nav {
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .shadow-sm,
+html.dark .shadow-md,
+html.dark [class*="shadow-[0_2px_8px"],
+html.dark [class*="shadow-[0_4px_20px"] {
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder,
+html.dark [class*="placeholder:text-"]::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+html.dark select option {
+  background-color: #131d33 !important;
+  color: #f8fafc !important;
+}
+
+/* Opacidades y variantes de texto secundario en modo oscuro */
+html.dark [class*="text-on-surface-variant/"] {
+  color: #94a3b8 !important;
+}
+
+html.dark [class*="text-on-surface-variant/60"] {
+  color: #94a3b8 !important;
+}
+
+html.dark [class*="text-on-surface-variant/70"],
+html.dark [class*="text-on-surface-variant/80"] {
+  color: #cbd5e1 !important;
+}
+
+/* Barra de chat e input del asistente en modo oscuro */
+html.dark #chat-form {
+  background-color: #131d33 !important;
+  border-color: rgba(51, 65, 85, 0.75) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark #chat-form:focus-within {
+  border-color: #4edea3 !important;
+  box-shadow: 0 0 0 2px rgba(78, 222, 163, 0.25), 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark #chat-input {
+  color: #f8fafc !important;
+}
+
+html.dark #chat-input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+html.dark #btn-trigger-camera {
+  color: #94a3b8 !important;
+}
+
+html.dark #btn-trigger-camera:hover {
+  color: #4edea3 !important;
+  background-color: rgba(78, 222, 163, 0.15) !important;
+}
+
+html.dark #image-preview-bar {
+  background-color: #131d33 !important;
+  border-color: rgba(78, 222, 163, 0.3) !important;
+}
+
+html.dark #chat-form + div span,
+html.dark .chat-disclaimer {
+  color: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   SWITCH DE TEMA CLARO / OSCURO (Círculo Verde Claro con Sol / Luna)
+   ========================================================================== */
+.theme-switch-track {
+  position: relative;
+  width: 64px;
+  height: 36px;
+  border-radius: 9999px;
+  background-color: #e2e8f0;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+html.dark .theme-switch-track {
+  background-color: #1e293b;
+  border-color: rgba(78, 222, 163, 0.4);
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #6ffbbe; /* Círculo verde claro */
+  color: #00422b;     /* Verde oscuro para el ícono de sol/luna */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 66, 43, 0.25);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, color 0.3s ease;
+  will-change: transform;
+}
+
+html.dark .theme-switch-thumb {
+  transform: translateX(28px);
+  background: #4edea3; /* Verde claro esmeralda en modo oscuro */
+  color: #002b1c;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.theme-switch-icon {
+  font-size: 17px !important;
+  line-height: 1;
+  transition: transform 0.35s ease, opacity 0.2s ease;
+}
+
+/* Notificación Toast para feedback */
+.dia-toast {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  background-color: #00422b;
+  color: #6ffbbe;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(111, 251, 190, 0.3);
+}
+
+.dia-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
