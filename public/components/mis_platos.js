@@ -5,75 +5,50 @@
 
 (function () {
   const STORAGE_KEY = 'dia_mis_platos';
-
-  const DEFAULT_PLATOS = [
-    {
-      id: 'plato-1',
-      nombre: 'Salmón a la Plancha con Espárragos',
-      descripcion: 'Filete de salmón fresco sellado al punto con espárragos trigueros salteados en aceite de oliva virgen extra y semillas de sésamo tostadas.',
-      foto: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
-      calorias: 520,
-      categoria: 'Almuerzo',
-      fecha: new Date().toISOString()
-    },
-    {
-      id: 'plato-2',
-      nombre: 'Bowl de Avena con Frutas del Bosque',
-      descripcion: 'Copos de avena integral cocidos en leche de almendras con arándanos frescos, plátano en rodajas, semillas de chía y nueces crujientes.',
-      foto: 'https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=800&q=80',
-      calorias: 380,
-      categoria: 'Desayuno',
-      fecha: new Date().toISOString()
-    },
-    {
-      id: 'plato-3',
-      nombre: 'Pechuga de Pollo con Quinoa y Aguacate',
-      descripcion: 'Pechuga marinada a las finas hierbas con base de quinoa perlada tibia, láminas de aguacate fresco y un toque de limón.',
-      foto: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
-      calorias: 490,
-      categoria: 'Almuerzo',
-      fecha: new Date().toISOString()
-    },
-    {
-      id: 'plato-4',
-      nombre: 'Ensalada Mediterránea con Queso Feta',
-      descripcion: 'Mix de hojas verdes, tomates cherry maduros, pepino crujiente, aceitunas kalamata y queso feta con vinagreta balsámica de orégano.',
-      foto: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
-      calorias: 320,
-      categoria: 'Cena',
-      fecha: new Date().toISOString()
-    }
-  ];
+  const DEFAULT_MOCK_IDS = ['plato-1', 'plato-2', 'plato-3', 'plato-4'];
 
   const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260' width='400' height='260'%3E%3Crect width='400' height='260' fill='%23eaedff'/%3E%3Cg fill='%23006c49'%3E%3Ccircle cx='200' cy='115' r='45' fill='none' stroke='%2310b981' stroke-width='6'/%3E%3Cpath d='M160 85v25a8 8 0 008 8v35h6v-35a8 8 0 008-8V85h-4v20h-4V85h-3v20h-4V85h-5zm65 0v30a8 8 0 008 8v30h6V85h-14z' fill='%2310b981'/%3E%3C/g%3E%3Ctext x='200' y='210' font-family='Plus Jakarta Sans, sans-serif' font-size='16' font-weight='700' fill='%233c4a42' text-anchor='middle'%3EPlatillo Nutritivo DIA%3C/text%3E%3C/svg%3E";
 
-  // Modelo de datos en LocalStorage
+  // Modelo de datos en LocalStorage (sin datos simulados por defecto)
   const PlatosStore = {
     getAll: function () {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_PLATOS));
-          return [...DEFAULT_PLATOS];
+          return [];
         }
         const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed : [...DEFAULT_PLATOS];
+        if (Array.isArray(parsed)) {
+          // Filtrar y eliminar platillos de ejemplo mock iniciales si aún persisten
+          const cleaned = parsed.filter(p => !DEFAULT_MOCK_IDS.includes(p.id));
+          if (cleaned.length !== parsed.length) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned));
+          }
+          return cleaned;
+        }
+        return [];
       } catch (e) {
         console.warn('Error al leer de LocalStorage:', e);
-        return [...DEFAULT_PLATOS];
+        return [];
       }
     },
     saveAll: function (platos) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(platos));
+        this.notifyChange();
       } catch (e) {
         console.error('Error al guardar en LocalStorage:', e);
       }
     },
+    notifyChange: function () {
+      try {
+        window.dispatchEvent(new CustomEvent('dia_platos_updated'));
+      } catch (e) {}
+    },
     add: function (plato) {
       const list = this.getAll();
       plato.id = 'plato-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7);
-      plato.fecha = new Date().toISOString();
+      plato.fecha = plato.fecha || new Date().toISOString();
       list.unshift(plato);
       this.saveAll(list);
       return plato;
@@ -97,6 +72,74 @@
     getById: function (id) {
       const list = this.getAll();
       return list.find((p) => p.id === id) || null;
+    },
+    getTodayTotals: function () {
+      const list = this.getAll();
+      const now = new Date();
+      const isToday = (dateStr) => {
+        if (!dateStr) return true;
+        const d = new Date(dateStr);
+        return d.getFullYear() === now.getFullYear() &&
+               d.getMonth() === now.getMonth() &&
+               d.getDate() === now.getDate();
+      };
+
+      const platosHoy = list.filter(p => isToday(p.fecha));
+
+      let totalCal = 0;
+      let totalProt = 0;
+      let totalCarbs = 0;
+      let totalFat = 0;
+      let totalFib = 0;
+
+      const byCategory = {
+        Desayuno: { carbs: 0, protein: 0, fat: 0, kcal: 0, items: [] },
+        Almuerzo: { carbs: 0, protein: 0, fat: 0, kcal: 0, items: [] },
+        Cena: { carbs: 0, protein: 0, fat: 0, kcal: 0, items: [] },
+        Snack: { carbs: 0, protein: 0, fat: 0, kcal: 0, items: [] }
+      };
+
+      platosHoy.forEach(p => {
+        let carbs = Number(p.carbohidratos) || 0;
+        let prot = Number(p.proteinas) || 0;
+        let fat = Number(p.grasas) || 0;
+        const fib = Number(p.fibra) || 0;
+
+        let kcal = Number(p.calorias) || 0;
+        if (kcal <= 0 && (carbs > 0 || prot > 0 || fat > 0)) {
+          kcal = Math.round((carbs * 4) + (prot * 4) + (fat * 9));
+        } else if (kcal > 0 && carbs === 0 && prot === 0 && fat === 0) {
+          // Si el plato solo tiene calorías ingresadas (sin desglose de macros),
+          // estimar distribución estándar balanceada (50% carbs, 25% proteína, 25% grasas)
+          // para que los gráficos y barras se calculen dinámicamente:
+          carbs = Math.round((kcal * 0.50) / 4);
+          prot = Math.round((kcal * 0.25) / 4);
+          fat = Math.round((kcal * 0.25) / 9);
+        }
+
+        totalCal += kcal;
+        totalProt += prot;
+        totalCarbs += carbs;
+        totalFat += fat;
+        totalFib += fib;
+
+        const cat = p.categoria && byCategory[p.categoria] ? p.categoria : 'Almuerzo';
+        byCategory[cat].carbs += carbs;
+        byCategory[cat].protein += prot;
+        byCategory[cat].fat += fat;
+        byCategory[cat].kcal += kcal;
+        byCategory[cat].items.push(p);
+      });
+
+      return {
+        calorias: totalCal,
+        proteinas: totalProt,
+        carbs: totalCarbs,
+        grasas: totalFat,
+        fibra: totalFib,
+        platosHoy,
+        byCategory
+      };
     }
   };
 
@@ -131,10 +174,31 @@
     const inputDescripcion = document.getElementById('plato-descripcion');
     const inputCalorias = document.getElementById('plato-calorias');
     const selectCategoria = document.getElementById('plato-categoria');
+    const inputCarbs = document.getElementById('plato-carbs');
+    const inputProtein = document.getElementById('plato-protein');
+    const inputFat = document.getElementById('plato-fat');
+    const inputFibra = document.getElementById('plato-fibra');
     const previewContainer = document.getElementById('plato-image-preview-container');
     const previewImg = document.getElementById('plato-image-preview');
     const btnRemoveImage = document.getElementById('btn-remove-preview-image');
     const presetImages = document.querySelectorAll('.preset-image-btn');
+
+    // Cálculo automático de calorías a partir de macronutrientes (si los campos existen)
+    function autoCalcCalories() {
+      const c = parseFloat(inputCarbs ? inputCarbs.value : 0) || 0;
+      const p = parseFloat(inputProtein ? inputProtein.value : 0) || 0;
+      const f = parseFloat(inputFat ? inputFat.value : 0) || 0;
+      if (c > 0 || p > 0 || f > 0) {
+        const computed = Math.round((c * 4) + (p * 4) + (f * 9));
+        if (inputCalorias) inputCalorias.value = computed;
+      }
+    }
+
+    [inputCarbs, inputProtein, inputFat].forEach((inp) => {
+      if (inp) {
+        inp.addEventListener('input', autoCalcCalories);
+      }
+    });
 
     // Modal de confirmación de eliminación
     const deleteModal = document.getElementById('delete-modal');
@@ -174,12 +238,18 @@
       // Estado vacío
       if (filtered.length === 0) {
         gridContainer.classList.add('hidden');
-        if (emptyState) emptyState.classList.remove('hidden');
+        if (emptyState) {
+          emptyState.classList.remove('hidden');
+          emptyState.classList.add('flex');
+        }
         return;
       }
 
       gridContainer.classList.remove('hidden');
-      if (emptyState) emptyState.classList.add('hidden');
+      if (emptyState) {
+        emptyState.classList.add('hidden');
+        emptyState.classList.remove('flex');
+      }
 
       // Generar tarjetas
       gridContainer.innerHTML = filtered
@@ -193,6 +263,15 @@
           else if (plato.categoria === 'Almuerzo') catBg = 'bg-emerald-100 text-emerald-900 border-emerald-300';
           else if (plato.categoria === 'Cena') catBg = 'bg-indigo-100 text-indigo-900 border-indigo-300';
           else if (plato.categoria === 'Snack') catBg = 'bg-orange-100 text-orange-900 border-orange-300';
+
+          const hasMacros = plato.carbohidratos > 0 || plato.proteinas > 0 || plato.grasas > 0;
+          const macrosHtml = hasMacros
+            ? `<div class="flex items-center gap-1.5 flex-wrap text-[11px] font-bold text-on-surface-variant/90 pt-1">
+                <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">Carbs: ${plato.carbohidratos || 0}g</span>
+                <span class="px-2 py-0.5 rounded-md bg-sky-100 text-sky-800 dark:bg-sky-950/40 dark:text-sky-300">Prot: ${plato.proteinas || 0}g</span>
+                <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">Grasas: ${plato.grasas || 0}g</span>
+              </div>`
+            : '';
 
           return `
             <article class="group relative flex flex-col bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm hover:shadow-xl hover:border-primary-container/40 transition-all duration-300 overflow-hidden" data-id="${escapeHtml(plato.id)}">
@@ -236,6 +315,7 @@
                   <p class="font-body-md text-xs sm:text-[13px] text-on-surface-variant leading-relaxed line-clamp-3">
                     ${escapeHtml(plato.descripcion || 'Sin descripción ingresada.')}
                   </p>
+                  ${macrosHtml}
                 </div>
 
                 <!-- ACCIONES DE LA TARJETA (EDITAR Y ELIMINAR) -->
@@ -294,6 +374,11 @@
     function openCreateModal() {
       form.reset();
       inputId.value = '';
+      if (inputCarbs) inputCarbs.value = '';
+      if (inputProtein) inputProtein.value = '';
+      if (inputFat) inputFat.value = '';
+      if (inputFibra) inputFibra.value = '';
+      if (inputCalorias) inputCalorias.value = '';
       modalTitle.textContent = 'Crear Platillo';
       const submitText = document.getElementById('modal-submit-text');
       if (submitText) submitText.textContent = 'Guardar Platillo';
@@ -313,6 +398,11 @@
       inputDescripcion.value = plato.descripcion || '';
       inputCalorias.value = plato.calorias || '';
       selectCategoria.value = plato.categoria || 'Almuerzo';
+      if (inputCarbs) inputCarbs.value = plato.carbohidratos !== undefined && plato.carbohidratos !== null ? plato.carbohidratos : '';
+      if (inputProtein) inputProtein.value = plato.proteinas !== undefined && plato.proteinas !== null ? plato.proteinas : '';
+      if (inputFat) inputFat.value = plato.grasas !== undefined && plato.grasas !== null ? plato.grasas : '';
+      if (inputFibra) inputFibra.value = plato.fibra !== undefined && plato.fibra !== null ? plato.fibra : '';
+
       inputFoto.value = plato.foto && !plato.foto.startsWith('data:') ? plato.foto : '';
       currentImageData = plato.foto || '';
 
@@ -457,7 +547,16 @@
 
         const nombre = inputNombre.value.trim();
         const descripcion = inputDescripcion.value.trim();
-        const caloriasVal = inputCalorias.value ? parseInt(inputCalorias.value, 10) : null;
+        const carbohidratos = inputCarbs && inputCarbs.value !== '' ? parseFloat(inputCarbs.value) : 0;
+        const proteinas = inputProtein && inputProtein.value !== '' ? parseFloat(inputProtein.value) : 0;
+        const grasas = inputFat && inputFat.value !== '' ? parseFloat(inputFat.value) : 0;
+        const fibra = inputFibra && inputFibra.value !== '' ? parseFloat(inputFibra.value) : 0;
+        let caloriasVal = inputCalorias && inputCalorias.value !== '' ? parseInt(inputCalorias.value, 10) : null;
+
+        if ((!caloriasVal || isNaN(caloriasVal)) && (carbohidratos > 0 || proteinas > 0 || grasas > 0)) {
+          caloriasVal = Math.round((carbohidratos * 4) + (proteinas * 4) + (grasas * 9));
+        }
+
         const categoria = selectCategoria.value || 'Almuerzo';
         const id = inputId.value;
 
@@ -471,6 +570,10 @@
           descripcion,
           foto: currentImageData || FALLBACK_IMAGE,
           calorias: caloriasVal,
+          carbohidratos,
+          proteinas,
+          grasas,
+          fibra,
           categoria
         };
 
@@ -535,6 +638,22 @@
         render();
       });
     });
+
+    // Escuchar eventos globales de actualización
+    window.addEventListener('dia_platos_updated', () => {
+      render();
+    });
+
+    // Exponer función de abrir modal para uso global y navegación SPA
+    window.openCreatePlatoModal = openCreateModal;
+
+    // Si se solicitó abrir automáticamente el formulario para registrar comida
+    if (sessionStorage.getItem('dia_auto_open_create_dish') === 'true' || window.location.hash === '#crear') {
+      sessionStorage.removeItem('dia_auto_open_create_dish');
+      setTimeout(() => {
+        openCreateModal();
+      }, 50);
+    }
 
     // Render inicial
     render();
