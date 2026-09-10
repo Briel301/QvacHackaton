@@ -13,75 +13,80 @@
     <script src="components/views.js"></script>
     <script src="components/navigation.js"></script>
     <script src="components/settings.js"></script>
+    <script src="components/mis_platos.js"></script>
+    <script src="components/recordatorios.js"></script>
     <script src="components/Js/main.js" type="module"></script>
   </head>
   <body class="bg-surface font-body-md text-body-md text-on-surface flex min-h-screen">
     
     <!-- MODAL DE ONBOARDING (PRIMER INGRESO Y EDICIÓN) -->
-    <div id="onboarding-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-300" style="display: none;">
-      <div class="w-full max-w-xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-full overflow-hidden relative transform transition-transform duration-300 scale-100">
+    <div id="onboarding-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300" style="display: none;">
+      <div class="w-full max-w-xl rounded-3xl shadow-2xl flex flex-col max-h-full overflow-hidden relative transform transition-transform duration-300 scale-100">
         <div class="h-3 w-full bg-gradient-to-r from-emerald-400 to-emerald-600"></div>
         <div class="px-6 sm:px-8 pt-8 pb-4 text-center relative">
           <!-- Botón cerrar (Solo visible al editar) -->
-          <button id="btn-cerrar-onboarding" class="hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200">
+          <button id="btn-cerrar-onboarding" class="hidden absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors">
             <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
           
-          <div class="w-16 h-16 mx-auto bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-4 shadow-inner">
+          <div class="onboarding-icon-badge w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 shadow-inner">
             <span class="material-symbols-outlined text-[32px]">waving_hand</span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">¡Bienvenido a DIA! ✨</h2>
-          <p class="text-sm sm:text-base text-slate-500 mt-2 leading-relaxed">
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">¡Bienvenido a DIA! ✨</h2>
+          <p class="text-sm sm:text-base mt-2 leading-relaxed">
             Para calcular tus macros diarios ideales y ofrecerte sugerencias de insulina precisas, necesitamos conocerte un poco más.
           </p>
         </div>
         <div class="px-6 sm:px-8 pb-6 sm:pb-8 overflow-y-auto">
           <form id="onboarding-form" class="flex flex-col gap-5">
             <div class="flex flex-col gap-1.5">
-              <label for="nombre" class="text-sm font-bold text-slate-700">¿Cómo te llamas?</label>
-              <input type="text" id="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium" />
+              <label for="nombre" class="text-sm font-bold">¿Cómo te llamas?</label>
+              <input type="text" id="nombre" required placeholder="Ej. Juan Pérez" class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium" />
             </div>
             <div class="grid grid-cols-3 gap-4">
               <div class="flex flex-col gap-1.5">
-                <label for="edad" class="text-sm font-bold text-slate-700">Edad</label>
-                <input type="number" id="edad" required min="1" placeholder="Años" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+                <label for="edad" class="text-sm font-bold">Edad</label>
+                <input type="number" id="edad" required min="1" placeholder="Años" class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium text-center" />
               </div>
               <div class="flex flex-col gap-1.5">
-                <label for="altura" class="text-sm font-bold text-slate-700">Altura</label>
-                <input type="number" id="altura" required min="50" step="0.01" placeholder="Metros" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+                <label for="altura" class="text-sm font-bold">Altura</label>
+                <input type="number" id="altura" required min="50" step="0.01" placeholder="Metros" class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium text-center" />
               </div>
               <div class="flex flex-col gap-1.5">
-                <label for="peso" class="text-sm font-bold text-slate-700">Peso</label>
-                <input type="number" id="peso" required min="10" step="0.1" placeholder="Libras" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium text-center" />
+                <label for="peso" class="text-sm font-bold">Peso</label>
+                <input type="number" id="peso" required min="10" step="0.1" placeholder="Libras" class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium text-center" />
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-1.5">
-                <label for="genero" class="text-sm font-bold text-slate-700">Género</label>
-                <select id="genero" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                <label for="genero" class="text-sm font-bold">Género</label>
+                <select id="genero" required class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium">
                   <option value="" disabled selected>Selecciona...</option>
                 </select>
               </div>
               <div class="flex flex-col gap-1.5">
-                <label for="tipo_diabetes" class="text-sm font-bold text-slate-700">Tipo de Diabetes</label>
-                <select id="tipo_diabetes" required class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-slate-700 font-medium appearance-none">
+                <label for="tipo_diabetes" class="text-sm font-bold">Tipo de Diabetes</label>
+                <select id="tipo_diabetes" required class="w-full px-4 py-3 rounded-xl outline-none transition-all font-medium">
                   <option value="" disabled selected>Selecciona...</option>
                 </select>
               </div>
             </div>
-            <div class="mt-2 flex items-center p-4 rounded-xl border border-emerald-100 bg-emerald-50/50 cursor-pointer hover:bg-emerald-50 transition-colors" onclick="document.getElementById('insulina').click()">
-              <div class="flex items-center h-5">
-                <input id="insulina" type="checkbox" class="w-5 h-5 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 focus:ring-2 cursor-pointer" />
+            <label for="insulina" class="insulina-card-container mt-2 flex items-center p-4 rounded-xl cursor-pointer transition-all select-none">
+              <div class="flex items-center justify-center shrink-0">
+                <input id="insulina" type="checkbox" class="sr-only" />
+                <div class="insulina-custom-box">
+                  <span class="material-symbols-outlined check-icon">check</span>
+                </div>
               </div>
-              <div class="ml-3 text-sm">
-                <label for="insulina" class="font-bold text-slate-800 cursor-pointer">Utilizo insulina frecuentemente</label>
-                <p class="text-slate-500 text-xs mt-0.5">Activa esta opción para recibir cálculos sugeridos de dosis.</p>
+              <div class="ml-3.5 text-sm pointer-events-none">
+                <span class="font-bold block">Utilizo insulina frecuentemente</span>
+                <p class="text-xs mt-0.5">Activa esta opción para recibir cálculos sugeridos de dosis.</p>
               </div>
-            </div>
+            </label>
           </form>
         </div>
-        <div class="p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
-          <button type="submit" form="onboarding-form" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-[0_4px_14px_rgba(16,185,129,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2">
+        <div class="onboarding-footer p-6 flex justify-end">
+          <button type="submit" form="onboarding-form" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-[0_4px_14px_rgba(16,185,129,0.4)] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
             <span>Guardar mis datos</span>
             <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
           </button>
@@ -99,7 +104,7 @@
             <span class="material-symbols-outlined text-[22px]">notifications</span>
             <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
           </button>
-          <button class="w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+          <button id="btn-open-settings-desktop" aria-label="Ajustes y preferencias" class="btn-settings w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all cursor-pointer" title="Configuraciones">
             <span class="material-symbols-outlined text-[22px]">settings</span>
           </button>
           
@@ -138,7 +143,7 @@
               <span class="material-symbols-outlined text-[22px]">notifications</span>
               <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary-container rounded-full ring-2 ring-surface-container-lowest"></span>
             </button>
-            <button class="btn-editar-perfil w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <button id="btn-open-settings-mobile" aria-label="Ajustes y preferencias" class="btn-settings w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all cursor-pointer" title="Configuraciones">
               <span class="material-symbols-outlined text-[22px]">settings</span>
             </button>
           </div>
@@ -150,22 +155,22 @@
             <h1 class="font-headline-xl text-2xl xl:text-3xl text-on-surface flex items-center gap-2">
               <span id="desktop-saludo">¡Buenos días</span>, <span id="header-nombre-desktop">Usuario</span>! <span class="text-xl">✨</span>
             </h1>
-            <p class="font-body-md text-on-surface-variant mt-1">
-              Estás a <span class="font-bold text-primary px-2.5 py-0.5 rounded-full bg-primary-fixed/40">460 kcal</span> de completar tu objetivo del día
+            <p class="font-body-md text-on-surface-variant mt-1" id="header-goal-status">
+              Estás a <span class="header-remaining-kcal font-bold text-primary px-2.5 py-0.5 rounded-full bg-primary-fixed/40">2,100 kcal</span> de completar tu objetivo del día
             </p>
           </div>
           
           <!-- Acciones Principales -->
           <div class="flex items-center gap-3">
-            <a href="asistente.html" class="px-4 py-2.5 rounded-full bg-surface-container-lowest border border-primary-container/30 text-on-surface hover:bg-surface-container-low font-headline-md text-sm flex items-center gap-2 shadow-sm active:scale-95 transition-all">
+            <a href="asistente.html" class="btn-scan-ai-dashboard px-4 py-2.5 rounded-full bg-surface-container-lowest border border-primary-container/30 text-on-surface hover:bg-surface-container-low font-headline-md text-sm flex items-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-primary text-[20px]">photo_camera</span>
               <span class="text-primary font-bold">Escanear con IA</span>
               <span class="material-symbols-outlined text-on-surface-variant text-[16px]">chevron_right</span>
             </a>
-            <a href="asistente.html" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm flex items-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all">
+            <button type="button" class="btn-open-create-dish-dashboard px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm flex items-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-[20px]">add</span>
               <span>Registrar Comida</span>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -185,24 +190,24 @@
                     <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider font-bold">Racha diaria</span>
                   </div>
                   <h2 class="font-headline-lg text-lg sm:text-xl lg:text-2xl text-on-primary-container pt-1 font-extrabold">
-                    Tu progreso: 15 DÍAS de racha activa 🔥
+                    Tu progreso diario activo 🔥
                   </h2>
-                  <p class="font-body-sm text-body-sm text-on-primary-container/85 leading-relaxed">
-                    ¡Completaste el <strong>85%</strong> de tu meta calórica de hoy! Mantén la consistencia para alcanzar tu récord personal de 21 días consecutivos.
+                  <p class="font-body-sm text-body-sm text-on-primary-container/85 leading-relaxed" id="streak-meta-pct-text">
+                    ¡Completaste el <strong id="streak-meta-pct">0%</strong> de tu meta calórica de hoy! Registra tus comidas para monitorear tu consistencia.
                   </p>
                 </div>
                 <div class="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
                   <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
                     <circle cx="44" cy="44" fill="none" r="36" stroke="rgba(255,255,255,0.3)" stroke-width="7"></circle>
-                    <circle cx="44" cy="44" fill="none" r="36" stroke="#ffffff" stroke-dasharray="226" stroke-dashoffset="34" stroke-linecap="round" stroke-width="7"></circle>
+                    <circle id="streak-circle-progress" cx="44" cy="44" fill="none" r="36" stroke="#ffffff" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round" stroke-width="7" class="transition-all duration-700"></circle>
                   </svg>
                   <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span class="text-[10px] font-bold text-on-primary uppercase tracking-tight">85% META</span>
+                    <span id="streak-meta-badge" class="text-[10px] font-bold text-on-primary uppercase tracking-tight">0% META</span>
                     <div class="flex items-center justify-center gap-0.5 mt-0.5">
-                      <span class="font-numeric-hero text-xl sm:text-2xl text-on-primary font-black leading-none">15</span>
+                      <span class="font-numeric-hero text-xl sm:text-2xl text-on-primary font-black leading-none">1</span>
                       <span class="material-symbols-outlined text-[16px] text-tertiary-fixed fill-current" style="font-variation-settings: &quot;FILL&quot; 1">local_fire_department</span>
                     </div>
-                    <span class="font-label-sm text-[10px] text-on-primary/90 font-semibold uppercase tracking-wide">días</span>
+                    <span class="font-label-sm text-[10px] text-on-primary/90 font-semibold uppercase tracking-wide">día</span>
                   </div>
                 </div>
               </div>
@@ -279,133 +284,26 @@
                 </div>
                 <div class="flex flex-col sm:items-end">
                   <div class="flex items-center gap-1">
-                    <span class="consumed-calories-val font-headline-md text-lg text-primary font-black">1,640</span>
+                    <span class="consumed-calories-val font-headline-md text-lg text-primary font-black">0</span>
                     <span class="target-calories-total font-body-md text-on-surface-variant font-medium">/ 2,100 kcal</span>
                   </div>
                   <div class="w-36 h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
-                    <div class="h-full bg-primary-container rounded-full" style="width: 78%;"></div>
+                    <div id="consumed-calories-bar" class="h-full bg-primary-container rounded-full transition-all duration-500" style="width: 0%;"></div>
                   </div>
                 </div>
               </div>
               
-              <!-- Lista de Comidas del Día -->
+              <!-- Lista Dinámica de Comidas del Día -->
               <div id="mis-comidas-container" class="flex flex-col gap-space-sm">
-                <!-- Card: Desayuno -->
-                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
-                  <div class="flex items-center gap-space-md">
-                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
-                      <img alt="[Foto de comida: Desayuno]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <div class="flex items-center gap-2">
-                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Desayuno</span>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
-                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
-                          Registrado con éxito
-                        </span>
-                      </div>
-                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del plato / Ingredientes del desayuno]</p>
-                      <div class="flex items-center gap-3 text-tertiary pt-1">
-                        <div class="flex items-center gap-1">
-                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
-                          <span class="font-body-sm text-[12px] font-bold text-tertiary">480 – 520 kcal</span>
-                        </div>
-                        <span class="text-on-surface-variant/40 text-xs">•</span>
-                        <span class="font-body-sm text-[12px] text-on-surface-variant">08:30 AM</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button aria-label="Ver detalles de desayuno" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
-                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-                  </button>
-                </div>
-
-                <!-- Card: Almuerzo -->
-                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
-                  <div class="flex items-center gap-space-md">
-                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
-                      <img alt="[Foto de comida: Almuerzo]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <div class="flex items-center gap-2">
-                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Almuerzo</span>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
-                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
-                          Registrado con éxito
-                        </span>
-                      </div>
-                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del plato / Ingredientes del almuerzo]</p>
-                      <div class="flex items-center gap-3 text-tertiary pt-1">
-                        <div class="flex items-center gap-1">
-                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
-                          <span class="font-body-sm text-[12px] font-bold text-tertiary">650 – 710 kcal</span>
-                        </div>
-                        <span class="text-on-surface-variant/40 text-xs">•</span>
-                        <span class="font-body-sm text-[12px] text-on-surface-variant">01:45 PM</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button aria-label="Ver detalles de almuerzo" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
-                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-                  </button>
-                </div>
-
-                <!-- Card: Snack / Refacción -->
-                <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
-                  <div class="flex items-center gap-space-md">
-                    <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0" title="[Foto de comida]">
-                      <img alt="[Foto de comida: Snack]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <div class="flex items-center gap-2">
-                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Refacción / Snack</span>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold">
-                          <span class="material-symbols-outlined text-[13px]">check_circle</span>
-                          Registrado con éxito
-                        </span>
-                      </div>
-                      <p class="font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5">[Nombre del snack / Ingredientes de la refacción]</p>
-                      <div class="flex items-center gap-3 text-tertiary pt-1">
-                        <div class="flex items-center gap-1">
-                          <span class="material-symbols-outlined text-[15px]">local_fire_department</span>
-                          <span class="font-body-sm text-[12px] font-bold text-tertiary">210 – 240 kcal</span>
-                        </div>
-                        <span class="text-on-surface-variant/40 text-xs">•</span>
-                        <span class="font-body-sm text-[12px] text-on-surface-variant">05:15 PM</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button aria-label="Ver detalles de refacción" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0">
-                    <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-                  </button>
-                </div>
-                
-                <!-- Card: Cena -->
-                <div class="group flex flex-col sm:flex-row sm:items-center justify-between p-card-padding bg-surface-container-low/40 rounded-2xl border-2 border-dashed border-surface-container-high hover:border-primary-container/60 hover:bg-surface-container-lowest transition-all gap-4">
-                  <div class="flex items-center gap-space-md">
-                    <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-on-surface-variant flex-shrink-0">
-                      <span class="material-symbols-outlined text-[28px] text-primary">restaurant</span>
-                    </div>
-                    <div class="flex flex-col">
-                      <div class="flex items-center gap-2">
-                        <span class="font-title-sm text-title-sm text-on-surface font-bold">Cena</span>
-                      </div>
-                      <p class="font-body-sm text-[13px] text-on-surface-variant mt-0.5">Aún no registrada</p>
-                    </div>
-                  </div>
-                  <a href="asistente.html" class="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary/90 active:scale-95 transition-all self-end sm:self-center shrink-0">
-                    <span class="material-symbols-outlined text-[16px]">add</span>
-                    <span>Registrar cena</span>
-                  </a>
-                </div>
+                <!-- Se renderiza en tiempo real según los platillos ingresados hoy -->
               </div>
 
               <!-- Botón Destacado CTA -->
-              <div class="pt-2">
-                <a href="asistente.html" class="w-full py-3.5 px-card-padding rounded-2xl bg-primary-container hover:bg-secondary text-on-primary font-headline-md text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] active:scale-[0.99] transition-all">
+              <div id="bottom-registrar-comida-container" class="pt-2 hidden">
+                <button type="button" class="btn-open-create-dish-dashboard w-full py-3.5 px-card-padding rounded-2xl bg-primary-container hover:bg-secondary text-on-primary font-headline-md text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] active:scale-[0.99] transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-[22px]">add_circle</span>
                   <span>Registrar Comida</span>
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -432,7 +330,7 @@
                 <div class="flex flex-col">
                   <span class="font-body-sm text-xs text-on-surface-variant">Calorías restantes</span>
                   <div class="flex items-baseline gap-1 mt-0.5">
-                    <span class="remaining-calories-val font-headline-lg text-2xl font-black text-primary">460</span>
+                    <span class="remaining-calories-val font-headline-lg text-2xl font-black text-primary">2,100</span>
                     <span class="remaining-calories-unit font-body-sm text-xs text-on-surface-variant font-semibold">kcal libres</span>
                   </div>
                 </div>
@@ -443,15 +341,15 @@
 
               <!-- Gráfico Donut de Calorías -->
               <div class="relative w-40 h-40 mx-auto my-1 flex items-center justify-center">
-                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <svg id="dashboard-donut-svg" class="w-full h-full -rotate-90" viewBox="0 0 100 100">
                   <circle cx="50" cy="50" fill="none" r="40" stroke="#f2f3ff" stroke-width="10"></circle>
-                  <circle cx="50" cy="50" fill="none" r="40" stroke="#ffb95f" stroke-dasharray="251.2" stroke-dashoffset="200" stroke-linecap="round" stroke-width="10" transform="rotate(270 50 50)"></circle>
-                  <circle cx="50" cy="50" fill="none" r="40" stroke="#6bff8f" stroke-dasharray="251.2" stroke-dashoffset="175" stroke-linecap="round" stroke-width="10" transform="rotate(160 50 50)"></circle>
-                  <circle cx="50" cy="50" fill="none" r="40" stroke="#10b981" stroke-dasharray="251.2" stroke-dashoffset="125" stroke-linecap="round" stroke-width="10"></circle>
+                  <circle id="donut-segment-fat" cx="50" cy="50" fill="none" r="40" stroke="#ffb95f" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
+                  <circle id="donut-segment-prot" cx="50" cy="50" fill="none" r="40" stroke="#0284c7" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
+                  <circle id="donut-segment-carbs" cx="50" cy="50" fill="none" r="40" stroke="#10b981" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                   <span class="font-label-sm text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Total</span>
-                  <span class="consumed-calories-val font-headline-md text-xl font-black text-on-surface leading-tight">1,640</span>
+                  <span class="consumed-calories-val font-headline-md text-xl font-black text-on-surface leading-tight">0</span>
                   <span class="consumed-calories-unit font-body-sm text-[11px] text-on-surface-variant font-semibold">kcal consumidas</span>
                 </div>
               </div>
@@ -465,10 +363,10 @@
                       <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Carbohidratos</span>
                     </div>
-                    <span class="macro-carbs-val font-title-sm font-bold text-on-surface">220g <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span></span>
+                    <span class="macro-carbs-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                    <div class="h-full bg-[#10b981] rounded-full" style="width: 50%;"></div>
+                    <div id="macro-carbs-bar" class="h-full bg-[#10b981] rounded-full transition-all duration-500" style="width: 0%;"></div>
                   </div>
                 </div>
 
@@ -476,13 +374,13 @@
                 <div class="flex flex-col gap-1">
                   <div class="flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2">
-                      <span class="w-2.5 h-2.5 rounded-full bg-[#6bff8f]"></span>
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#0284c7]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Proteínas</span>
                     </div>
-                    <span class="macro-prot-val font-title-sm font-bold text-on-surface">135g <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span></span>
+                    <span class="macro-prot-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                    <div class="h-full bg-[#6bff8f] rounded-full" style="width: 30%;"></div>
+                    <div id="macro-prot-bar" class="h-full bg-[#0284c7] rounded-full transition-all duration-500" style="width: 0%;"></div>
                   </div>
                 </div>
 
@@ -493,10 +391,10 @@
                       <span class="w-2.5 h-2.5 rounded-full bg-[#ffb95f]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Grasas</span>
                     </div>
-                    <span class="macro-fat-val font-title-sm font-bold text-on-surface">52g <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span></span>
+                    <span class="macro-fat-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
-                    <div class="h-full bg-[#ffb95f] rounded-full" style="width: 20%;"></div>
+                    <div id="macro-fat-bar" class="h-full bg-[#ffb95f] rounded-full transition-all duration-500" style="width: 0%;"></div>
                   </div>
                 </div>
               </div>
@@ -512,52 +410,9 @@
                 <a href="mis_platos.html" class="font-label-sm text-xs text-primary hover:underline font-bold">Ver todos</a>
               </div>
 
-              <!-- Lista de 3 Platos Favoritos -->
-              <div class="flex flex-col gap-2.5">
-                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
-                  <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
-                      <img alt="[Foto de plato favorito 1]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 1]</span>
-                      <span class="font-body-sm text-[11px] text-tertiary font-bold">380 kcal</span>
-                    </div>
-                  </div>
-                  <button aria-label="Agregar [Plato Favorito 1]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
-                  </button>
-                </div>
-
-                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
-                  <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
-                      <img alt="[Foto de plato favorito 2]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 2]</span>
-                      <span class="font-body-sm text-[11px] text-tertiary font-bold">510 kcal</span>
-                    </div>
-                  </div>
-                  <button aria-label="Agregar [Plato Favorito 2]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
-                  </button>
-                </div>
-
-                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group">
-                  <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0" title="[Foto de plato favorito]">
-                      <img alt="[Foto de plato favorito 3]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E" />
-                    </div>
-                    <div class="flex flex-col">
-                      <span class="font-title-sm text-[13px] text-on-surface font-bold line-clamp-1">[Plato Favorito 3]</span>
-                      <span class="font-body-sm text-[11px] text-tertiary font-bold">290 kcal</span>
-                    </div>
-                  </div>
-                  <button aria-label="Agregar [Plato Favorito 3]" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all">
-                    <span class="material-symbols-outlined text-[18px]">add</span>
-                  </button>
-                </div>
+              <!-- Lista Dinámica de Platos Favoritos -->
+              <div id="favoritos-container" class="flex flex-col gap-2.5">
+                <!-- Se cargan dinámicamente desde PlatosStore -->
               </div>
             </div>
 
@@ -567,6 +422,99 @@
     </div>
 
     <app-bottom-nav></app-bottom-nav>
+
+    <!-- ======================================================== -->
+    <!-- VENTANA MODAL PARA INTRODUCIR / EDITAR INFORMACIÓN DE CADA PLATO -->
+    <!-- ======================================================== -->
+    <div id="plato-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div id="plato-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-200"></div>
+      <div id="plato-modal-dialog" class="relative w-full max-w-xl bg-surface-container-lowest rounded-3xl shadow-2xl border border-surface-container-high/80 overflow-hidden z-10 opacity-0 scale-95 transition-all duration-200 flex flex-col max-h-[92vh]">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-surface-container-high/60 bg-surface/50">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[22px]">restaurant</span>
+            </div>
+            <div>
+              <h2 id="modal-title" class="font-headline-md text-lg font-bold text-on-surface">Crear Platillo</h2>
+              <p class="text-xs text-on-surface-variant">Introduce los detalles de tu comida o receta</p>
+            </div>
+          </div>
+          <button id="btn-modal-close" type="button" aria-label="Cerrar modal" class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+          </button>
+        </div>
+        <form id="plato-form" class="p-6 space-y-4 overflow-y-auto flex-1 text-on-surface">
+          <input type="hidden" id="plato-id" />
+          <div>
+            <label for="plato-nombre" class="block text-xs font-bold text-on-surface mb-1.5">Nombre del platillo <span class="text-error">*</span></label>
+            <input type="text" id="plato-nombre" required placeholder="Ej. Salmón a la plancha con vegetales" class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium" />
+          </div>
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-on-surface">Foto del platillo</label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input type="url" id="plato-foto-url" placeholder="Pega el enlace de la imagen (https://...)" class="flex-1 px-3.5 py-2 rounded-xl bg-surface-container-low border border-surface-container-high text-xs sm:text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all" />
+              <input type="file" id="plato-foto-file" accept="image/*" class="hidden" />
+              <button type="button" id="btn-select-file" class="px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-primary-container/40 text-primary hover:bg-primary-container/10 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Subir foto</span>
+              </button>
+            </div>
+            <!-- Fotos sugeridas -->
+            <div class="pt-1">
+              <span class="text-[11px] font-semibold text-on-surface-variant/80 block mb-1.5">O elige una foto sugerida:</span>
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80" title="Salmón">
+                  <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Salmón" />
+                </button>
+                <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" title="Pollo y Quinoa">
+                  <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Bowl Saludable" />
+                </button>
+                <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" title="Ensalada">
+                  <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Ensalada" />
+                </button>
+                <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=800&q=80" title="Bowl de Avena">
+                  <img src="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Avena" />
+                </button>
+              </div>
+            </div>
+            <!-- Vista previa imagen -->
+            <div id="plato-image-preview-container" class="hidden relative rounded-2xl overflow-hidden border border-surface-container-high/80 aspect-[16/9] max-h-44 bg-surface-container-low">
+              <img id="plato-image-preview" src="" alt="Vista previa del plato" class="w-full h-full object-cover" />
+              <button type="button" id="btn-remove-preview-image" title="Quitar foto" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-error text-white flex items-center justify-center transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="plato-categoria" class="block text-xs font-bold text-on-surface mb-1.5">Categoría</label>
+              <select id="plato-categoria" class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface focus:outline-none focus:border-primary transition-all font-medium cursor-pointer">
+                <option value="Almuerzo">Almuerzo</option>
+                <option value="Desayuno">Desayuno</option>
+                <option value="Cena">Cena</option>
+                <option value="Snack">Snack / Refacción</option>
+              </select>
+            </div>
+            <div>
+              <label for="plato-calorias" class="block text-xs font-bold text-on-surface mb-1.5">Calorías estimadas (kcal)</label>
+              <input type="number" id="plato-calorias" min="0" max="5000" placeholder="Ej. 480" class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all font-medium" />
+            </div>
+          </div>
+
+          <div>
+            <label for="plato-descripcion" class="block text-xs font-bold text-on-surface mb-1.5">Breve descripción <span class="text-error">*</span></label>
+            <textarea id="plato-descripcion" rows="3" required placeholder="Describe los ingredientes principales..." class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium resize-none leading-relaxed"></textarea>
+          </div>
+          <div class="pt-3 border-t border-surface-container-high/60 flex items-center justify-end gap-2.5">
+            <button type="button" id="btn-modal-cancel" class="px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-bold text-sm transition-all cursor-pointer">Cancelar</button>
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[19px]">check</span>
+              <span id="modal-submit-text">Guardar Platillo</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- ======================================================== -->
     <!-- MODAL DE CONFIGURACIONES DE LA APLICACIÓN -->

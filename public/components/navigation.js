@@ -27,7 +27,8 @@ function getCurrentPagePath() {
 }
 
 // Sincronizar el layout del documento según la vista activa:
-// 'asistente' requiere layout fijo de 100vh en PC con scroll únicamente en el historial de mensajes,
+// 'asistente' requiere layout fijo de 100vh con scroll únicamente en el historial de mensajes,
+// tanto en PC como en móvil para permitir la ventana flotante inferior fija,
 // mientras que las demás vistas (inicio, progreso, mis platos, historial) requieren scroll vertical normal.
 function syncLayoutWithActivePage(pagePath) {
   if (typeof document === 'undefined') return;
@@ -36,17 +37,17 @@ function syncLayoutWithActivePage(pagePath) {
   const contentCol = document.querySelector('.flex-1.flex.flex-col.min-w-0');
   
   if (isAsistente) {
-    document.body.classList.add('lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
+    document.body.classList.add('chat-view-active', 'h-screen', 'max-h-screen', 'overflow-hidden', 'lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
     document.body.classList.remove('min-h-screen');
     if (contentCol) {
-      contentCol.classList.add('lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
+      contentCol.classList.add('h-screen', 'max-h-screen', 'overflow-hidden', 'lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
       contentCol.classList.remove('min-h-screen');
     }
   } else {
-    document.body.classList.remove('lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
+    document.body.classList.remove('chat-view-active', 'h-screen', 'max-h-screen', 'overflow-hidden', 'lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
     document.body.classList.add('min-h-screen');
     if (contentCol) {
-      contentCol.classList.remove('lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
+      contentCol.classList.remove('h-screen', 'max-h-screen', 'overflow-hidden', 'lg:h-screen', 'lg:max-h-screen', 'lg:overflow-hidden');
       contentCol.classList.add('min-h-screen');
     }
   }
@@ -61,8 +62,26 @@ function switchAppView(targetHref, e) {
   const normalizedTarget = targetHref.split('/').pop() || 'index.html';
   const currentPath = getCurrentPagePath();
 
-  // Si ya estamos en la vista solicitada: hacer scroll al inicio sin recargar
+  // Si ya estamos en la vista solicitada: realizar acción si fue solicitada y hacer scroll al inicio
   if (normalizedTarget === currentPath) {
+    if (sessionStorage.getItem('dia_auto_open_create_dish') === 'true') {
+      sessionStorage.removeItem('dia_auto_open_create_dish');
+      setTimeout(() => {
+        if (typeof window.openCreatePlatoModal === 'function') {
+          window.openCreatePlatoModal();
+        } else {
+          const btn = document.getElementById('btn-create-dish') || document.getElementById('btn-empty-create');
+          if (btn) btn.click();
+        }
+      }, 50);
+    }
+    if (sessionStorage.getItem('dia_auto_open_camera') === 'true') {
+      sessionStorage.removeItem('dia_auto_open_camera');
+      const photoInput = document.getElementById('photo-file-input');
+      if (photoInput) {
+        try { photoInput.click(); } catch (err) {}
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
@@ -105,7 +124,15 @@ function switchAppView(targetHref, e) {
       } catch (e) {}
     }
 
-    // Ejecutar inicializadores interactivos (ej. chat de IA)
+    // Sincronizar botones de campana y badges de recordatorios
+    if (window.DiaRecordatorios) {
+      try {
+        window.DiaRecordatorios.bindBellButtons();
+        window.DiaRecordatorios.updateBadges();
+      } catch (e) {}
+    }
+
+    // Ejecutar inicializadores interactivos (ej. chat de IA o recordatorios)
     if (typeof view.init === 'function') {
       try {
         view.init();
@@ -124,15 +151,6 @@ function switchAppView(targetHref, e) {
       } catch (err) {}
     } else {
       window.location.hash = view.id;
-    }
-
-    // Ejecutar inicializadores interactivos (ej. chat de IA)
-    if (typeof view.init === 'function') {
-      try {
-        view.init();
-      } catch (err) {
-        console.warn('Error al inicializar la vista:', err);
-      }
     }
     return;
   }
@@ -155,6 +173,7 @@ class AppSidebar extends HTMLElement {
       { href: 'mi_progreso.html', icon: 'trending_up', label: 'Mi progreso', id: 'progreso' },
       { href: 'mis_platos.html', icon: 'bookmark', label: 'Mis Platos', id: 'mis-platos' },
       { href: 'historial.html', icon: 'history', label: 'Historial', id: 'historial' },
+      { href: 'recordatorios.html', icon: 'notifications_active', label: 'Recordatorios', id: 'recordatorios' },
     ];
 
     const isAsistente = currentPath === 'asistente.html';
@@ -317,6 +336,7 @@ class AppTopbar extends HTMLElement {
       'mis_platos.html': 'Mis Platos',
       'historial.html': 'Historial',
       'asistente.html': 'Asistente IA',
+      'recordatorios.html': 'Recordatorios',
     };
 
     const title = this.getAttribute('title') || 
@@ -433,12 +453,45 @@ if (typeof window !== 'undefined') {
     }
   });
 
-  // Interceptar otros enlaces de la página que apunten a vistas internas (ej. botón Mi Progreso en index)
+  // Interceptar otros enlaces de la página y botones especiales de acción
   document.addEventListener('click', (e) => {
+    // 1. Botón "Escanear con IA": ir inmediatamente a la vista del asistente y activar la opción de subir imagen
+    const targetScan = e.target.closest('.btn-scan-ai-dashboard, [data-action="scan-ai"]');
+    if (targetScan) {
+      e.preventDefault();
+      sessionStorage.setItem('dia_auto_open_camera', 'true');
+      switchAppView('asistente.html', e);
+      const photoInput = document.getElementById('photo-file-input');
+      if (photoInput) {
+        try {
+          photoInput.click();
+          sessionStorage.removeItem('dia_auto_open_camera');
+        } catch (err) {}
+      }
+      return;
+    }
+
+    // 2. Botón "Registrar Comida" o "Registrar platillo": ir inmediatamente a la vista y al formulario para ingresar comida
+    const targetCreateDish = e.target.closest('.btn-open-create-dish-dashboard, [data-action="create-dish"]');
+    if (targetCreateDish) {
+      e.preventDefault();
+      sessionStorage.setItem('dia_auto_open_create_dish', 'true');
+      switchAppView('mis_platos.html', e);
+      setTimeout(() => {
+        if (typeof window.openCreatePlatoModal === 'function') {
+          window.openCreatePlatoModal();
+        } else {
+          const btn = document.getElementById('btn-create-dish') || document.getElementById('btn-empty-create');
+          if (btn) btn.click();
+        }
+      }, 60);
+      return;
+    }
+
     const targetA = e.target.closest('a[href]');
     if (targetA && !targetA.classList.contains('nav-link')) {
       const href = targetA.getAttribute('href');
-      if (href && (href === 'mi_progreso.html' || href === 'mis_platos.html' || href === 'historial.html' || href === 'asistente.html' || href === 'index.html')) {
+      if (href && (href === 'mi_progreso.html' || href === 'mis_platos.html' || href === 'historial.html' || href === 'asistente.html' || href === 'index.html' || href === 'recordatorios.html')) {
         switchAppView(href, e);
       }
     }

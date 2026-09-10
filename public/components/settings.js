@@ -16,7 +16,8 @@
     MEALS: 'dia_mis_platos',
     CHAT_HISTORY: 'dia_chat_history',
     ACTIVE_CHAT: 'dia_active_chat_id',
-    MEALS_CLEARED: 'dia_meals_cleared'
+    MEALS_CLEARED: 'dia_meals_cleared',
+    TIME_FORMAT: 'dia_time_format'
   };
 
   // Diccionario bilingüe para la interfaz
@@ -39,6 +40,10 @@
       energyLabel: 'Energía de comidas',
       energyKcal: 'Kilocalorías (kcal)',
       energyKj: 'Kilojulios (kJ)',
+      timeFormatSection: 'Formato de Horario',
+      timeFormatDesc: 'Selecciona si prefieres ver la hora en formato de 12 horas (AM/PM) o 24 horas.',
+      timeFormat12: '12 Horas (AM / PM)',
+      timeFormat24: '24 Horas (Militar)',
       langSection: 'Idioma de la Aplicación',
       langDesc: 'Selecciona el idioma principal de navegación e interfaz.',
       langEs: 'Español (ES)',
@@ -63,6 +68,7 @@
       navProgreso: 'Mi progreso',
       navPlatos: 'Mis Platos',
       navHistorial: 'Historial',
+      navRecordatorios: 'Recordatorios',
       greeting: '¡Buenos días!',
       remainingKcal: 'kcal de completar tu objetivo del día',
       remainingKj: 'kJ de completar tu objetivo del día',
@@ -88,6 +94,10 @@
       energyLabel: 'Food energy',
       energyKcal: 'Kilocalories (kcal)',
       energyKj: 'Kilojoules (kJ)',
+      timeFormatSection: 'Time Format',
+      timeFormatDesc: 'Choose whether you prefer 12-hour (AM/PM) or 24-hour time display.',
+      timeFormat12: '12 Hours (AM / PM)',
+      timeFormat24: '24 Hours (Military)',
       langSection: 'Application Language',
       langDesc: 'Select the primary language for navigation and UI.',
       langEs: 'Spanish (ES)',
@@ -112,6 +122,7 @@
       navProgreso: 'My Progress',
       navPlatos: 'My Dishes',
       navHistorial: 'History',
+      navRecordatorios: 'Reminders',
       greeting: 'Good morning!',
       remainingKcal: 'kcal away from completing your daily goal',
       remainingKj: 'kJ away from completing your daily goal',
@@ -130,6 +141,7 @@
       energy: 'kcal'
     },
     language: 'es',
+    timeFormat: '12h',
 
     load: function () {
       try {
@@ -163,6 +175,14 @@
         } else {
           this.language = 'es';
         }
+
+        // Formato de hora (12h o 24h)
+        const savedTimeFormat = localStorage.getItem(STORAGE_KEYS.TIME_FORMAT);
+        if (savedTimeFormat === '24h' || savedTimeFormat === '12h') {
+          this.timeFormat = savedTimeFormat;
+        } else {
+          this.timeFormat = '12h';
+        }
       } catch (e) {
         console.warn('Error al cargar configuraciones:', e);
       }
@@ -173,6 +193,7 @@
         localStorage.setItem(STORAGE_KEYS.THEME, this.theme);
         localStorage.setItem(STORAGE_KEYS.UNITS, JSON.stringify(this.units));
         localStorage.setItem(STORAGE_KEYS.LANGUAGE, this.language);
+        localStorage.setItem(STORAGE_KEYS.TIME_FORMAT, this.timeFormat);
       } catch (e) {}
     }
   };
@@ -260,10 +281,50 @@
     const isKj = AppSettings.units.energy === 'kJ';
     const isOz = AppSettings.units.portion === 'oz';
 
-    // 1. Calorías restantes del día (por defecto 460 kcal = ~1,925 kJ)
+    let consumedKcal = 0;
+    let carbsG = 0;
+    let protG = 0;
+    let fatG = 0;
+
+    if (window.PlatosStore && typeof window.PlatosStore.getTodayTotals === 'function') {
+      const totals = window.PlatosStore.getTodayTotals();
+      consumedKcal = totals.calories || 0;
+      carbsG = totals.carbs || 0;
+      protG = totals.protein || 0;
+      fatG = totals.fat || 0;
+    }
+
+    const targetKcal = 2100;
+    const remainingKcal = Math.max(0, targetKcal - consumedKcal);
+
+    // Conversiones
+    // 1 kcal = 4.184 kJ
+    const remainingValFormatted = isKj 
+      ? Math.round(remainingKcal * 4.184).toLocaleString() 
+      : Math.round(remainingKcal).toLocaleString();
+
+    const consumedValFormatted = isKj 
+      ? Math.round(consumedKcal * 4.184).toLocaleString() 
+      : Math.round(consumedKcal).toLocaleString();
+
+    const targetValFormatted = isKj
+      ? `/ ${Math.round(targetKcal * 4.184).toLocaleString()} kJ`
+      : `/ ${targetKcal.toLocaleString()} kcal`;
+
+    // 1 g = 0.035274 oz
+    const carbsFormatted = isOz ? `${(carbsG * 0.035274).toFixed(1)} oz` : `${Math.round(carbsG)}g`;
+    const protFormatted = isOz ? `${(protG * 0.035274).toFixed(1)} oz` : `${Math.round(protG)}g`;
+    const fatFormatted = isOz ? `${(fatG * 0.035274).toFixed(1)} oz` : `${Math.round(fatG)}g`;
+
+    const totalMacroG = carbsG + protG + fatG;
+    const carbsPct = totalMacroG > 0 ? Math.round((carbsG / totalMacroG) * 100) : 0;
+    const protPct = totalMacroG > 0 ? Math.round((protG / totalMacroG) * 100) : 0;
+    const fatPct = totalMacroG > 0 ? Math.round((fatG / totalMacroG) * 100) : 0;
+
+    // 1. Calorías restantes del día
     const kcalGoalRemaining = document.querySelectorAll('.remaining-calories-val');
     kcalGoalRemaining.forEach((el) => {
-      el.textContent = isKj ? '1,925' : '460';
+      el.textContent = remainingValFormatted;
     });
 
     const kcalGoalUnit = document.querySelectorAll('.remaining-calories-unit');
@@ -271,15 +332,10 @@
       el.textContent = isKj ? 'kJ' : 'kcal';
     });
 
-    // 2. Calorías consumidas hoy (por defecto 1,640 kcal = ~6,862 kJ)
-    const isCleared = localStorage.getItem(STORAGE_KEYS.MEALS_CLEARED) === 'true';
+    // 2. Calorías consumidas hoy
     const consumedVal = document.querySelectorAll('.consumed-calories-val');
     consumedVal.forEach((el) => {
-      if (isCleared) {
-        el.textContent = '0';
-      } else {
-        el.textContent = isKj ? '6,862' : '1,640';
-      }
+      el.textContent = consumedValFormatted;
     });
 
     const consumedUnit = document.querySelectorAll('.consumed-calories-unit');
@@ -287,21 +343,21 @@
       el.textContent = isKj ? 'kJ' : 'kcal';
     });
 
-    // Meta total (2,100 kcal = ~8,786 kJ)
+    // Meta total
     const targetCaloriesTotal = document.querySelectorAll('.target-calories-total');
     targetCaloriesTotal.forEach((el) => {
-      el.textContent = isKj ? '/ 8,786 kJ' : '/ 2,100 kcal';
+      el.textContent = targetValFormatted;
     });
 
-    // Macronutrientes (220g / 7.8oz, 135g / 4.8oz, 52g / 1.8oz)
+    // Macronutrientes
     const carbVal = document.querySelector('.macro-carbs-val');
-    if (carbVal) carbVal.innerHTML = isOz ? '7.8 oz <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span>' : '220g <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span>';
+    if (carbVal) carbVal.innerHTML = `${carbsFormatted} <span class="text-on-surface-variant font-normal text-[11px]">(${carbsPct}%)</span>`;
 
     const protVal = document.querySelector('.macro-prot-val');
-    if (protVal) protVal.innerHTML = isOz ? '4.8 oz <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span>' : '135g <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span>';
+    if (protVal) protVal.innerHTML = `${protFormatted} <span class="text-on-surface-variant font-normal text-[11px]">(${protPct}%)</span>`;
 
     const fatVal = document.querySelector('.macro-fat-val');
-    if (fatVal) fatVal.innerHTML = isOz ? '1.8 oz <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span>' : '52g <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span>';
+    if (fatVal) fatVal.innerHTML = `${fatFormatted} <span class="text-on-surface-variant font-normal text-[11px]">(${fatPct}%)</span>`;
   }
 
   // Aplicar idioma
@@ -327,6 +383,9 @@
       } else if (href.includes('historial')) {
         const span = link.querySelector('span:not(.material-symbols-outlined)');
         if (span) span.textContent = t.navHistorial;
+      } else if (href.includes('recordatorios')) {
+        const span = link.querySelector('span:not(.material-symbols-outlined)');
+        if (span) span.textContent = t.navRecordatorios;
       }
     });
 
@@ -518,7 +577,27 @@
         </div>
       </div>
 
-      <!-- 4 Y 5. OPCIONES: ELIMINAR HISTORIAL DE COMIDAS Y DE CHAT IA -->
+      <!-- 4. OPCIÓN: FORMATO DE HORA (12H / 24H) -->
+      <div class="p-4 rounded-2xl bg-surface-container-low/70 border border-surface-container-high/60 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-primary-container/15 text-primary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[22px]">schedule</span>
+          </div>
+          <div>
+            <span class="font-title-sm text-sm font-bold text-on-surface block">${t.timeFormatSection}</span>
+            <span class="font-body-sm text-xs text-on-surface-variant">${t.timeFormatDesc}</span>
+          </div>
+        </div>
+
+        <div class="w-48 shrink-0">
+          <select id="dia-select-time-format" class="w-full px-3 py-2 rounded-xl bg-surface-container-lowest border border-surface-container-high text-on-surface font-semibold text-xs focus:ring-2 focus:ring-primary-container focus:outline-none transition-all cursor-pointer">
+            <option value="12h" ${AppSettings.timeFormat === '12h' ? 'selected' : ''}>${t.timeFormat12}</option>
+            <option value="24h" ${AppSettings.timeFormat === '24h' ? 'selected' : ''}>${t.timeFormat24}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 5 Y 6. OPCIONES: ELIMINAR HISTORIAL DE COMIDAS Y DE CHAT IA -->
       <div class="p-4 rounded-2xl bg-surface-container-low/70 border border-surface-container-high/60 flex flex-col gap-3">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-error/15 text-error flex items-center justify-center shrink-0">
@@ -619,6 +698,18 @@
       };
     }
 
+    // Select de formato de hora (12h / 24h)
+    const selectTimeFormat = document.getElementById('dia-select-time-format');
+    if (selectTimeFormat) {
+      selectTimeFormat.onchange = function () {
+        AppSettings.timeFormat = selectTimeFormat.value;
+        AppSettings.save();
+        window.dispatchEvent(new CustomEvent('dia_time_format_changed', { detail: { format: selectTimeFormat.value } }));
+        window.dispatchEvent(new CustomEvent('dia_recordatorios_updated'));
+        showToast(TRANSLATIONS[AppSettings.language].settingsSavedToast);
+      };
+    }
+
     // Botón 4: Eliminar historial de comidas
     const btnClearMeals = document.getElementById('btn-delete-meals-history');
     if (btnClearMeals) {
@@ -628,39 +719,20 @@
           text: TRANSLATIONS[AppSettings.language].confirmClearMealsText,
           confirmLabel: TRANSLATIONS[AppSettings.language].confirmBtn,
           onConfirm: function () {
-            // Vaciar comidas
+            // Vaciar comidas y platos
             try {
               localStorage.setItem(STORAGE_KEYS.MEALS, JSON.stringify([]));
               localStorage.setItem(STORAGE_KEYS.MEALS_CLEARED, 'true');
+              if (window.PlatosStore && typeof window.PlatosStore.saveAll === 'function') {
+                window.PlatosStore.saveAll([]);
+              } else {
+                localStorage.setItem('dia_mis_platos', JSON.stringify([]));
+                window.dispatchEvent(new CustomEvent('dia_platos_updated', { detail: { platos: [] } }));
+              }
             } catch (e) {}
 
-            // Refrescar tarjetas de comidas en index si existen
-            const mealsList = document.querySelector('.flex.flex-col.gap-space-sm .space-y-3, #mis-comidas-container') || document.querySelector('.grid.grid-cols-1.lg\\:grid-cols-12 .flex.flex-col.gap-space-sm .flex.flex-col.gap-space-sm');
-            if (mealsList) {
-              const t = TRANSLATIONS[AppSettings.language];
-              mealsList.innerHTML = `
-                <div class="p-6 bg-surface-container-lowest rounded-2xl border border-dashed border-surface-container-high text-center flex flex-col items-center gap-2">
-                  <div class="w-12 h-12 rounded-2xl bg-primary-container/15 text-primary flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[24px]">restaurant</span>
-                  </div>
-                  <p class="text-xs text-on-surface-variant max-w-sm">${t.noMealsToday}</p>
-                  <button id="btn-restore-sample-meals" type="button" class="mt-2 px-3 py-1.5 rounded-lg text-xs font-bold text-primary hover:bg-primary-container/10 transition-colors">
-                    ${t.restoreMealsBtn}
-                  </button>
-                </div>
-              `;
-              const btnRestore = document.getElementById('btn-restore-sample-meals');
-              if (btnRestore) {
-                btnRestore.onclick = function () {
-                  localStorage.removeItem(STORAGE_KEYS.MEALS_CLEARED);
-                  localStorage.removeItem(STORAGE_KEYS.MEALS);
-                  if (typeof switchAppView === 'function') {
-                    switchAppView('index.html');
-                  } else {
-                    window.location.reload();
-                  }
-                };
-              }
+            if (typeof window.initDashboard === 'function') {
+              window.initDashboard();
             }
 
             updatePageUnits();
@@ -753,6 +825,11 @@
   function closeSettingsModal() {
     const modal = document.getElementById('dia-settings-modal');
     if (modal) {
+      const card = modal.querySelector('.relative.w-full.max-w-xl');
+      if (card) {
+        card.classList.add('scale-95');
+        card.classList.remove('scale-100');
+      }
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
@@ -780,28 +857,53 @@
       modal.classList.remove('hidden');
       modal.classList.add('flex');
       document.body.style.overflow = 'hidden';
+
+      const card = modal.querySelector('.relative.w-full.max-w-xl');
+      if (card) {
+        requestAnimationFrame(() => {
+          card.classList.remove('scale-95');
+          card.classList.add('scale-100');
+        });
+      }
     }
   }
 
   // Escuchar clics globales para abrir o cerrar el modal (garantiza funcionamiento sin importar renderizado previo)
   document.addEventListener('click', (e) => {
-    // Abrir modal con botón de ajustes / engranaje
-    const openBtn = e.target.closest(
-      '#btn-open-settings-mobile, #btn-open-settings-desktop, [aria-label="Ajustes y preferencias"], .btn-settings'
-    );
-    if (openBtn) {
-      e.preventDefault();
-      openSettingsModal();
-      return;
-    }
-
-    // Cerrar modal al hacer clic en 'X', botón 'Listo/Cerrar', o en el fondo oscuro (backdrop)
+    // 1. Cerrar modal al hacer clic en 'X', botón 'Listo/Cerrar', backdrop o área exterior del modal
     const closeTrigger = e.target.closest(
       '#btn-close-settings-modal, #btn-done-settings, #dia-settings-backdrop, [data-close-settings]'
     );
-    if (closeTrigger) {
+    if (closeTrigger || e.target.id === 'dia-settings-modal') {
       e.preventDefault();
       closeSettingsModal();
+      return;
+    }
+
+    // 2. Abrir modal con botón de ajustes / engranaje
+    let openBtn = e.target.closest(
+      '#btn-open-settings-mobile, #btn-open-settings-desktop, #btn-open-settings-desktop-asistente, [aria-label*="Ajustes" i], [aria-label*="Configura" i], [aria-label*="Settings" i], .btn-settings, [data-open-settings]'
+    );
+
+    // Detección de respaldo inteligente: botón o elemento que contiene el ícono 'settings'
+    if (!openBtn) {
+      const candidate = e.target.closest('button, a');
+      if (candidate && !candidate.closest('#dia-settings-modal')) {
+        const icon = candidate.querySelector('.material-symbols-outlined');
+        const candidateIconText = icon ? icon.textContent.trim().toLowerCase() : '';
+        const targetIconText = (e.target.classList && e.target.classList.contains('material-symbols-outlined')) ? e.target.textContent.trim().toLowerCase() : '';
+        
+        if ((candidateIconText === 'settings' || targetIconText === 'settings') && !candidate.id.includes('close')) {
+          openBtn = candidate;
+        }
+      }
+    }
+
+    if (openBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      openSettingsModal();
+      return;
     }
   });
 
@@ -818,16 +920,17 @@
   // Inicialización inmediata al cargar
   AppSettings.load();
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      applyTheme(AppSettings.theme);
-      applyUnits();
-      applyLanguage(AppSettings.language);
-    });
-  } else {
+  function initializeSettings() {
+    injectSettingsModal();
     applyTheme(AppSettings.theme);
     applyUnits();
     applyLanguage(AppSettings.language);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSettings);
+  } else {
+    initializeSettings();
   }
 
   // Exportar a window para uso en componentes y vistas
@@ -836,6 +939,15 @@
     applyTheme,
     applyUnits,
     applyLanguage,
+    getTimeFormat: () => AppSettings.timeFormat || '12h',
+    setTimeFormat: (fmt) => {
+      if (fmt === '12h' || fmt === '24h') {
+        AppSettings.timeFormat = fmt;
+        AppSettings.save();
+        window.dispatchEvent(new CustomEvent('dia_time_format_changed', { detail: { format: fmt } }));
+        window.dispatchEvent(new CustomEvent('dia_recordatorios_updated'));
+      }
+    },
     getSettings: () => ({ ...AppSettings })
   };
 })();
