@@ -120,9 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // -- Conexión al Backend (Soporta Local y Túneles externos) --
         async function procesarEnServidorNode(texto, imagenBase64) {
             try {
-                const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? 'http://localhost:3000/api/analizar'
-                    : 'https://qjjb804w-3000.use2.devtunnels.ms/api/analizar';
+                const backendUrl = window.location.protocol.startsWith('http')
+                    ? '/api/analizar'
+                    : 'http://localhost:3000/api/analizar';
 
                 const respuesta = await fetch(backendUrl, {
                     method: 'POST',

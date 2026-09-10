@@ -15,16 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const topRightNombre = document.getElementById('top-right-nombre');
 
     const getApiUrl = (endpoint) => {
-        return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? `http://localhost:3000${endpoint}`
-            : `https://qjjb804w-3000.use2.devtunnels.ms${endpoint}`;
+        if (window.location.protocol.startsWith('http')) {
+            return endpoint;
+        }
+        return `http://localhost:3000${endpoint}`;
     };
 
     async function cargarCatalogos() {
         try {
             const resGeneros = await fetch(getApiUrl('/api/generos'));
             const generos = await resGeneros.json();
-            if (selectGenero) {
+            if (selectGenero && Array.isArray(generos)) {
                 selectGenero.innerHTML = '<option value="" disabled selected>Seleccione su género</option>';
                 generos.forEach(g => {
                     selectGenero.innerHTML += `<option value="${g.id_genero}">${g.nom_genero}</option>`;
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const resDiabetes = await fetch(getApiUrl('/api/tipos-diabetes'));
             const tiposDiabetes = await resDiabetes.json();
-            if (selectTipoDiabetes) {
+            if (selectTipoDiabetes && Array.isArray(tiposDiabetes)) {
                 selectTipoDiabetes.innerHTML = '<option value="" disabled selected>Seleccione tipo de diabetes</option>';
                 tiposDiabetes.forEach(td => {
                     selectTipoDiabetes.innerHTML += `<option value="${td.id_tipodiabetes}">${td.nom_tipodiabetes}</option>`;
