@@ -42,5 +42,6 @@ jobs:
           node --check public/components/views.js
           node --check public/components/historial.js
           node --check public/components/mis_platos.js
+          node --check public/components/recordatorios.js
           node --check public/components/Js/asistente.js
           node --check public/components/Js/main.js
