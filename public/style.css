@@ -1,0 +1,130 @@
+@layer base {
+  html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    overflow-y: auto;
+  }
+
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  /* Dimensiones y visualización directa de la barra lateral compartida */
+  app-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    app-sidebar {
+      display: block;
+      width: 16rem; /* w-64 */
+      flex-shrink: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    app-sidebar {
+      width: 18rem; /* xl:w-72 */
+    }
+  }
+
+  /* Barra superior compartida para PC (Fija arriba al hacer scroll) */
+  app-topbar {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    app-topbar {
+      display: block;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      width: 100%;
+    }
+  }
+
+  /* Barra de navegación inferior móvil */
+  app-bottom-nav {
+    display: block;
+  }
+
+  @media (min-width: 1024px) {
+    app-bottom-nav {
+      display: none;
+    }
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  main > :first-child {
+    margin-top: 0 !important;
+  }
+
+  main > :last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Scrollbar moderno, fino y accesible para PC */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Utilidad para ocultar scrollbar donde sea necesario */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Efecto transform para tarjetas del historial de chats (crece suavemente al pasar el mouse) */
+.chat-history-card {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, background-color 0.28s ease;
+  will-change: transform;
+}
+
+.chat-history-card:hover {
+  transform: translateY(-4px) scale(1.025);
+}
+
+@media (hover: none) {
+  .chat-history-card:hover {
+    transform: none;
+  }
+  .chat-history-card:active {
+    transform: scale(0.985);
+  }
+}
+
