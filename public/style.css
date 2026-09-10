@@ -318,6 +318,59 @@ html.dark #asistente-ia {
   border-color: rgba(78, 222, 163, 0.35) !important;
 }
 
+/* Tarjeta de Diagnóstico IA / Recomendación Nutricional en Mi Progreso (Modo Oscuro) */
+#progreso-ai-diagnosis-card,
+.progreso-ai-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark #progreso-ai-diagnosis-card,
+html.dark .progreso-ai-card {
+  background: linear-gradient(135deg, rgba(19, 29, 51, 0.95) 0%, rgba(23, 35, 61, 0.92) 55%, rgba(16, 185, 129, 0.18) 100%) !important;
+  border-color: rgba(78, 222, 163, 0.45) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 16px -2px rgba(16, 185, 129, 0.12) !important;
+}
+
+html.dark #progreso-ai-diagnosis-card h3,
+html.dark .progreso-ai-card h3 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+html.dark #progreso-ai-diagnosis-card #insight-ai-text,
+html.dark .progreso-ai-card #insight-ai-text,
+html.dark #progreso-ai-diagnosis-card p,
+html.dark .progreso-ai-card p {
+  color: #e2e8f0 !important;
+}
+
+html.dark #progreso-ai-diagnosis-card .badge-diagnostico-optimo,
+html.dark .progreso-ai-card .badge-diagnostico-optimo {
+  background-color: rgba(16, 185, 129, 0.22) !important;
+  color: #6ffbbe !important;
+  border: 1px solid rgba(111, 251, 190, 0.45) !important;
+}
+
+html.dark #progreso-ai-diagnosis-card a[href="asistente.html"],
+html.dark .progreso-ai-card a[href="asistente.html"],
+html.dark #progreso-ai-diagnosis-card .btn-consultar-nutribot,
+html.dark .progreso-ai-card .btn-consultar-nutribot {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(78, 222, 163, 0.45) !important;
+  color: #6ffbbe !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark #progreso-ai-diagnosis-card a[href="asistente.html"]:hover,
+html.dark .progreso-ai-card a[href="asistente.html"]:hover,
+html.dark #progreso-ai-diagnosis-card .btn-consultar-nutribot:hover,
+html.dark .progreso-ai-card .btn-consultar-nutribot:hover {
+  background-color: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #0b1120 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.45) !important;
+}
+
 html.dark app-topbar header {
   background-color: rgba(11, 17, 32, 0.9) !important;
   border-color: rgba(51, 65, 85, 0.6) !important;
@@ -409,6 +462,230 @@ html.dark .chat-disclaimer {
 }
 
 /* ==========================================================================
+   MODAL DE ONBOARDING / DATOS PERSONALES (TEMA CLARO Y OSCURO DINÁMICO)
+   ========================================================================== */
+
+/* --- TEMA CLARO (POR DEFECTO) --- */
+#onboarding-modal {
+  background-color: rgba(15, 23, 42, 0.6);
+}
+
+#onboarding-modal > div {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(226, 231, 255, 0.8) !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
+  color: #131b2e !important;
+}
+
+#onboarding-modal h2 {
+  color: #1e293b !important;
+}
+
+#onboarding-modal p {
+  color: #64748b !important;
+}
+
+#btn-cerrar-onboarding {
+  background-color: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+#btn-cerrar-onboarding:hover {
+  background-color: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+#onboarding-modal .onboarding-icon-badge {
+  background-color: #d1fae5 !important;
+  color: #059669 !important;
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+#onboarding-form label {
+  color: #334155 !important;
+}
+
+#onboarding-form input[type="text"],
+#onboarding-form input[type="number"],
+#onboarding-form select {
+  background-color: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+#onboarding-form input[type="text"]:focus,
+#onboarding-form input[type="number"]:focus,
+#onboarding-form select:focus {
+  background-color: #ffffff !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18) !important;
+}
+
+#onboarding-form input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+#onboarding-form select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+.insulina-card-container {
+  border: 1px solid rgba(16, 185, 129, 0.25) !important;
+  background-color: rgba(16, 185, 129, 0.06) !important;
+}
+
+.insulina-card-container:hover {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.insulina-card-container span.font-bold {
+  color: #1e293b !important;
+}
+
+.insulina-custom-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid #cbd5e1;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+#insulina:checked + .insulina-custom-box {
+  background-color: #10b981 !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.45) !important;
+}
+
+.insulina-custom-box .check-icon {
+  color: #ffffff !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  display: none !important;
+  line-height: 1 !important;
+  user-select: none;
+}
+
+#insulina:checked + .insulina-custom-box .check-icon {
+  display: block !important;
+}
+
+#insulina:focus-visible + .insulina-custom-box {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.insulina-card-container:has(#insulina:checked) {
+  border-color: rgba(16, 185, 129, 0.6) !important;
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+#onboarding-modal .onboarding-footer {
+  border-top: 1px solid #e2e8f0 !important;
+  background-color: #f8fafc !important;
+}
+
+/* --- TEMA OSCURO (html.dark) --- */
+html.dark #onboarding-modal {
+  background-color: rgba(2, 6, 23, 0.75) !important;
+}
+
+html.dark #onboarding-modal > div {
+  background-color: #131d33 !important;
+  border-color: rgba(51, 65, 85, 0.6) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+  color: #f8fafc !important;
+}
+
+html.dark #onboarding-modal h2 {
+  color: #f8fafc !important;
+}
+
+html.dark #onboarding-modal p {
+  color: #94a3b8 !important;
+}
+
+html.dark #btn-cerrar-onboarding {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+}
+
+html.dark #btn-cerrar-onboarding:hover {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html.dark #onboarding-modal .onboarding-icon-badge {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+  color: #4edea3 !important;
+  border: 1px solid rgba(78, 222, 163, 0.25) !important;
+}
+
+html.dark #onboarding-form label {
+  color: #e2e8f0 !important;
+}
+
+html.dark #onboarding-form input[type="text"],
+html.dark #onboarding-form input[type="number"],
+html.dark #onboarding-form select {
+  background-color: #1c2b48 !important;
+  border-color: rgba(51, 65, 85, 0.8) !important;
+  color: #f8fafc !important;
+}
+
+html.dark #onboarding-form input[type="text"]:focus,
+html.dark #onboarding-form input[type="number"]:focus,
+html.dark #onboarding-form select:focus {
+  background-color: #1c2b48 !important;
+  border-color: #4edea3 !important;
+  box-shadow: 0 0 0 3px rgba(78, 222, 163, 0.25) !important;
+}
+
+html.dark #onboarding-form input::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+html.dark #onboarding-form select option {
+  background-color: #131d33 !important;
+  color: #f8fafc !important;
+}
+
+html.dark .insulina-card-container {
+  border-color: rgba(78, 222, 163, 0.25) !important;
+  background-color: rgba(16, 185, 129, 0.08) !important;
+}
+
+html.dark .insulina-card-container:hover {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+html.dark .insulina-card-container span.font-bold {
+  color: #f8fafc !important;
+}
+
+html.dark .insulina-custom-box {
+  border-color: #475569 !important;
+  background-color: #1c2b48 !important;
+}
+
+html.dark .insulina-card-container:has(#insulina:checked) {
+  border-color: rgba(78, 222, 163, 0.6) !important;
+  background-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+html.dark #onboarding-modal .onboarding-footer {
+  border-top-color: rgba(51, 65, 85, 0.6) !important;
+  background-color: #0f172a !important;
+}
+
+/* ==========================================================================
    SWITCH DE TEMA CLARO / OSCURO (Círculo Verde Claro con Sol / Luna)
    ========================================================================== */
 .theme-switch-track {
@@ -488,3 +765,162 @@ html.dark .theme-switch-thumb {
   pointer-events: auto;
 }
 
+/* ==========================================================================
+   VENTANA FLOTANTE DEL INPUT DEL ASISTENTE EN VISTA MÓVIL
+   ========================================================================== */
+
+/* Altura de pantalla fija y scroll exclusivo para el asistente en móvil */
+@media (max-width: 1023px) {
+  body.chat-view-active,
+  body.chat-view-active .flex-1.flex.flex-col.min-w-0 {
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  body.chat-view-active main {
+    height: calc(100vh - 64px) !important;
+    height: calc(100dvh - 64px) !important;
+    max-height: calc(100dvh - 64px) !important;
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+  }
+
+  .chat-floating-dock {
+    position: fixed !important;
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    max-width: calc(100% - 1.5rem) !important;
+    width: auto !important;
+    margin: 0 auto !important;
+    z-index: 45 !important;
+    padding: 0.5rem 0.625rem 0.375rem 0.625rem !important;
+    border-radius: 1.75rem !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.95) !important;
+    box-shadow: 0 12px 35px -4px rgba(15, 23, 42, 0.15), 0 4px 12px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(16, 185, 129, 0.12) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  @media (min-width: 640px) {
+    .chat-floating-dock {
+      left: 1.5rem !important;
+      right: 1.5rem !important;
+      max-width: 44rem !important;
+    }
+  }
+
+  html.dark .chat-floating-dock {
+    background: rgba(19, 29, 51, 0.92) !important;
+    border: 1px solid rgba(51, 65, 85, 0.85) !important;
+    box-shadow: 0 14px 40px -4px rgba(0, 0, 0, 0.7), 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(78, 222, 163, 0.2) !important;
+  }
+
+  .chat-floating-dock:focus-within {
+    border-color: rgba(16, 185, 129, 0.6) !important;
+    box-shadow: 0 16px 45px -4px rgba(16, 185, 129, 0.2), 0 0 0 2px rgba(16, 185, 129, 0.3) !important;
+  }
+
+  html.dark .chat-floating-dock:focus-within {
+    border-color: rgba(78, 222, 163, 0.7) !important;
+    box-shadow: 0 16px 45px -4px rgba(0, 0, 0, 0.8), 0 0 0 2px rgba(78, 222, 163, 0.35) !important;
+  }
+
+  .chat-floating-dock #chat-form {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    margin-bottom: 0 !important;
+  }
+
+  html.dark .chat-floating-dock #chat-form {
+    background-color: #0b1329 !important;
+    border: 1px solid rgba(51, 65, 85, 0.75) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Padding inferior adicional en el historial de mensajes para que el último mensaje no quede tapado */
+  #chat-scroll-container {
+    padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .chat-floating-dock {
+    position: static !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0.5rem 0 1rem 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS DE DIÁLOGOS Y MENSAJES DE ASISTENTE NUTRIBOT (MODO CLARO Y OSCURO)
+   ========================================================================== */
+.bot-message-body,
+.ai-response-text {
+  color: #131b2e !important;
+}
+
+html.dark .bot-message-body,
+html.dark .ai-response-text {
+  color: #f8fafc !important;
+}
+
+.bot-message-body strong,
+.ai-response-text strong {
+  color: #006c49 !important;
+  font-weight: 700;
+}
+
+html.dark .bot-message-body strong,
+html.dark .ai-response-text strong {
+  color: #4edea3 !important;
+  font-weight: 700;
+}
+
+.bot-message-body p,
+.ai-response-text p {
+  color: inherit !important;
+  margin-bottom: 0.75rem;
+}
+
+.bot-message-body p:last-child,
+.ai-response-text p:last-child {
+  margin-bottom: 0;
+}
+
+.quick-prompt-btn {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+.quick-prompt-btn:hover {
+  background-color: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #047857 !important;
+}
+
+html.dark .quick-prompt-btn {
+  background-color: #131d33 !important;
+  color: #cbd5e1 !important;
+  border-color: #243557 !important;
+}
+
+html.dark .quick-prompt-btn:hover {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border-color: #4edea3 !important;
+  color: #6ffbbe !important;
+}

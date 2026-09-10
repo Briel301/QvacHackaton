@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
     
     if (chatForm) {
+        if (chatForm.dataset.initialized === 'true') return;
+        chatForm.dataset.initialized = 'true';
+
         const chatInput = document.getElementById('chat-input');
         const photoFileInput = document.getElementById('photo-file-input');
         const btnTriggerCamera = document.getElementById('btn-trigger-camera');
@@ -20,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let selectedImageDataUrl = null;
         let selectedFileName = '';
+        let isSubmitting = false;
 
         // -- Funciones Utilitarias del Chat --
         function scrollToBottom() {
@@ -48,18 +52,43 @@ document.addEventListener('DOMContentLoaded', () => {
         // -- Chips Sugerencias Rápidas --
         if (quickPromptBtns) {
             quickPromptBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (isSubmitting) return;
                     if(chatInput) {
-                        chatInput.value = btn.getAttribute('data-prompt');
+                        const prompt = btn.getAttribute('data-prompt');
+                        if (!prompt) return;
+                        chatInput.value = prompt;
                         chatForm.requestSubmit();
                     }
                 });
             });
         }
 
+        // Permitir envío con tecla Enter
+        if (chatInput) {
+            chatInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (isSubmitting) return;
+                    chatForm.requestSubmit();
+                }
+            });
+        }
+
         // -- Manejo de Imágenes --
         if (btnTriggerCamera) {
             btnTriggerCamera.addEventListener('click', () => photoFileInput.click());
+        }
+
+        // Abrir automáticamente la cámara o selector si se solicitó desde Escanear con IA
+        if (sessionStorage.getItem('dia_auto_open_camera') === 'true') {
+            sessionStorage.removeItem('dia_auto_open_camera');
+            setTimeout(() => {
+                if (photoFileInput) {
+                    try { photoFileInput.click(); } catch (e) {}
+                }
+            }, 80);
         }
 
         if (photoFileInput) {
@@ -143,13 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error("Error conectando al backend:", error);
-                return "Lo siento, no pude conectarme con el servidor. Verifica que tu backend y tu túnel estén activos.\n\n⚠️ *Nota: Soy una inteligencia artificial y puedo cometer errores. Consulta siempre a tu médico.*";
+                return "Lo siento, no pude conectarme con el servidor. Verifica que tu backend y tu túnel estén activos.\n\n⚠️ *Aviso: Recuerda que soy un modelo de Inteligencia Artificial y puedo cometer errores. Esta información no sustituye el criterio profesional. Siempre debes consultar con tu médico antes de realizar cambios en tu tratamiento o alimentación.*";
             }
         }
 
         // -- Envío del Mensaje --
         chatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (isSubmitting) return;
             
             if(!chatInput) return;
             const text = chatInput.value.trim();
@@ -157,29 +187,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!text && !hasImage) return;
 
-            renderUserMessage(text, selectedImageDataUrl);
-            
-            const submittedText = text;
-            const submittedImage = selectedImageDataUrl;
+            isSubmitting = true;
+            try {
+                renderUserMessage(text, selectedImageDataUrl);
+                
+                const submittedText = text;
+                const submittedImage = selectedImageDataUrl;
 
-            chatInput.value = '';
-            if(btnRemoveImage) btnRemoveImage.click();
-            scrollToBottom();
+                chatInput.value = '';
+                if(btnRemoveImage) btnRemoveImage.click();
+                scrollToBottom();
 
-            if(typingIndicator) {
-                typingIndicator.classList.remove('hidden');
-                typingIndicator.classList.add('flex');
+                if(typingIndicator) {
+                    typingIndicator.classList.remove('hidden');
+                    typingIndicator.classList.add('flex');
+                }
+                scrollToBottom();
+
+                const respuestaDelServidor = await procesarEnServidorNode(submittedText, submittedImage);
+
+                if(typingIndicator) {
+                    typingIndicator.classList.add('hidden');
+                    typingIndicator.classList.remove('flex');
+                }
+                renderAiResponse(respuestaDelServidor, submittedText);
+                scrollToBottom();
+            } catch (err) {
+                console.error("Error al procesar mensaje:", err);
+                if(typingIndicator) {
+                    typingIndicator.classList.add('hidden');
+                    typingIndicator.classList.remove('flex');
+                }
+            } finally {
+                isSubmitting = false;
             }
-            scrollToBottom();
-
-            const respuestaDelServidor = await procesarEnServidorNode(submittedText, submittedImage);
-
-            if(typingIndicator) {
-                typingIndicator.classList.add('hidden');
-                typingIndicator.classList.remove('flex');
-            }
-            renderAiResponse(respuestaDelServidor, submittedText);
-            scrollToBottom();
         });
 
         // -- Renderizado Visual --
@@ -219,7 +260,43 @@ document.addEventListener('DOMContentLoaded', () => {
             let htmlContent = escapeHtml(aiText)
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/(?:^|\n)\*\s+(.*?)(?=\n|$)/g, '<br/>• $1')
                 .replace(/\n/g, '<br/>');
+
+            // Guardar en el historial general de chats
+            try {
+                const historyKey = 'dia_chat_history';
+                let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+                const now = new Date();
+                const timeStr = getCurrentTime();
+                const userMsg = { sender: 'user', text: userQuery || 'Consulta nutricional', time: timeStr };
+                const aiMsg = { sender: 'ai', text: aiText, time: timeStr };
+
+                let activeId = sessionStorage.getItem('dia_active_chat_id');
+                let chat = activeId ? history.find(c => c.id === activeId) : null;
+                if (!chat) {
+                    const newId = 'chat-' + Date.now();
+                    sessionStorage.setItem('dia_active_chat_id', newId);
+                    let title = userQuery || 'Consulta nutricional';
+                    if (title.length > 45) title = title.substring(0, 42) + '...';
+                    chat = {
+                        id: newId,
+                        titulo: title,
+                        primeraSolicitud: userQuery || 'Consulta nutricional',
+                        fechaCreacion: now.toISOString(),
+                        categoria: 'Consulta IA',
+                        icono: 'smart_toy',
+                        hasImage: false,
+                        mensajes: [userMsg, aiMsg]
+                    };
+                    history.unshift(chat);
+                } else {
+                    chat.mensajes.push(userMsg, aiMsg);
+                }
+                localStorage.setItem(historyKey, JSON.stringify(history));
+            } catch (e) {
+                console.warn('Error registrando en dia_chat_history:', e);
+            }
 
             wrapper.innerHTML = `
               <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm mt-0.5">
@@ -236,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <span class="text-[11px] text-on-surface-variant/80">${getCurrentTime()}</span>
                   </div>
-                  <div class="text-sm leading-relaxed mb-3 ai-response-text">
+                  <div class="ai-response-text text-sm leading-relaxed mb-3 text-on-surface">
                     ${htmlContent}
                   </div>
                   <!-- Botones interactivos para agregar o descartar del historial -->

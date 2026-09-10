@@ -37,35 +37,48 @@ async function inicializarModelo() {
 }
 
 async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina) {
-    const INSTRUCCIONES_SISTEMA = `Eres DIA NutriBot, un asistente nutricional especializado en diabetes.
-Responde de forma directa, profesional y concisa.
-Incluye obligatoriamente:
-1. Veredicto claro: Indica si el alimento es una buena o mala opción para alguien con diabetes y explica brevemente el porqué (razón nutricional).
-2. Estimación rápida de calorías y carbohidratos.
-3. Impacto glucémico breve.
-4. Termina exactamente con esta frase: "⚠️ *Recuerda que soy una IA. Consulta a tu médico.*"`;
+    let instruccionesSistema = `Eres DIA NutriBot, un asistente nutricional inteligente especializado en personas con diabetes.
+Responde de forma concisa, profesional, motivadora y estructurada en español.
+Incluye siempre las siguientes secciones obligatorias:
+1. **Veredicto:** Indica con claridad si el alimento es una opción recomendada, con moderación o desaconsejada para alguien con diabetes y la razón nutricional.
+2. **Estimación Nutricional:** Aporta una estimación rápida de calorías, carbohidratos (g), proteínas (g) y grasas (g).
+3. **Impacto Glucémico:** Breve explicación del índice/carga glucémica esperada.`;
+
+    const ADVERTENCIA_MEDICA = `⚠️ *Aviso: Recuerda que soy un modelo de Inteligencia Artificial y puedo cometer errores. Esta información no sustituye el criterio profesional. Siempre debes consultar con tu médico antes de realizar cambios en tu tratamiento o alimentación.*`;
+
+    if (usaInsulina) {
+        instruccionesSistema += `\n4. **Atención con Insulina:** El usuario utiliza insulina; incluye un consejo breve de precaución respecto al conteo de carbohidratos para dosificación.`;
+    }
+
+    instruccionesSistema += `\n5. Termina obligatoriamente con esta advertencia exacta al final: "${ADVERTENCIA_MEDICA}"`;
 
     try {
         const modelId = await inicializarModelo();
 
+        let consultaFinal = (mensajeUsuario || '').trim();
+        if (!consultaFinal || consultaFinal === 'Analiza esta foto de mi plato' || consultaFinal === 'Mi platillo tiene los siguientes ingredientes:') {
+            if (imagenBase64) {
+                consultaFinal = "He subido una foto de mi comida. Analiza un platillo saludable típico para alguien con diabetes, detallando calorías, carbohidratos y recomendaciones.";
+            } else {
+                consultaFinal = "Analiza este alimento y dime si es apto para alguien con diabetes.";
+            }
+        } else if (imagenBase64) {
+            consultaFinal = `${consultaFinal} (Nota: El usuario adjuntó una foto de este platillo).`;
+        }
+
         const history = [
-            { role: "system", content: INSTRUCCIONES_SISTEMA },
-            { role: "user", content: mensajeUsuario || "Analiza este alimento." }
+            { role: "system", content: instruccionesSistema },
+            { role: "user", content: consultaFinal }
         ];
 
         const opcionesInferencia = { 
             modelId: modelId, 
             history: history, 
             stream: false,
-            max_tokens: 180, 
-            temperature: 0.1, 
+            max_tokens: 350, 
+            temperature: 0.2, 
             threads: 4 
         };
-
-        if (imagenBase64) {
-            let base64Puro = imagenBase64.includes(',') ? imagenBase64.split(',')[1] : imagenBase64;
-            opcionesInferencia.images = [base64Puro];
-        }
 
         console.log("🧠 Ejecutando inferencia con Llama 3.2...");
         
@@ -79,7 +92,15 @@ Incluye obligatoriamente:
             textoFinal = result.choices[0].message.content;
         }
 
-        console.log("💬 IA Respondió correctamente.");
+        // Garantizar al 100% que la advertencia médica esté presente al final de cualquier mensaje
+        const regexDisclaimer = /(?:⚠️\s*\*?)?(?:Recuerda que soy una? IA|Aviso:.*|Consulta a tu médico.*|Recuerda que soy un modelo de Inteligencia Artificial.*)[\s\S]*$/i;
+        if (regexDisclaimer.test(textoFinal)) {
+            textoFinal = textoFinal.replace(regexDisclaimer, ADVERTENCIA_MEDICA).trim();
+        } else {
+            textoFinal = `${textoFinal.trim()}\n\n${ADVERTENCIA_MEDICA}`;
+        }
+
+        console.log("💬 IA Respondió correctamente con advertencia médica garantizada.");
         return textoFinal;
 
     } catch (error) {

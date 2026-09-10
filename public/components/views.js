@@ -10,7 +10,308 @@ window.APP_VIEWS = {
     title: 'DIA - Dashboard Nutricional',
     headerTitle: 'Dashboard Nutricional',
     mainClass: 'flex-1 px-4 sm:px-6 lg:px-8 py-5 lg:py-7 max-w-7xl w-full mx-auto pb-28 lg:pb-12',
-    html: "<!-- HEADER M\u00d3VIL (Visible \u00fanicamente en m\u00f3vil < lg) -->\n        <div class=\"lg:hidden flex items-center justify-between pt-safe pb-5\">\n          <div class=\"flex items-center gap-space-sm\">\n            <div class=\"relative w-12 h-12 rounded-full overflow-hidden shadow-sm bg-surface-container ring-2 ring-primary/20\" title=\"[Foto de perfil]\">\n              <img alt=\"[Foto de perfil de usuario]\" class=\"w-full h-full object-cover\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Crect width='80' height='80' fill='%23e2e8f0'/%3E%3Ccircle cx='40' cy='31' r='14' fill='%2394a3b8'/%3E%3Cpath d='M16 68c0-13.255 10.745-24 24-24s24 10.745 24 24z' fill='%2394a3b8'/%3E%3C/svg%3E\" />\n            </div>\n            <div class=\"flex flex-col\">\n              <span class=\"font-label-md text-label-md text-on-surface-variant flex items-center gap-1\">\n                \u00a1Buenos d\u00edas!\n                <span class=\"inline-block animate-pulse text-xs\">\u2728</span>\n              </span>\n              <span class=\"font-headline-md text-headline-md text-on-surface\">[Nombre del Usuario]</span>\n            </div>\n          </div>\n          <!-- Acciones R\u00e1pidas M\u00f3viles -->\n          <div class=\"flex items-center gap-space-xs\">\n            <button aria-label=\"Notificaciones\" class=\"relative w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all\">\n              <span class=\"material-symbols-outlined text-[22px]\">notifications</span>\n              <span class=\"absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary-container rounded-full ring-2 ring-surface-container-lowest\"></span>\n            </button>\n            <button aria-label=\"Ajustes y preferencias\" class=\"w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all\">\n              <span class=\"material-symbols-outlined text-[22px]\">settings</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- ENCABEZADO DE SECCI\u00d3N PRINCIPAL PARA ESCRITORIO CON ACCIONES R\u00c1PIDAS -->\n        <div class=\"hidden lg:flex items-center justify-between mb-6\">\n          <div class=\"flex flex-col\">\n            <h1 class=\"font-headline-xl text-2xl xl:text-3xl text-on-surface flex items-center gap-2\">\n              \u00a1Buenos d\u00edas, [Nombre del Usuario]! <span class=\"text-xl\">\u2728</span>\n            </h1>\n            <p class=\"font-body-md text-on-surface-variant mt-1\">\n              Est\u00e1s a <span class=\"font-bold text-primary px-2.5 py-0.5 rounded-full bg-primary-fixed/40\">460 kcal</span> de completar tu objetivo del d\u00eda\n            </p>\n          </div>\n          <!-- Acciones Principales -->\n          <div class=\"flex items-center gap-3\">\n            <a href=\"#asistente-ia\" class=\"px-4 py-2.5 rounded-full bg-surface-container-lowest border border-primary-container/30 text-on-surface hover:bg-surface-container-low font-headline-md text-sm flex items-center gap-2 shadow-sm active:scale-95 transition-all\">\n              <span class=\"material-symbols-outlined text-primary text-[20px]\">photo_camera</span>\n              <span class=\"text-primary font-bold\">Escanear con IA</span>\n              <span class=\"material-symbols-outlined text-on-surface-variant text-[16px]\">chevron_right</span>\n            </a>\n            <button class=\"px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm flex items-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all\">\n              <span class=\"material-symbols-outlined text-[20px]\">add</span>\n              <span>Registrar Comida</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- CUADR\u00cdCULA DE 2 COLUMNAS PARA ESCRITORIO (En m\u00f3vil fluye en 1 columna) -->\n        <div class=\"grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start\">\n          \n          <!-- COLUMNA PRINCIPAL / IZQUIERDA (lg:col-span-7 xl:col-span-8) -->\n          <div class=\"lg:col-span-7 xl:col-span-8 flex flex-col gap-6\">\n            \n            <!-- 1. Tarjeta de Racha Diaria & Progreso -->\n            <div class=\"relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-fixed via-primary-container to-secondary p-card-padding shadow-[0_12px_28px_-6px_rgba(16,185,129,0.3)]\">\n              <!-- C\u00edrculo decorativo difuso -->\n              <div class=\"absolute -right-8 -top-8 w-44 h-44 rounded-full bg-white/20 blur-2xl pointer-events-none\"></div>\n              <div class=\"relative z-10 flex items-center justify-between\">\n                <div class=\"flex flex-col gap-space-2xs max-w-[62%] sm:max-w-[70%]\">\n                  <div class=\"inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/30 backdrop-blur-md w-fit\">\n                    <span class=\"material-symbols-outlined text-on-primary-container text-[16px]\">bolt</span>\n                    <span class=\"font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider font-bold\">Racha diaria</span>\n                  </div>\n                  <h2 class=\"font-headline-lg text-lg sm:text-xl lg:text-2xl text-on-primary-container pt-1 font-extrabold\">\n                    Tu progreso: 15 D\u00cdAS de racha activa \ud83d\udd25\n                  </h2>\n                  <p class=\"font-body-sm text-body-sm text-on-primary-container/85 leading-relaxed\">\n                    \u00a1Completaste el <strong>85%</strong> de tu meta cal\u00f3rica de hoy! Mant\u00e9n la consistencia para alcanzar tu r\u00e9cord personal de 21 d\u00edas consecutivos.\n                  </p>\n                </div>\n                <!-- Gr\u00e1fico Circular con D\u00edas e \u00cdcono de Fuego -->\n                <div class=\"relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0\">\n                  <svg class=\"w-full h-full -rotate-90\" viewBox=\"0 0 88 88\">\n                    <circle cx=\"44\" cy=\"44\" fill=\"none\" r=\"36\" stroke=\"rgba(255,255,255,0.3)\" stroke-width=\"7\"></circle>\n                    <circle cx=\"44\" cy=\"44\" fill=\"none\" r=\"36\" stroke=\"#ffffff\" stroke-dasharray=\"226\" stroke-dashoffset=\"34\" stroke-linecap=\"round\" stroke-width=\"7\"></circle>\n                  </svg>\n                  <div class=\"absolute inset-0 flex flex-col items-center justify-center text-center\">\n                    <span class=\"text-[10px] font-bold text-on-primary uppercase tracking-tight\">85% META</span>\n                    <div class=\"flex items-center justify-center gap-0.5 mt-0.5\">\n                      <span class=\"font-numeric-hero text-xl sm:text-2xl text-on-primary font-black leading-none\">15</span>\n                      <span class=\"material-symbols-outlined text-[16px] text-tertiary-fixed fill-current\" style=\"font-variation-settings: &quot;FILL&quot; 1\">local_fire_department</span>\n                    </div>\n                    <span class=\"font-label-sm text-[10px] text-on-primary/90 font-semibold uppercase tracking-wide\">d\u00edas</span>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- 2. Secci\u00f3n Calendario Semanal -->\n            <div class=\"flex flex-col gap-space-sm\">\n              <div class=\"flex items-center justify-between\">\n                <div class=\"flex items-center gap-2\">\n                  <span class=\"material-symbols-outlined text-on-surface-variant text-[20px]\">calendar_today</span>\n                  <h3 class=\"font-headline-md text-headline-md text-on-surface\">Agosto 2025</h3>\n                  <span class=\"px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold uppercase tracking-wider\">Semana 33</span>\n                </div>\n                <div class=\"flex items-center gap-space-xs\">\n                  <span class=\"hidden sm:inline font-title-sm text-body-sm text-on-surface-variant font-medium\">10 \u2013 16 Ago</span>\n                  <div class=\"flex items-center gap-1 bg-surface-container-low rounded-full p-0.5\">\n                    <button aria-label=\"Semana anterior\" class=\"w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all\">\n                      <span class=\"material-symbols-outlined text-[18px]\">chevron_left</span>\n                    </button>\n                    <button aria-label=\"Semana siguiente\" class=\"w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all\">\n                      <span class=\"material-symbols-outlined text-[18px]\">chevron_right</span>\n                    </button>\n                  </div>\n                </div>\n              </div>\n\n              <!-- Tira Semanal de D\u00edas -->\n              <div class=\"bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30\">\n                <div class=\"grid grid-cols-7 gap-1.5 sm:gap-2 text-center\">\n                  <!-- DOM 07: Completado -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant font-semibold\">DOM</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">07</span>\n                    <span class=\"material-symbols-outlined text-primary text-[14px]\" style=\"font-variation-settings: &quot;FILL&quot; 1\">check_circle</span>\n                  </button>\n                  <!-- LUN 08: Completado -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant font-semibold\">LUN</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">08</span>\n                    <span class=\"material-symbols-outlined text-primary text-[14px]\" style=\"font-variation-settings: &quot;FILL&quot; 1\">check_circle</span>\n                  </button>\n                  <!-- MAR 09: Completado -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant font-semibold\">MAR</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">09</span>\n                    <span class=\"material-symbols-outlined text-primary text-[14px]\" style=\"font-variation-settings: &quot;FILL&quot; 1\">check_circle</span>\n                  </button>\n                  <!-- HOY 10: Activo Destacado -->\n                  <button class=\"flex flex-col items-center gap-1 py-2 rounded-2xl bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(16,185,129,0.4)] scale-105\">\n                    <span class=\"text-[10px] font-black uppercase tracking-wider text-on-primary/90\">\u25cf HOY</span>\n                    <span class=\"font-title-sm text-title-sm text-on-primary font-extrabold\">10</span>\n                    <span class=\"text-[11px] font-bold text-on-primary/95\">1,640 kcal</span>\n                  </button>\n                  <!-- JUE 11: Futuro -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant\">JUE</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface-variant\">11</span>\n                    <span class=\"w-2 h-2 rounded-full bg-surface-container\"></span>\n                  </button>\n                  <!-- VIE 12: Futuro -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant\">VIE</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface-variant\">12</span>\n                    <span class=\"w-2 h-2 rounded-full bg-surface-container\"></span>\n                  </button>\n                  <!-- S\u00c1B 13: Futuro -->\n                  <button class=\"flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors\">\n                    <span class=\"font-label-md text-label-md text-on-surface-variant\">S\u00c1B</span>\n                    <span class=\"font-title-sm text-title-sm text-on-surface-variant\">13</span>\n                    <span class=\"w-2 h-2 rounded-full bg-surface-container\"></span>\n                  </button>\n                </div>\n              </div>\n            </div>\n\n            <!-- 3. Secci\u00f3n Bit\u00e1cora Diaria (\"Mis comidas de hoy\") -->\n            <div class=\"flex flex-col gap-space-sm\">\n              <div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-1\">\n                <div>\n                  <span class=\"font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold\">Bit\u00e1cora Diaria</span>\n                  <h3 class=\"font-headline-md text-headline-md text-on-surface\">Mis comidas de hoy</h3>\n                </div>\n                <div class=\"flex flex-col sm:items-end\">\n                  <div class=\"flex items-center gap-1\">\n                    <span class=\"font-headline-md text-lg text-primary font-black\">1,640</span>\n                    <span class=\"font-body-md text-on-surface-variant font-medium\">/ 2,100 kcal</span>\n                  </div>\n                  <div class=\"w-36 h-1.5 bg-surface-container rounded-full overflow-hidden mt-1\">\n                    <div class=\"h-full bg-primary-container rounded-full\" style=\"width: 78%;\"></div>\n                  </div>\n                </div>\n              </div>\n\n              <!-- Lista de Comidas del D\u00eda -->\n              <div class=\"flex flex-col gap-space-sm\">\n                <!-- Card: Desayuno -->\n                <div class=\"group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all\">\n                  <div class=\"flex items-center gap-space-md\">\n                    <div class=\"w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0\" title=\"[Foto de comida]\">\n                      <img alt=\"[Foto de comida: Desayuno]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <div class=\"flex items-center gap-2\">\n                        <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">Desayuno</span>\n                        <span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold\">\n                          <span class=\"material-symbols-outlined text-[13px]\">check_circle</span>\n                          Registrado con \u00e9xito\n                        </span>\n                      </div>\n                      <p class=\"font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5\">[Nombre del plato / Ingredientes del desayuno]</p>\n                      <div class=\"flex items-center gap-3 text-tertiary pt-1\">\n                        <div class=\"flex items-center gap-1\">\n                          <span class=\"material-symbols-outlined text-[15px]\">local_fire_department</span>\n                          <span class=\"font-body-sm text-[12px] font-bold text-tertiary\">480 \u2013 520 kcal</span>\n                        </div>\n                        <span class=\"text-on-surface-variant/40 text-xs\">\u2022</span>\n                        <span class=\"font-body-sm text-[12px] text-on-surface-variant\">08:30 AM</span>\n                      </div>\n                    </div>\n                  </div>\n                  <button aria-label=\"Ver detalles de desayuno\" class=\"w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0\">\n                    <span class=\"material-symbols-outlined text-[20px]\">chevron_right</span>\n                  </button>\n                </div>\n\n                <!-- Card: Almuerzo -->\n                <div class=\"group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all\">\n                  <div class=\"flex items-center gap-space-md\">\n                    <div class=\"w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0\" title=\"[Foto de comida]\">\n                      <img alt=\"[Foto de comida: Almuerzo]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <div class=\"flex items-center gap-2\">\n                        <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">Almuerzo</span>\n                        <span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold\">\n                          <span class=\"material-symbols-outlined text-[13px]\">check_circle</span>\n                          Registrado con \u00e9xito\n                        </span>\n                      </div>\n                      <p class=\"font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5\">[Nombre del plato / Ingredientes del almuerzo]</p>\n                      <div class=\"flex items-center gap-3 text-tertiary pt-1\">\n                        <div class=\"flex items-center gap-1\">\n                          <span class=\"material-symbols-outlined text-[15px]\">local_fire_department</span>\n                          <span class=\"font-body-sm text-[12px] font-bold text-tertiary\">650 \u2013 710 kcal</span>\n                        </div>\n                        <span class=\"text-on-surface-variant/40 text-xs\">\u2022</span>\n                        <span class=\"font-body-sm text-[12px] text-on-surface-variant\">01:45 PM</span>\n                      </div>\n                    </div>\n                  </div>\n                  <button aria-label=\"Ver detalles de almuerzo\" class=\"w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0\">\n                    <span class=\"material-symbols-outlined text-[20px]\">chevron_right</span>\n                  </button>\n                </div>\n\n                <!-- Card: Snack / Refacci\u00f3n -->\n                <div class=\"group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all\">\n                  <div class=\"flex items-center gap-space-md\">\n                    <div class=\"w-14 h-14 rounded-2xl overflow-hidden shadow-sm bg-surface-container flex-shrink-0\" title=\"[Foto de comida]\">\n                      <img alt=\"[Foto de comida: Snack]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <div class=\"flex items-center gap-2\">\n                        <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">Refacci\u00f3n / Snack</span>\n                        <span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-fixed/30 text-primary font-label-sm text-[11px] font-bold\">\n                          <span class=\"material-symbols-outlined text-[13px]\">check_circle</span>\n                          Registrado con \u00e9xito\n                        </span>\n                      </div>\n                      <p class=\"font-body-sm text-[13px] text-on-surface-variant line-clamp-1 mt-0.5\">[Nombre del snack / Ingredientes de la refacci\u00f3n]</p>\n                      <div class=\"flex items-center gap-3 text-tertiary pt-1\">\n                        <div class=\"flex items-center gap-1\">\n                          <span class=\"material-symbols-outlined text-[15px]\">local_fire_department</span>\n                          <span class=\"font-body-sm text-[12px] font-bold text-tertiary\">210 \u2013 240 kcal</span>\n                        </div>\n                        <span class=\"text-on-surface-variant/40 text-xs\">\u2022</span>\n                        <span class=\"font-body-sm text-[12px] text-on-surface-variant\">05:15 PM</span>\n                      </div>\n                    </div>\n                  </div>\n                  <button aria-label=\"Ver detalles de refacci\u00f3n\" class=\"w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary group-hover:translate-x-0.5 group-hover:bg-primary-container/20 transition-all shrink-0\">\n                    <span class=\"material-symbols-outlined text-[20px]\">chevron_right</span>\n                  </button>\n                </div>\n\n                <!-- Card: Cena (A\u00fan no registrada) -->\n                <div class=\"group flex flex-col sm:flex-row sm:items-center justify-between p-card-padding bg-surface-container-low/40 rounded-2xl border-2 border-dashed border-surface-container-high hover:border-primary-container/60 hover:bg-surface-container-lowest transition-all gap-4\">\n                  <div class=\"flex items-center gap-space-md\">\n                    <div class=\"w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-on-surface-variant flex-shrink-0\">\n                      <span class=\"material-symbols-outlined text-[28px] text-primary\">restaurant</span>\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <div class=\"flex items-center gap-2\">\n                        <span class=\"font-title-sm text-title-sm text-on-surface font-bold\">Cena</span>\n                        <span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-[11px] font-medium\">\n                          <span class=\"material-symbols-outlined text-[13px]\">schedule</span>\n                          A\u00fan no registrada\n                        </span>\n                      </div>\n                      <p class=\"font-body-sm text-[13px] text-on-surface-variant mt-0.5\">Sugerido para tu objetivo: [Sugerencia de comida / Men\u00fa recomendado]</p>\n                      <div class=\"flex items-center gap-1 text-on-surface-variant pt-1\">\n                        <span class=\"material-symbols-outlined text-[15px]\">local_fire_department</span>\n                        <span class=\"font-body-sm text-[12px] font-semibold\">Sugerido: 450 \u2013 550 kcal</span>\n                      </div>\n                    </div>\n                  </div>\n                  <button class=\"px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm hover:bg-primary/90 active:scale-95 transition-all self-end sm:self-center shrink-0\">\n                    <span class=\"material-symbols-outlined text-[16px]\">add</span>\n                    <span>Registrar cena</span>\n                  </button>\n                </div>\n              </div>\n\n              <!-- Bot\u00f3n Destacado CTA: + Registrar Comida -->\n              <div class=\"pt-2\">\n                <button class=\"w-full py-3.5 px-card-padding rounded-2xl bg-primary-container hover:bg-secondary text-on-primary font-headline-md text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] active:scale-[0.99] transition-all\">\n                  <span class=\"material-symbols-outlined text-[22px]\">add_circle</span>\n                  <span>Registrar Comida</span>\n                </button>\n              </div>\n            </div>\n          </div>\n\n          <!-- COLUMNA LATERAL DERECHA (lg:col-span-5 xl:col-span-4) -->\n          <div class=\"lg:col-span-5 xl:col-span-4 flex flex-col gap-6\">\n            \n            <!-- PANEL 1: \"Mi progreso\" (Macros de Hoy & Balance Nutricional) -->\n            <div class=\"bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-4\">\n              <!-- Encabezado con t\u00edtulo \"Mi progreso\" y bot\u00f3n que redirige a mi_progreso.html -->\n              <div class=\"flex items-center justify-between border-b border-surface-container-high/50 pb-3\">\n                <div class=\"flex flex-col\">\n                  <span class=\"font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold\">Balance Nutricional</span>\n                  <h3 class=\"font-headline-md text-lg text-on-surface font-bold\">Mi progreso</h3>\n                </div>\n                <!-- Bot\u00f3n estilo navegaci\u00f3n Mi Progreso hacia mi_progreso.html -->\n                <a href=\"mi_progreso.html\" aria-label=\"Ir a Mi progreso\" class=\"inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-container/15 text-primary hover:bg-primary-container hover:text-on-primary transition-all font-title-sm text-xs font-bold group\">\n                  <span class=\"material-symbols-outlined text-[18px]\">trending_up</span>\n                  <span>Mi progreso</span>\n                  <span class=\"material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform\">chevron_right</span>\n                </a>\n              </div>\n\n              <!-- Calor\u00edas Restantes -->\n              <div class=\"flex items-center justify-between bg-surface-container-low/70 rounded-xl p-3\">\n                <div class=\"flex flex-col\">\n                  <span class=\"font-body-sm text-xs text-on-surface-variant\">Calor\u00edas restantes</span>\n                  <div class=\"flex items-baseline gap-1 mt-0.5\">\n                    <span class=\"font-headline-lg text-2xl font-black text-primary\">460</span>\n                    <span class=\"font-body-sm text-xs text-on-surface-variant font-semibold\">kcal libres</span>\n                  </div>\n                </div>\n                <div class=\"w-9 h-9 rounded-full bg-primary-container/20 text-primary flex items-center justify-center\">\n                  <span class=\"material-symbols-outlined text-[20px]\">flag</span>\n                </div>\n              </div>\n\n              <!-- Gr\u00e1fico Donut de Calor\u00edas -->\n              <div class=\"relative w-40 h-40 mx-auto my-1 flex items-center justify-center\">\n                <svg class=\"w-full h-full -rotate-90\" viewBox=\"0 0 100 100\">\n                  <!-- C\u00edrculo de fondo -->\n                  <circle cx=\"50\" cy=\"50\" fill=\"none\" r=\"40\" stroke=\"#f2f3ff\" stroke-width=\"10\"></circle>\n                  <!-- Progreso Grasas (20%) -->\n                  <circle cx=\"50\" cy=\"50\" fill=\"none\" r=\"40\" stroke=\"#ffb95f\" stroke-dasharray=\"251.2\" stroke-dashoffset=\"200\" stroke-linecap=\"round\" stroke-width=\"10\" transform=\"rotate(270 50 50)\"></circle>\n                  <!-- Progreso Prote\u00ednas (30%) -->\n                  <circle cx=\"50\" cy=\"50\" fill=\"none\" r=\"40\" stroke=\"#6bff8f\" stroke-dasharray=\"251.2\" stroke-dashoffset=\"175\" stroke-linecap=\"round\" stroke-width=\"10\" transform=\"rotate(160 50 50)\"></circle>\n                  <!-- Progreso Carbohidratos (50%) -->\n                  <circle cx=\"50\" cy=\"50\" fill=\"none\" r=\"40\" stroke=\"#10b981\" stroke-dasharray=\"251.2\" stroke-dashoffset=\"125\" stroke-linecap=\"round\" stroke-width=\"10\"></circle>\n                </svg>\n                <div class=\"absolute inset-0 flex flex-col items-center justify-center text-center\">\n                  <span class=\"font-label-sm text-[10px] text-on-surface-variant font-bold uppercase tracking-wider\">Total</span>\n                  <span class=\"font-headline-md text-xl font-black text-on-surface leading-tight\">1,640</span>\n                  <span class=\"font-body-sm text-[11px] text-on-surface-variant font-semibold\">kcal consumidas</span>\n                </div>\n              </div>\n\n              <!-- Desglose de Macronutrientes -->\n              <div class=\"flex flex-col gap-2.5 pt-1\">\n                <!-- Carbohidratos -->\n                <div class=\"flex flex-col gap-1\">\n                  <div class=\"flex items-center justify-between text-xs\">\n                    <div class=\"flex items-center gap-2\">\n                      <span class=\"w-2.5 h-2.5 rounded-full bg-[#10b981]\"></span>\n                      <span class=\"font-title-sm text-on-surface font-semibold\">Carbohidratos</span>\n                    </div>\n                    <span class=\"font-title-sm font-bold text-on-surface\">220g <span class=\"text-on-surface-variant font-normal text-[11px]\">(50%)</span></span>\n                  </div>\n                  <div class=\"w-full h-2 bg-surface-container rounded-full overflow-hidden\">\n                    <div class=\"h-full bg-[#10b981] rounded-full\" style=\"width: 50%;\"></div>\n                  </div>\n                </div>\n\n                <!-- Prote\u00ednas -->\n                <div class=\"flex flex-col gap-1\">\n                  <div class=\"flex items-center justify-between text-xs\">\n                    <div class=\"flex items-center gap-2\">\n                      <span class=\"w-2.5 h-2.5 rounded-full bg-[#6bff8f]\"></span>\n                      <span class=\"font-title-sm text-on-surface font-semibold\">Prote\u00ednas</span>\n                    </div>\n                    <span class=\"font-title-sm font-bold text-on-surface\">135g <span class=\"text-on-surface-variant font-normal text-[11px]\">(30%)</span></span>\n                  </div>\n                  <div class=\"w-full h-2 bg-surface-container rounded-full overflow-hidden\">\n                    <div class=\"h-full bg-[#6bff8f] rounded-full\" style=\"width: 30%;\"></div>\n                  </div>\n                </div>\n\n                <!-- Grasas -->\n                <div class=\"flex flex-col gap-1\">\n                  <div class=\"flex items-center justify-between text-xs\">\n                    <div class=\"flex items-center gap-2\">\n                      <span class=\"w-2.5 h-2.5 rounded-full bg-[#ffb95f]\"></span>\n                      <span class=\"font-title-sm text-on-surface font-semibold\">Grasas</span>\n                    </div>\n                    <span class=\"font-title-sm font-bold text-on-surface\">52g <span class=\"text-on-surface-variant font-normal text-[11px]\">(20%)</span></span>\n                  </div>\n                  <div class=\"w-full h-2 bg-surface-container rounded-full overflow-hidden\">\n                    <div class=\"h-full bg-[#ffb95f] rounded-full\" style=\"width: 20%;\"></div>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- PANEL 2: \"Acceso R\u00e1pido Asistente IA\" -->\n            <div id=\"asistente-ia\" class=\"relative overflow-hidden bg-gradient-to-br from-surface-container-lowest via-surface-container-low/60 to-primary-fixed/20 rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-primary-fixed/40 flex flex-col gap-3\">\n              <div class=\"flex items-center justify-between\">\n                <div class=\"w-11 h-11 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/30\">\n                  <span class=\"material-symbols-outlined text-[24px]\">photo_camera</span>\n                </div>\n                <span class=\"inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed/40 text-primary font-label-sm text-[11px] font-bold\">\n                  <span class=\"material-symbols-outlined text-[14px]\">auto_awesome</span>\n                  Visi\u00f3n IA\n                </span>\n              </div>\n              <div>\n                <h3 class=\"font-headline-md text-base text-on-surface font-bold\">Acceso R\u00e1pido Asistente IA</h3>\n                <p class=\"font-body-sm text-[13px] text-on-surface-variant mt-1 leading-relaxed\">\n                  Sube o toma una foto de tu plato para desglosar ingredientes, gramos y calor\u00edas autom\u00e1ticamente en 3 segundos.\n                </p>\n              </div>\n              <button class=\"w-full mt-1 py-2.5 px-4 rounded-xl bg-surface-container-lowest border border-primary-container/40 text-primary font-title-sm text-xs font-bold flex items-center justify-center gap-2 hover:bg-primary-container hover:text-on-primary shadow-sm active:scale-95 transition-all\">\n                <span class=\"material-symbols-outlined text-[18px]\">document_scanner</span>\n                <span>Escanear Plato con IA</span>\n              </button>\n            </div>\n\n            <!-- PANEL 3: \"Platos Favoritos\" -->\n            <div class=\"bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-3\">\n              <div class=\"flex items-center justify-between border-b border-surface-container-high/40 pb-2.5\">\n                <div class=\"flex items-center gap-2\">\n                  <span class=\"material-symbols-outlined text-primary text-[20px]\">bookmark</span>\n                  <h3 class=\"font-headline-md text-base text-on-surface font-bold\">Platos Favoritos</h3>\n                </div>\n                <a href=\"#\" class=\"font-label-sm text-xs text-primary hover:underline font-bold\">Ver todos</a>\n              </div>\n\n              <!-- Lista de 3 Platos Favoritos -->\n              <div class=\"flex flex-col gap-2.5\">\n                <!-- Favorito 1 -->\n                <div class=\"flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group\">\n                  <div class=\"flex items-center gap-3\">\n                    <div class=\"w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0\" title=\"[Foto de plato favorito]\">\n                      <img alt=\"[Foto de plato favorito 1]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <span class=\"font-title-sm text-[13px] text-on-surface font-bold line-clamp-1\">[Plato Favorito 1]</span>\n                      <span class=\"font-body-sm text-[11px] text-tertiary font-bold\">380 kcal</span>\n                    </div>\n                  </div>\n                  <button aria-label=\"Agregar [Plato Favorito 1]\" class=\"w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all\">\n                    <span class=\"material-symbols-outlined text-[18px]\">add</span>\n                  </button>\n                </div>\n\n                <!-- Favorito 2 -->\n                <div class=\"flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group\">\n                  <div class=\"flex items-center gap-3\">\n                    <div class=\"w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0\" title=\"[Foto de plato favorito]\">\n                      <img alt=\"[Foto de plato favorito 2]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <span class=\"font-title-sm text-[13px] text-on-surface font-bold line-clamp-1\">[Plato Favorito 2]</span>\n                      <span class=\"font-body-sm text-[11px] text-tertiary font-bold\">510 kcal</span>\n                    </div>\n                  </div>\n                  <button aria-label=\"Agregar [Plato Favorito 2]\" class=\"w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all\">\n                    <span class=\"material-symbols-outlined text-[18px]\">add</span>\n                  </button>\n                </div>\n\n                <!-- Favorito 3 -->\n                <div class=\"flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors group\">\n                  <div class=\"flex items-center gap-3\">\n                    <div class=\"w-11 h-11 rounded-xl overflow-hidden shadow-xs bg-surface-container shrink-0\" title=\"[Foto de plato favorito]\">\n                      <img alt=\"[Foto de plato favorito 3]\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23e2e8f0'/%3E%3Cg fill='%2394a3b8'%3E%3Ccircle cx='50' cy='42' r='20' fill='none' stroke='%2394a3b8' stroke-width='3'/%3E%3Cpath d='M25 28v12a4 4 0 004 4v20h3V44a4 4 0 004-4V28h-2v10h-2V28h-1v10h-2V28h-2zm46 0v16a4 4 0 004 4v16h3V28h-7z'/%3E%3C/g%3E%3Ctext x='50' y='82' font-family='system-ui,sans-serif' font-size='8' font-weight='bold' fill='%2364748b' text-anchor='middle'%3E[FOTO PLATO]%3C/text%3E%3C/svg%3E\" />\n                    </div>\n                    <div class=\"flex flex-col\">\n                      <span class=\"font-title-sm text-[13px] text-on-surface font-bold line-clamp-1\">[Plato Favorito 3]</span>\n                      <span class=\"font-body-sm text-[11px] text-tertiary font-bold\">290 kcal</span>\n                    </div>\n                  </div>\n                  <button aria-label=\"Agregar [Plato Favorito 3]\" class=\"w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary active:scale-95 transition-all\">\n                    <span class=\"material-symbols-outlined text-[18px]\">add</span>\n                  </button>\n                </div>\n              </div>\n            </div>\n\n          </div>\n\n        </div>"
+    html: `
+        <!-- HEADER MÓVIL (Visible únicamente en móvil < lg) -->
+        <div class="lg:hidden flex items-center justify-between pt-safe pb-5">
+          <div id="user-profile-header-area-mobile" class="flex items-center gap-space-sm cursor-pointer">
+            <div class="relative w-12 h-12 rounded-full overflow-hidden shadow-sm bg-surface-container ring-2 ring-primary/25 hover:ring-primary/50 transition-all flex items-center justify-center text-primary" title="Editar Perfil">
+              <span class="material-symbols-outlined text-[24px]">person</span>
+            </div>
+            <div class="flex flex-col">
+              <span id="mobile-saludo" class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+                ¡Buenos días!
+                <span class="inline-block animate-pulse text-xs">✨</span>
+              </span>
+              <span class="font-headline-md text-headline-md text-on-surface" id="header-nombre-movil">Usuario</span>
+            </div>
+          </div>
+          <!-- Acciones Rápidas Móviles -->
+          <div class="flex items-center gap-space-xs">
+            <button aria-label="Notificaciones" class="relative w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+              <span class="material-symbols-outlined text-[22px]">notifications</span>
+              <span class="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+            </button>
+            <button id="btn-open-settings-mobile" aria-label="Ajustes y preferencias" class="btn-settings w-11 h-11 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all cursor-pointer" title="Configuraciones">
+              <span class="material-symbols-outlined text-[22px]">settings</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ENCABEZADO ESCRITORIO -->
+        <div class="hidden lg:flex items-center justify-between mb-6">
+          <div class="flex flex-col">
+            <h1 class="font-headline-xl text-2xl xl:text-3xl text-on-surface flex items-center gap-2">
+              <span id="desktop-saludo">¡Buenos días</span>, <span id="header-nombre-desktop">Usuario</span>! <span class="text-xl">✨</span>
+            </h1>
+            <p class="font-body-md text-on-surface-variant mt-1" id="header-goal-status">
+              Estás a <span class="header-remaining-kcal font-bold text-primary px-2.5 py-0.5 rounded-full bg-primary-fixed/40">2,100 kcal</span> de completar tu objetivo del día
+            </p>
+          </div>
+          
+          <!-- Acciones Principales -->
+          <div class="flex items-center gap-3">
+            <a href="asistente.html" class="btn-scan-ai-dashboard px-4 py-2.5 rounded-full bg-surface-container-lowest border border-primary-container/30 text-on-surface hover:bg-surface-container-low font-headline-md text-sm flex items-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-primary text-[20px]">photo_camera</span>
+              <span class="text-primary font-bold">Escanear con IA</span>
+              <span class="material-symbols-outlined text-on-surface-variant text-[16px]">chevron_right</span>
+            </a>
+            <button type="button" class="btn-open-create-dish-dashboard px-5 py-2.5 rounded-full bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm flex items-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[20px]">add</span>
+              <span>Registrar Comida</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CUADRÍCULA -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
+          
+          <!-- COLUMNA PRINCIPAL -->
+          <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+            
+            <!-- 1. Tarjeta de Racha Diaria & Progreso -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-fixed via-primary-container to-secondary p-card-padding shadow-[0_12px_28px_-6px_rgba(16,185,129,0.3)]">
+              <div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-white/20 blur-2xl pointer-events-none"></div>
+              <div class="relative z-10 flex items-center justify-between">
+                <div class="flex flex-col gap-space-2xs max-w-[62%] sm:max-w-[70%]">
+                  <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-lowest/30 backdrop-blur-md w-fit">
+                    <span class="material-symbols-outlined text-on-primary-container text-[16px]">bolt</span>
+                    <span class="font-label-sm text-label-sm text-on-primary-container uppercase tracking-wider font-bold">Racha diaria</span>
+                  </div>
+                  <h2 class="font-headline-lg text-lg sm:text-xl lg:text-2xl text-on-primary-container pt-1 font-extrabold">
+                    Tu progreso diario activo 🔥
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-on-primary-container/85 leading-relaxed" id="streak-meta-pct-text">
+                    ¡Completaste el <strong id="streak-meta-pct">0%</strong> de tu meta calórica de hoy! Registra tus comidas para monitorear tu consistencia.
+                  </p>
+                </div>
+                <div class="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
+                  <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
+                    <circle cx="44" cy="44" fill="none" r="36" stroke="rgba(255,255,255,0.3)" stroke-width="7"></circle>
+                    <circle id="streak-circle-progress" cx="44" cy="44" fill="none" r="36" stroke="#ffffff" stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round" stroke-width="7" class="transition-all duration-700"></circle>
+                  </svg>
+                  <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span id="streak-meta-badge" class="text-[10px] font-bold text-on-primary uppercase tracking-tight">0% META</span>
+                    <div class="flex items-center justify-center gap-0.5 mt-0.5">
+                      <span class="font-numeric-hero text-xl sm:text-2xl text-on-primary font-black leading-none">1</span>
+                      <span class="material-symbols-outlined text-[16px] text-tertiary-fixed fill-current" style="font-variation-settings: &quot;FILL&quot; 1">local_fire_department</span>
+                    </div>
+                    <span class="font-label-sm text-[10px] text-on-primary/90 font-semibold uppercase tracking-wide">día</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Sección Calendario Semanal -->
+            <div class="flex flex-col gap-space-sm">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-on-surface-variant text-[20px]">calendar_today</span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">Septiembre 2026</h3>
+                  <span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Semana 37</span>
+                </div>
+                <div class="flex items-center gap-space-xs">
+                  <span class="hidden sm:inline font-title-sm text-body-sm text-on-surface-variant font-medium">06 – 12 Sep</span>
+                  <div class="flex items-center gap-1 bg-surface-container-low rounded-full p-0.5">
+                    <button aria-label="Semana anterior" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+                      <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                    </button>
+                    <button aria-label="Semana siguiente" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+                      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tira Semanal de Días -->
+              <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30">
+                <div class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center">
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">DOM</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">06</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">LUN</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">07</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">MAR</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">08</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1 py-2 rounded-2xl bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(16,185,129,0.4)] scale-105">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-on-primary/90">● HOY</span>
+                    <span class="font-title-sm text-title-sm text-on-primary font-extrabold">09</span>
+                    <span class="text-[11px] font-bold text-on-primary/95">1,640 kcal</span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">JUE</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">10</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">VIE</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">11</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">SÁB</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">12</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col gap-space-sm mt-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div>
+                  <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Bitácora Diaria</span>
+                  <h3 class="font-headline-md text-headline-md text-on-surface">Mis comidas de hoy</h3>
+                </div>
+                <div class="flex flex-col sm:items-end">
+                  <div class="flex items-center gap-1">
+                    <span class="consumed-calories-val font-headline-md text-lg text-primary font-black">0</span>
+                    <span class="target-calories-total font-body-md text-on-surface-variant font-medium">/ 2,100 kcal</span>
+                  </div>
+                  <div class="w-36 h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+                    <div id="consumed-calories-bar" class="h-full bg-primary-container rounded-full transition-all duration-500" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Lista Dinámica de Comidas del Día -->
+              <div id="mis-comidas-container" class="flex flex-col gap-space-sm">
+                <!-- Se renderiza en tiempo real según los platillos ingresados hoy -->
+              </div>
+
+              <!-- Botón Destacado CTA -->
+              <div id="bottom-registrar-comida-container" class="pt-2 hidden">
+                <button type="button" class="btn-open-create-dish-dashboard w-full py-3.5 px-card-padding rounded-2xl bg-primary-container hover:bg-secondary text-on-primary font-headline-md text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] active:scale-[0.99] transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-[22px]">add_circle</span>
+                  <span>Registrar Comida</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA LATERAL DERECHA -->
+          <div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+            
+            <!-- PANEL 1: "Mi progreso" -->
+            <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-4">
+              <div class="flex items-center justify-between border-b border-surface-container-high/50 pb-3">
+                <div class="flex flex-col">
+                  <span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">Balance Nutricional</span>
+                  <h3 class="font-headline-md text-lg text-on-surface font-bold">Mi progreso</h3>
+                </div>
+                <a href="mi_progreso.html" aria-label="Ir a Mi progreso" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary-container/15 text-primary hover:bg-primary-container hover:text-on-primary transition-all font-title-sm text-xs font-bold group">
+                  <span class="material-symbols-outlined text-[18px]">trending_up</span>
+                  <span>Mi progreso</span>
+                  <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+                </a>
+              </div>
+
+              <!-- Calorías Restantes -->
+              <div class="flex items-center justify-between bg-surface-container-low/70 rounded-xl p-3">
+                <div class="flex flex-col">
+                  <span class="font-body-sm text-xs text-on-surface-variant">Calorías restantes</span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span class="remaining-calories-val font-headline-lg text-2xl font-black text-primary">2,100</span>
+                    <span class="remaining-calories-unit font-body-sm text-xs text-on-surface-variant font-semibold">kcal libres</span>
+                  </div>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-primary-container/20 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">flag</span>
+                </div>
+              </div>
+
+              <!-- Gráfico Donut de Calorías -->
+              <div class="relative w-40 h-40 mx-auto my-1 flex items-center justify-center">
+                <svg id="dashboard-donut-svg" class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#f2f3ff" stroke-width="10"></circle>
+                  <circle id="donut-segment-fat" cx="50" cy="50" fill="none" r="40" stroke="#ffb95f" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
+                  <circle id="donut-segment-prot" cx="50" cy="50" fill="none" r="40" stroke="#0284c7" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
+                  <circle id="donut-segment-carbs" cx="50" cy="50" fill="none" r="40" stroke="#10b981" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="10" class="transition-all duration-500"></circle>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <span class="font-label-sm text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Total</span>
+                  <span class="consumed-calories-val font-headline-md text-xl font-black text-on-surface leading-tight">0</span>
+                  <span class="consumed-calories-unit font-body-sm text-[11px] text-on-surface-variant font-semibold">kcal consumidas</span>
+                </div>
+              </div>
+
+              <!-- Desglose de Macronutrientes -->
+              <div class="flex flex-col gap-2.5 pt-1">
+                <!-- Carbohidratos -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Carbohidratos</span>
+                    </div>
+                    <span class="macro-carbs-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="macro-carbs-bar" class="h-full bg-[#10b981] rounded-full transition-all duration-500" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <!-- Proteínas -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#0284c7]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Proteínas</span>
+                    </div>
+                    <span class="macro-prot-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="macro-prot-bar" class="h-full bg-[#0284c7] rounded-full transition-all duration-500" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <!-- Grasas -->
+                <div class="flex flex-col gap-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-[#ffb95f]"></span>
+                      <span class="font-title-sm text-on-surface font-semibold">Grasas</span>
+                    </div>
+                    <span class="macro-fat-val font-title-sm font-bold text-on-surface">0g <span class="text-on-surface-variant font-normal text-[11px]">(0%)</span></span>
+                  </div>
+                  <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                    <div id="macro-fat-bar" class="h-full bg-[#ffb95f] rounded-full transition-all duration-500" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 3: "Platos Favoritos" -->
+            <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30 flex flex-col gap-3">
+              <div class="flex items-center justify-between border-b border-surface-container-high/40 pb-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[20px]">bookmark</span>
+                  <h3 class="font-headline-md text-base text-on-surface font-bold">Platos Favoritos</h3>
+                </div>
+                <a href="mis_platos.html" class="font-label-sm text-xs text-primary hover:underline font-bold">Ver todos</a>
+              </div>
+
+              <!-- Lista Dinámica de Platos Favoritos -->
+              <div id="favoritos-container" class="flex flex-col gap-2.5">
+                <!-- Se cargan dinámicamente desde PlatosStore -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+    `,
+    init: function() {
+      if (typeof window.initDashboard === 'function') {
+        window.initDashboard();
+      }
+    }
   },
   'mi_progreso.html': {
     id: 'progreso',
@@ -307,22 +608,22 @@ window.APP_VIEWS = {
         </div>
 
         <!-- SECCIÓN 3: RECOMENDACIÓN NUTRICIONAL INTELIGENTE (Asistente IA) -->
-        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-surface-container-lowest via-surface-container-low to-primary-fixed/20 border border-primary-fixed/50 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div id="progreso-ai-diagnosis-card" class="progreso-ai-card p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-surface-container-lowest via-surface-container-low to-primary-fixed/20 dark:from-[#131d33] dark:via-[#17233d] dark:to-primary-container/15 border border-primary-fixed/50 dark:border-emerald-500/40 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div class="flex items-start gap-3.5">
             <div class="w-11 h-11 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/30 shrink-0">
               <span class="material-symbols-outlined text-[24px]">auto_awesome</span>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h3 class="font-headline-md text-base font-bold text-on-surface">Diagnóstico IA del Período</h3>
-                <span class="px-2 py-0.5 rounded-full bg-primary-fixed/40 text-primary text-[10px] font-extrabold uppercase tracking-wide">Óptimo</span>
+                <h3 class="font-headline-md text-base font-bold text-on-surface dark:text-white">Diagnóstico IA del Período</h3>
+                <span class="badge-diagnostico-optimo px-2.5 py-0.5 rounded-full bg-primary-fixed/40 dark:bg-emerald-500/20 text-primary dark:text-emerald-300 border border-primary-container/30 dark:border-emerald-500/40 text-[10px] font-extrabold uppercase tracking-wide">Óptimo</span>
               </div>
               <p id="insight-ai-text" class="text-xs sm:text-sm text-on-surface-variant mt-1 leading-relaxed">
-                ¡Gran progreso! Tu ingesta de proteínas está en el rango ideal para regeneración muscular. Te sugerimos mantener una hidratación continua antes de la cena.
+                ¡Gran consistencia! Estás a 460 kcal de tu objetivo calórico diario con un excelente balance de proteínas (90%).
               </p>
             </div>
           </div>
-          <a href="asistente.html" class="px-4 py-2.5 rounded-2xl bg-surface-container-lowest border border-primary-container/40 text-primary hover:bg-primary-container hover:text-on-primary font-title-sm text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition-all whitespace-nowrap self-end sm:self-center">
+          <a href="asistente.html" class="btn-consultar-nutribot px-4 py-2.5 rounded-2xl bg-surface-container-lowest dark:bg-emerald-500/15 border border-primary-container/40 dark:border-emerald-500/40 text-primary dark:text-emerald-300 hover:bg-primary-container hover:text-on-primary dark:hover:bg-primary-container dark:hover:text-slate-950 font-title-sm text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition-all whitespace-nowrap self-end sm:self-center">
             <span>Consultar NutriBot</span>
             <span class="material-symbols-outlined text-[16px]">chevron_right</span>
           </a>
@@ -339,14 +640,335 @@ window.APP_VIEWS = {
     title: 'DIA - Mis Platos y Recetas',
     headerTitle: 'Mis Platos',
     mainClass: 'flex-1 px-4 sm:px-6 lg:px-8 py-5 lg:py-7 max-w-7xl w-full mx-auto pb-28 lg:pb-12',
-    html: "<!-- ENCABEZADO SUPERIOR CON BOTÓN PRINCIPAL \"CREAR PLATILLO\" -->\n        <div class=\"p-5 sm:p-6 bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\">\n          <div class=\"flex items-center gap-3.5\">\n            <div class=\"w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/30 shrink-0\">\n              <span class=\"material-symbols-outlined text-[28px]\">restaurant_menu</span>\n            </div>\n            <div>\n              <div class=\"flex items-center gap-2\">\n                <h1 class=\"text-xl sm:text-2xl font-bold font-headline-xl text-on-surface\">Mis Platos y Recetas</h1>\n                <span id=\"platos-count-badge\" class=\"px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-fixed/40 text-primary border border-primary-container/30\">\n                  Cargando...\n                </span>\n              </div>\n              <p class=\"text-xs sm:text-sm text-on-surface-variant mt-0.5\">Colección de tus comidas registradas con fotos, recetas y macronutrientes</p>\n            </div>\n          </div>\n\n          <!-- BOTÓN SUPERIOR: + CREAR PLATILLO (Acción Principal Destacada) -->\n          <button \n            id=\"btn-create-dish\" \n            type=\"button\" \n            class=\"px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shrink-0\"\n          >\n            <span class=\"material-symbols-outlined text-[22px]\">add_circle</span>\n            <span>Crear Platillo</span>\n          </button>\n        </div>\n\n        <!-- BARRA DE FILTROS Y BÚSQUEDA -->\n        <div class=\"flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6\">\n          \n          <!-- BUSCADOR CON ICONO DE LUPA -->\n          <div class=\"relative flex-1 max-w-md\">\n            <span class=\"material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none\">\n              search\n            </span>\n            <input \n              type=\"text\" \n              id=\"platos-search\" \n              placeholder=\"Buscar por nombre, descripción o ingrediente...\" \n              class=\"w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-surface-container-high/80 rounded-2xl text-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-2xs\"\n            />\n            <button \n              id=\"btn-clear-search\" \n              type=\"button\" \n              aria-label=\"Limpiar búsqueda\" \n              class=\"hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center text-xs transition-colors\"\n            >\n              <span class=\"material-symbols-outlined text-[16px]\">close</span>\n            </button>\n          </div>\n\n          <!-- CHIPS DE FILTRO POR CATEGORÍA -->\n          <div class=\"flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1\">\n            <button type=\"button\" class=\"plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-primary-container text-on-primary shadow-sm cursor-pointer whitespace-nowrap\" data-category=\"Todos\">\n              Todos\n            </button>\n            <button type=\"button\" class=\"plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap\" data-category=\"Desayuno\">\n              Desayuno\n            </button>\n            <button type=\"button\" class=\"plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap\" data-category=\"Almuerzo\">\n              Almuerzo\n            </button>\n            <button type=\"button\" class=\"plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap\" data-category=\"Cena\">\n              Cena\n            </button>\n            <button type=\"button\" class=\"plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap\" data-category=\"Snack\">\n              Snack\n            </button>\n          </div>\n        </div>\n\n        <!-- CUADRÍCULA DE CARTAS DE PLATILLOS (GRID RESPONSIVE: 1 col móvil, 2 tablet, 3-4 PC) -->\n        <div id=\"platos-grid\" class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6\">\n          <!-- Las tarjetas de platos se renderizan dinámicamente aquí -->\n        </div>\n\n        <!-- ESTADO VACÍO (Si no hay platos registrados o coincidentes) -->\n        <div id=\"platos-empty-state\" class=\"hidden flex-col items-center justify-center text-center py-16 px-4 bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm my-6\">\n          <div class=\"w-20 h-20 rounded-3xl bg-primary-fixed/30 text-primary flex items-center justify-center mb-4\">\n            <span class=\"material-symbols-outlined text-[42px]\">set_meal</span>\n          </div>\n          <h2 class=\"text-xl font-bold font-headline-md text-on-surface\">No se encontraron platillos</h2>\n          <p class=\"text-sm text-on-surface-variant max-w-sm mt-1.5 mb-6\">\n            Aún no has registrado ningún plato en esta categoría o no coincide con tu búsqueda.\n          </p>\n          <button \n            id=\"btn-empty-create\" \n            type=\"button\" \n            class=\"px-5 py-2.5 rounded-full bg-primary-container text-on-primary font-bold text-sm flex items-center gap-2 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer\"\n          >\n            <span class=\"material-symbols-outlined text-[20px]\">add</span>\n            <span>Registrar mi primer platillo</span>\n          </button>\n        </div>\n\n        <!-- ======================================================== -->\n        <!-- VENTANA MODAL PARA INTRODUCIR / EDITAR INFORMACIÓN DE CADA PLATO -->\n        <!-- ======================================================== -->\n        <div id=\"plato-modal\" class=\"hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"modal-title\">\n          \n          <!-- FONDO TRASLÚCIDO OSCURO (BACKDROP) -->\n          <div id=\"plato-modal-backdrop\" class=\"fixed inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-200\"></div>\n\n          <!-- CONTENEDOR DIÁLOGO MODAL -->\n          <div id=\"plato-modal-dialog\" class=\"relative w-full max-w-xl bg-surface-container-lowest rounded-3xl shadow-2xl border border-surface-container-high/80 overflow-hidden z-10 opacity-0 scale-95 transition-all duration-200 flex flex-col max-h-[92vh]\">\n            \n            <!-- CABECERA DEL MODAL -->\n            <div class=\"flex items-center justify-between px-6 py-4 border-b border-surface-container-high/60 bg-surface/50\">\n              <div class=\"flex items-center gap-2.5\">\n                <div class=\"w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center\">\n                  <span class=\"material-symbols-outlined text-[22px]\">restaurant</span>\n                </div>\n                <div>\n                  <h2 id=\"modal-title\" class=\"font-headline-md text-lg font-bold text-on-surface\">Crear Platillo</h2>\n                  <p class=\"text-xs text-on-surface-variant\">Introduce los detalles de tu comida o receta</p>\n                </div>\n              </div>\n              <button \n                id=\"btn-modal-close\" \n                type=\"button\" \n                aria-label=\"Cerrar modal\" \n                class=\"w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer\"\n              >\n                <span class=\"material-symbols-outlined text-[20px]\">close</span>\n              </button>\n            </div>\n\n            <!-- CUERPO DEL FORMULARIO (SCROLLABLE EN PANTALLAS PEQUEÑAS) -->\n            <form id=\"plato-form\" class=\"p-6 space-y-4 overflow-y-auto flex-1 text-on-surface\">\n              <!-- Campo ID Oculto para Edición -->\n              <input type=\"hidden\" id=\"plato-id\" />\n\n              <!-- 1. NOMBRE DEL PLATILLO -->\n              <div>\n                <label for=\"plato-nombre\" class=\"block text-xs font-bold text-on-surface mb-1.5\">\n                  Nombre del platillo <span class=\"text-error\">*</span>\n                </label>\n                <input \n                  type=\"text\" \n                  id=\"plato-nombre\" \n                  required \n                  placeholder=\"Ej. Salmón a la plancha con vegetales\" \n                  class=\"w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium\"\n                />\n              </div>\n\n              <!-- 2. FOTO DEL PLATILLO (URL, ARCHIVO LOCAL O SUGERENCIA RÁPIDA) -->\n              <div class=\"space-y-2\">\n                <label class=\"block text-xs font-bold text-on-surface\">\n                  Foto del platillo\n                </label>\n                \n                <div class=\"flex flex-col sm:flex-row gap-2\">\n                  <input \n                    type=\"url\" \n                    id=\"plato-foto-url\" \n                    placeholder=\"Pega el enlace de la imagen (https://...)\" \n                    class=\"flex-1 px-3.5 py-2 rounded-xl bg-surface-container-low border border-surface-container-high text-xs sm:text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all\"\n                  />\n                  <input type=\"file\" id=\"plato-foto-file\" accept=\"image/*\" class=\"hidden\" />\n                  <button \n                    type=\"button\" \n                    id=\"btn-select-file\" \n                    class=\"px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-primary-container/40 text-primary hover:bg-primary-container/10 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0\"\n                  >\n                    <span class=\"material-symbols-outlined text-[18px]\">photo_camera</span>\n                    <span>Subir foto</span>\n                  </button>\n                </div>\n\n                <!-- FOTOS SUGERIDAS RÁPIDAS -->\n                <div class=\"pt-1\">\n                  <span class=\"text-[11px] font-semibold text-on-surface-variant/80 block mb-1.5\">O elige una foto sugerida:</span>\n                  <div class=\"flex items-center gap-2 overflow-x-auto no-scrollbar pb-1\">\n                    <button type=\"button\" class=\"preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all\" data-img=\"https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80\" title=\"Salmón\">\n                      <img src=\"https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=120&q=60\" class=\"w-full h-full object-cover\" alt=\"Salmón\" />\n                    </button>\n                    <button type=\"button\" class=\"preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all\" data-img=\"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80\" title=\"Pollo y Quinoa\">\n                      <img src=\"https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=120&q=60\" class=\"w-full h-full object-cover\" alt=\"Bowl Saludable\" />\n                    </button>\n                    <button type=\"button\" class=\"preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all\" data-img=\"https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80\" title=\"Ensalada\">\n                      <img src=\"https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=60\" class=\"w-full h-full object-cover\" alt=\"Ensalada\" />\n                    </button>\n                    <button type=\"button\" class=\"preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all\" data-img=\"https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=800&q=80\" title=\"Bowl de Avena\">\n                      <img src=\"https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=120&q=60\" class=\"w-full h-full object-cover\" alt=\"Avena\" />\n                    </button>\n                    <button type=\"button\" class=\"preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all\" data-img=\"https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=800&q=80\" title=\"Tostadas con Aguacate\">\n                      <img src=\"https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=120&q=60\" class=\"w-full h-full object-cover\" alt=\"Tostadas\" />\n                    </button>\n                  </div>\n                </div>\n\n                <!-- VISTA PREVIA DE LA FOTO SELECCIONADA -->\n                <div id=\"plato-image-preview-container\" class=\"hidden relative rounded-2xl overflow-hidden border border-surface-container-high/80 aspect-[16/9] max-h-44 bg-surface-container-low\">\n                  <img id=\"plato-image-preview\" src=\"\" alt=\"Vista previa del plato\" class=\"w-full h-full object-cover\" />\n                  <button \n                    type=\"button\" \n                    id=\"btn-remove-preview-image\" \n                    title=\"Quitar foto\" \n                    class=\"absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-error text-white flex items-center justify-center transition-colors cursor-pointer\"\n                  >\n                    <span class=\"material-symbols-outlined text-[16px]\">close</span>\n                  </button>\n                </div>\n              </div>\n\n              <!-- 3. CATEGORÍA Y CALORÍAS (EN 2 COLUMNAS) -->\n              <div class=\"grid grid-cols-1 sm:grid-cols-2 gap-3\">\n                <div>\n                  <label for=\"plato-categoria\" class=\"block text-xs font-bold text-on-surface mb-1.5\">\n                    Categoría\n                  </label>\n                  <select \n                    id=\"plato-categoria\" \n                    class=\"w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface focus:outline-none focus:border-primary transition-all font-medium cursor-pointer\"\n                  >\n                    <option value=\"Almuerzo\">Almuerzo</option>\n                    <option value=\"Desayuno\">Desayuno</option>\n                    <option value=\"Cena\">Cena</option>\n                    <option value=\"Snack\">Snack / Refacción</option>\n                  </select>\n                </div>\n\n                <div>\n                  <label for=\"plato-calorias\" class=\"block text-xs font-bold text-on-surface mb-1.5\">\n                    Calorías estimadas (kcal)\n                  </label>\n                  <input \n                    type=\"number\" \n                    id=\"plato-calorias\" \n                    min=\"0\" \n                    max=\"5000\" \n                    placeholder=\"Ej. 480\" \n                    class=\"w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all font-medium\"\n                  />\n                </div>\n              </div>\n\n              <!-- 4. BREVE DESCRIPCIÓN -->\n              <div>\n                <label for=\"plato-descripcion\" class=\"block text-xs font-bold text-on-surface mb-1.5\">\n                  Breve descripción <span class=\"text-error\">*</span>\n                </label>\n                <textarea \n                  id=\"plato-descripcion\" \n                  rows=\"3\" \n                  required \n                  placeholder=\"Describe los ingredientes principales, preparación o beneficios nutricionales de este plato...\" \n                  class=\"w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium resize-none leading-relaxed\"\n                ></textarea>\n              </div>\n\n              <!-- PIE DE ACCIONES DEL FORMULARIO -->\n              <div class=\"pt-3 border-t border-surface-container-high/60 flex items-center justify-end gap-2.5\">\n                <button \n                  type=\"button\" \n                  id=\"btn-modal-cancel\" \n                  class=\"px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-bold text-sm transition-all cursor-pointer\"\n                >\n                  Cancelar\n                </button>\n                <button \n                  type=\"submit\" \n                  class=\"px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer\"\n                >\n                  <span class=\"material-symbols-outlined text-[19px]\">check</span>\n                  <span id=\"modal-submit-text\">Guardar Platillo</span>\n                </button>\n              </div>\n            </form>\n          </div>\n        </div>\n\n        <!-- ======================================================== -->\n        <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR PLATILLO -->\n        <!-- ======================================================== -->\n        <div id=\"delete-modal\" class=\"hidden fixed inset-0 z-50 flex items-center justify-center p-4\" role=\"alertdialog\" aria-modal=\"true\">\n          <div class=\"fixed inset-0 bg-slate-900/60 backdrop-blur-xs\"></div>\n          <div class=\"relative w-full max-w-sm bg-surface-container-lowest rounded-3xl p-6 shadow-2xl border border-surface-container-high/80 z-10 flex flex-col items-center text-center\">\n            <div class=\"w-12 h-12 rounded-2xl bg-error/15 text-error flex items-center justify-center mb-3\">\n              <span class=\"material-symbols-outlined text-[26px]\">delete_forever</span>\n            </div>\n            <h3 class=\"font-headline-md text-base font-bold text-on-surface\">¿Eliminar platillo?</h3>\n            <p class=\"text-xs text-on-surface-variant mt-1 mb-4 leading-relaxed\">\n              ¿Estás seguro de que deseas eliminar <strong id=\"delete-dish-name\" class=\"text-on-surface\">este platillo</strong> de tu colección? Esta acción no se puede deshacer.\n            </p>\n            <div class=\"flex items-center gap-2 w-full\">\n              <button \n                type=\"button\" \n                id=\"btn-cancel-delete\" \n                class=\"flex-1 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-bold text-xs transition-all cursor-pointer\"\n              >\n                Cancelar\n              </button>\n              <button \n                type=\"button\" \n                id=\"btn-confirm-delete\" \n                class=\"flex-1 py-2.5 rounded-xl bg-error text-on-error font-bold text-xs shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer\"\n              >\n                Eliminar\n              </button>\n            </div>\n          </div>\n        </div>",
+    html: `<!-- ENCABEZADO SUPERIOR CON BOTÓN PRINCIPAL "CREAR PLATILLO" -->
+        <div class="p-5 sm:p-6 bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/30 shrink-0">
+              <span class="material-symbols-outlined text-[28px]">restaurant_menu</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h1 class="text-xl sm:text-2xl font-bold font-headline-xl text-on-surface">Mis Platos y Recetas</h1>
+                <span id="platos-count-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-fixed/40 text-primary border border-primary-container/30">
+                  Cargando...
+                </span>
+              </div>
+              <p class="text-xs sm:text-sm text-on-surface-variant mt-0.5">Colección de tus comidas registradas con fotos, recetas y macronutrientes</p>
+            </div>
+          </div>
+
+          <!-- BOTÓN SUPERIOR: + CREAR PLATILLO (Acción Principal Destacada) -->
+          <button 
+            id="btn-create-dish" 
+            type="button" 
+            class="px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shrink-0"
+          >
+            <span class="material-symbols-outlined text-[22px]">add_circle</span>
+            <span>Crear Platillo</span>
+          </button>
+        </div>
+
+        <!-- BARRA DE FILTROS Y BÚSQUEDA -->
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6">
+          
+          <!-- BUSCADOR CON ICONO DE LUPA -->
+          <div class="relative flex-1 max-w-md">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px] pointer-events-none">
+              search
+            </span>
+            <input 
+              type="text" 
+              id="platos-search" 
+              placeholder="Buscar por nombre, descripción o ingrediente..." 
+              class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-surface-container-high/80 rounded-2xl text-sm text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-2xs"
+            />
+            <button 
+              id="btn-clear-search" 
+              type="button" 
+              aria-label="Limpiar búsqueda" 
+              class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center text-xs transition-colors"
+            >
+              <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          </div>
+
+          <!-- CHIPS DE FILTRO POR CATEGORÍA -->
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+            <button type="button" class="plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-primary-container text-on-primary shadow-sm cursor-pointer whitespace-nowrap" data-category="Todos">
+              Todos
+            </button>
+            <button type="button" class="plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap" data-category="Desayuno">
+              Desayuno
+            </button>
+            <button type="button" class="plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap" data-category="Almuerzo">
+              Almuerzo
+            </button>
+            <button type="button" class="plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap" data-category="Cena">
+              Cena
+            </button>
+            <button type="button" class="plato-category-chip px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer whitespace-nowrap" data-category="Snack">
+              Snack
+            </button>
+          </div>
+        </div>
+
+        <!-- CUADRÍCULA DE CARTAS DE PLATILLOS (GRID RESPONSIVE: 1 col móvil, 2 tablet, 3-4 PC) -->
+        <div id="platos-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+          <!-- Las tarjetas de platos se renderizan dinámicamente aquí -->
+        </div>
+
+        <!-- ESTADO VACÍO (Si no hay platos registrados o coincidentes) -->
+        <div id="platos-empty-state" class="hidden flex flex-col items-center justify-center text-center py-16 px-4 bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm my-6">
+          <div class="w-20 h-20 rounded-3xl bg-primary-fixed/30 text-primary flex items-center justify-center mb-4 mx-auto shadow-inner">
+            <span class="material-symbols-outlined text-[42px]">set_meal</span>
+          </div>
+          <h2 class="text-xl font-bold font-headline-md text-on-surface text-center">No se encontraron platillos</h2>
+          <p class="text-sm text-on-surface-variant max-w-sm mt-1.5 mb-6 mx-auto text-center leading-relaxed">
+            Aún no has registrado ningún plato en esta categoría o no coincide con tu búsqueda.
+          </p>
+          <button 
+            id="btn-empty-create" 
+            type="button" 
+            class="px-5 py-2.5 rounded-full bg-primary-container text-on-primary font-bold text-sm inline-flex items-center justify-center gap-2 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer mx-auto"
+          >
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span>Registrar mi primer platillo</span>
+          </button>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- VENTANA MODAL PARA INTRODUCIR / EDITAR INFORMACIÓN DE CADA PLATO -->
+        <!-- ======================================================== -->
+        <div id="plato-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+          
+          <!-- FONDO TRASLÚCIDO OSCURO (BACKDROP) -->
+          <div id="plato-modal-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-200"></div>
+
+          <!-- CONTENEDOR DIÁLOGO MODAL -->
+          <div id="plato-modal-dialog" class="relative w-full max-w-xl bg-surface-container-lowest rounded-3xl shadow-2xl border border-surface-container-high/80 overflow-hidden z-10 opacity-0 scale-95 transition-all duration-200 flex flex-col max-h-[92vh]">
+            
+            <!-- CABECERA DEL MODAL -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-surface-container-high/60 bg-surface/50">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-primary-container/20 text-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[22px]">restaurant</span>
+                </div>
+                <div>
+                  <h2 id="modal-title" class="font-headline-md text-lg font-bold text-on-surface">Crear Platillo</h2>
+                  <p class="text-xs text-on-surface-variant">Introduce los detalles de tu comida o receta</p>
+                </div>
+              </div>
+              <button 
+                id="btn-modal-close" 
+                type="button" 
+                aria-label="Cerrar modal" 
+                class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-[20px]">close</span>
+              </button>
+            </div>
+
+            <!-- CUERPO DEL FORMULARIO (SCROLLABLE EN PANTALLAS PEQUEÑAS) -->
+            <form id="plato-form" class="p-6 space-y-4 overflow-y-auto flex-1 text-on-surface">
+              <!-- Campo ID Oculto para Edición -->
+              <input type="hidden" id="plato-id" />
+
+              <!-- 1. NOMBRE DEL PLATILLO -->
+              <div>
+                <label for="plato-nombre" class="block text-xs font-bold text-on-surface mb-1.5">
+                  Nombre del platillo <span class="text-error">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="plato-nombre" 
+                  required 
+                  placeholder="Ej. Salmón a la plancha con vegetales" 
+                  class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                />
+              </div>
+
+              <!-- 2. FOTO DEL PLATILLO (URL, ARCHIVO LOCAL O SUGERENCIA RÁPIDA) -->
+              <div class="space-y-2">
+                <label class="block text-xs font-bold text-on-surface">
+                  Foto del platillo
+                </label>
+                
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input 
+                    type="url" 
+                    id="plato-foto-url" 
+                    placeholder="Pega el enlace de la imagen (https://...)" 
+                    class="flex-1 px-3.5 py-2 rounded-xl bg-surface-container-low border border-surface-container-high text-xs sm:text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all"
+                  />
+                  <input type="file" id="plato-foto-file" accept="image/*" class="hidden" />
+                  <button 
+                    type="button" 
+                    id="btn-select-file" 
+                    class="px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-primary-container/40 text-primary hover:bg-primary-container/10 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0"
+                  >
+                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                    <span>Subir foto</span>
+                  </button>
+                </div>
+
+                <!-- FOTOS SUGERIDAS RÁPIDAS -->
+                <div class="pt-1">
+                  <span class="text-[11px] font-semibold text-on-surface-variant/80 block mb-1.5">O elige una foto sugerida:</span>
+                  <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                    <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80" title="Salmón">
+                      <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Salmón" />
+                    </button>
+                    <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" title="Pollo y Quinoa">
+                      <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Bowl Saludable" />
+                    </button>
+                    <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80" title="Ensalada">
+                      <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Ensalada" />
+                    </button>
+                    <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=800&q=80" title="Bowl de Avena">
+                      <img src="https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Avena" />
+                    </button>
+                    <button type="button" class="preset-image-btn shrink-0 w-12 h-12 rounded-xl overflow-hidden ring-1 ring-surface-container-high hover:ring-2 hover:ring-primary transition-all" data-img="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=800&q=80" title="Tostadas con Aguacate">
+                      <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=120&q=60" class="w-full h-full object-cover" alt="Tostadas" />
+                    </button>
+                  </div>
+                </div>
+
+                <!-- VISTA PREVIA DE LA FOTO SELECCIONADA -->
+                <div id="plato-image-preview-container" class="hidden relative rounded-2xl overflow-hidden border border-surface-container-high/80 aspect-[16/9] max-h-44 bg-surface-container-low">
+                  <img id="plato-image-preview" src="" alt="Vista previa del plato" class="w-full h-full object-cover" />
+                  <button 
+                    type="button" 
+                    id="btn-remove-preview-image" 
+                    title="Quitar foto" 
+                    class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 hover:bg-error text-white flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <span class="material-symbols-outlined text-[16px]">close</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. CATEGORÍA Y CALORÍAS (EN 2 COLUMNAS) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="plato-categoria" class="block text-xs font-bold text-on-surface mb-1.5">
+                    Categoría
+                  </label>
+                  <select 
+                    id="plato-categoria" 
+                    class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface focus:outline-none focus:border-primary transition-all font-medium cursor-pointer"
+                  >
+                    <option value="Almuerzo">Almuerzo</option>
+                    <option value="Desayuno">Desayuno</option>
+                    <option value="Cena">Cena</option>
+                    <option value="Snack">Snack / Refacción</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="plato-calorias" class="block text-xs font-bold text-on-surface mb-1.5">
+                    Calorías estimadas (kcal)
+                  </label>
+                  <input 
+                    type="number" 
+                    id="plato-calorias" 
+                    min="0" 
+                    max="5000" 
+                    placeholder="Ej. 480" 
+                    class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all font-medium" 
+                  />
+                </div>
+              </div>
+
+              <!-- 4. BREVE DESCRIPCIÓN -->
+              <div>
+                <label for="plato-descripcion" class="block text-xs font-bold text-on-surface mb-1.5">
+                  Breve descripción <span class="text-error">*</span>
+                </label>
+                <textarea 
+                  id="plato-descripcion" 
+                  rows="3" 
+                  required 
+                  placeholder="Describe los ingredientes principales, preparación o beneficios nutricionales de este plato..." 
+                  class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium resize-none leading-relaxed"
+                ></textarea>
+              </div>
+
+              <!-- PIE DE ACCIONES DEL FORMULARIO -->
+              <div class="pt-3 border-t border-surface-container-high/60 flex items-center justify-end gap-2.5">
+                <button 
+                  type="button" 
+                  id="btn-modal-cancel" 
+                  class="px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-bold text-sm transition-all cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit" 
+                  class="px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-[19px]">check</span>
+                  <span id="modal-submit-text">Guardar Platillo</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR PLATILLO -->
+        <!-- ======================================================== -->
+        <div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" role="alertdialog" aria-modal="true">
+          <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs"></div>
+          <div class="relative w-full max-w-sm bg-surface-container-lowest rounded-3xl p-6 shadow-2xl border border-surface-container-high/80 z-10 flex flex-col items-center text-center">
+            <div class="w-12 h-12 rounded-2xl bg-error/15 text-error flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-[26px]">delete_forever</span>
+            </div>
+            <h3 class="font-headline-md text-base font-bold text-on-surface">¿Eliminar platillo?</h3>
+            <p class="text-xs text-on-surface-variant mt-1 mb-4 leading-relaxed">
+              ¿Estás seguro de que deseas eliminar <strong id="delete-dish-name" class="text-on-surface">este platillo</strong> de tu colección? Esta acción no se puede deshacer.\n            </p>
+            <div class="flex items-center gap-2 w-full">
+              <button 
+                type="button" 
+                id="btn-cancel-delete" 
+                class="flex-1 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface font-bold text-xs transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="button" 
+                id="btn-confirm-delete" 
+                class="flex-1 py-2.5 rounded-xl bg-error text-on-error font-bold text-xs shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>`,
     init: function() {
+      const checkAutoCreate = () => {
+        if (sessionStorage.getItem('dia_auto_open_create_dish') === 'true' || window.location.hash === '#crear') {
+          sessionStorage.removeItem('dia_auto_open_create_dish');
+          setTimeout(() => {
+            if (typeof window.openCreatePlatoModal === 'function') {
+              window.openCreatePlatoModal();
+            } else {
+              const btn = document.getElementById('btn-create-dish') || document.getElementById('btn-empty-create');
+              if (btn) btn.click();
+            }
+          }, 60);
+        }
+      };
+
       if (window.initMisPlatosView) {
         window.initMisPlatosView();
+        checkAutoCreate();
       } else {
         const s = document.createElement('script');
         s.src = 'components/mis_platos.js';
-        s.onload = () => { if (window.initMisPlatosView) window.initMisPlatosView(); };
+        s.onload = () => {
+          if (window.initMisPlatosView) window.initMisPlatosView();
+          checkAutoCreate();
+        };
         document.head.appendChild(s);
       }
     }
@@ -544,7 +1166,7 @@ window.APP_VIEWS = {
     id: 'asistente',
     title: 'DIA - Asistente IA Conversacional',
     headerTitle: 'DIA NutriBot IA',
-    mainClass: 'flex-1 flex flex-col min-h-0 max-w-4xl w-full mx-auto px-3 sm:px-6 relative overflow-hidden lg:h-[calc(100vh-73px)] lg:max-h-[calc(100vh-73px)]',
+    mainClass: 'flex-1 flex flex-col min-h-0 max-w-4xl w-full mx-auto px-3 sm:px-6 relative overflow-hidden h-[calc(100dvh-64px)] lg:h-[calc(100vh-73px)] max-h-[100dvh] lg:max-h-[calc(100vh-73px)]',
     html: `<!-- ZONA DE HISTORIAL DE MENSAJES (SCROLLABLE) -->
         <div id="chat-scroll-container" class="flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1 sm:pr-2 space-y-4 sm:space-y-5 pt-3 pb-2">
           
@@ -556,11 +1178,11 @@ window.APP_VIEWS = {
             <div class="flex-1 max-w-2xl">
               <div class="p-4 sm:p-5 rounded-3xl rounded-tl-sm bg-surface-container-lowest border border-surface-container-high/60 shadow-sm text-on-surface">
                 <div class="flex items-center gap-2 mb-2">
-                  <span class="font-bold text-sm text-on-surface">DIA NutriBot</span>
-                  <span class="text-[11px] text-on-surface-variant/80">Ahora mismo</span>
+                  <span class="font-bold text-sm text-on-surface">DIA NutriBot IA</span>
+                  <span class="text-[11px] text-on-surface-variant/80">En línea</span>
                 </div>
-                <p class="text-sm leading-relaxed mb-3">
-                  ¡Hola, Carlos! 👋 Soy tu copiloto nutricional inteligente. Puedes preguntarme sobre el valor calórico de tus comidas, pedirme recomendaciones para cumplir tu objetivo diario de <strong class="text-primary font-bold">1,850 kcal</strong>, o subir una foto usando el icono de la cámara para analizar tu plato en segundos.
+                <p class="bot-message-body text-sm leading-relaxed mb-3 text-on-surface">
+                  ¡Hola! 👋 Soy tu copiloto nutricional inteligente para diabetes con motor local QVAC (Llama 3.2). Puedes preguntarme sobre el impacto glucémico o los macronutrientes de tus comidas, o subir una foto usando el icono de la cámara para analizar tu plato.
                 </p>
 
                 <!-- Tarjeta destacada de sugerencia con cámara -->
@@ -570,96 +1192,25 @@ window.APP_VIEWS = {
                   </div>
                   <div class="flex-1 text-xs">
                     <span class="font-bold text-on-surface block">¿Tienes tu comida enfrente?</span>
-                    <span class="text-on-surface-variant">Toca la cámara abajo para analizar calorías y macros automáticamente.</span>
+                    <span class="text-on-surface-variant">Toca la cámara abajo para adjuntar una foto y describe sus ingredientes.</span>
                   </div>
                 </div>
               </div>
 
               <!-- CHIPS DE CONSULTAS RÁPIDAS -->
               <div class="mt-3 flex flex-wrap gap-2">
-                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-primary-container/60 hover:bg-primary-fixed/20 text-xs font-semibold text-on-surface-variant hover:text-primary transition-all shadow-2xs flex items-center gap-1.5" data-prompt="¿Cuántas calorías y proteínas tiene un tazón de avena con plátano y nueces?">
+                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-xs font-semibold text-on-surface-variant hover:text-emerald-600 transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-prompt="¿Cuántas calorías y carbohidratos tiene un tazón de avena con plátano y nueces?">
                   <span>🥣 Avena con plátano y nueces</span>
                 </button>
-                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-primary-container/60 hover:bg-primary-fixed/20 text-xs font-semibold text-on-surface-variant hover:text-primary transition-all shadow-2xs flex items-center gap-1.5" data-prompt="Recomiéndame una cena ligera y saciante de menos de 400 kcal para hoy.">
-                  <span>🥗 Cena ligera < 400 kcal</span>
+                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-xs font-semibold text-on-surface-variant hover:text-emerald-600 transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-prompt="¿Puedo cenar pechuga de pollo a la plancha con ensalada verde y aceite de oliva?">
+                  <span>🥗 Pechuga con ensalada</span>
                 </button>
-                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-primary-container/60 hover:bg-primary-fixed/20 text-xs font-semibold text-on-surface-variant hover:text-primary transition-all shadow-2xs flex items-center gap-1.5" data-prompt="¿Cómo voy con mi distribución de macronutrientes hoy?">
-                  <span>📊 Balance de macronutrientes</span>
+                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-xs font-semibold text-on-surface-variant hover:text-emerald-600 transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-prompt="¿Qué impacto glucémico tiene comer 2 huevos con una rebanada de pan integral?">
+                  <span>🍳 Huevos con pan integral</span>
                 </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- MENSAJE DE EJEMPLO DEL USUARIO -->
-          <div class="flex items-start justify-end gap-3 animate-message">
-            <div class="flex flex-col items-end max-w-xl">
-              <div class="p-4 rounded-3xl rounded-tr-sm bg-primary-container text-on-primary shadow-md shadow-primary-container/20">
-                <p class="text-sm font-medium leading-relaxed">
-                  ¿El pollo a la plancha con quinoa y ensalada verde es una buena opción para mi almuerzo?
-                </p>
-              </div>
-              <span class="text-[11px] text-on-surface-variant/70 mt-1 mr-2">12:32 PM</span>
-            </div>
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl overflow-hidden shrink-0 ring-2 ring-primary/20 shadow-sm mt-0.5">
-              <img alt="Carlos Méndez" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdBGBgBFgZj2fQlLiT_ED280sddWbYDN1WfjanfIHUk_-m2cS6xx2_R0iWFQPwXcIsPyBTf7vVaXQp9sB0EMyi_JmNSt0oeEEqp8T36PB6bditByVo5lzaDqGGidOv0FXWlbPH4MZr9nN4tDaVZHDVZbCJd9r_F_nJ-0F2-64haWUYsTDzCyazcBG8NbcwUvpVAx2VRbyu9dJaht06f3gXZ46tUXSFnNKQElfVYzVLuC5tYDIgGyvR" />
-            </div>
-          </div>
-
-          <!-- RESPUESTA DE EJEMPLO DE LA IA -->
-          <div class="flex items-start gap-3 animate-message">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-              <span class="material-symbols-outlined text-[20px] sm:text-[22px]">smart_toy</span>
-            </div>
-            <div class="flex-1 max-w-2xl">
-              <div class="p-4 sm:p-5 rounded-3xl rounded-tl-sm bg-surface-container-lowest border border-surface-container-high/60 shadow-sm text-on-surface space-y-3">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold text-sm text-on-surface">DIA NutriBot</span>
-                    <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-fixed/30 text-primary">
-                      <span class="material-symbols-outlined text-[13px]">check_circle</span> Análisis completado
-                    </span>
-                  </div>
-                  <span class="text-[11px] text-on-surface-variant/80">12:33 PM</span>
-                </div>
-
-                <p class="text-sm leading-relaxed">
-                  ¡Excelente elección, Carlos! Es un almuerzo <strong class="text-primary font-bold">altamente equilibrado</strong> que encaja perfectamente en tu objetivo diario de déficit controlado.
-                </p>
-
-                <!-- Tarjetas de Macros del plato -->
-                <div class="grid grid-cols-4 gap-2 py-1">
-                  <div class="bg-surface-container-low rounded-2xl p-2.5 text-center border border-surface-container-high/50">
-                    <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Calorías</span>
-                    <span class="font-numeric-hero text-base sm:text-lg font-black text-on-surface">~485</span>
-                    <span class="text-[10px] text-on-surface-variant block">kcal</span>
-                  </div>
-                  <div class="bg-primary-fixed/25 rounded-2xl p-2.5 text-center border border-primary-fixed/60">
-                    <span class="text-[10px] uppercase font-bold text-primary block">Proteína</span>
-                    <span class="font-numeric-hero text-base sm:text-lg font-black text-primary">42g</span>
-                    <span class="text-[10px] text-primary/80 block">Alta</span>
-                  </div>
-                  <div class="bg-tertiary-fixed/30 rounded-2xl p-2.5 text-center border border-tertiary-fixed/50">
-                    <span class="text-[10px] uppercase font-bold text-tertiary block">Carbos</span>
-                    <span class="font-numeric-hero text-base sm:text-lg font-black text-tertiary">45g</span>
-                    <span class="text-[10px] text-tertiary/80 block">Complejos</span>
-                  </div>
-                  <div class="bg-surface-container-low rounded-2xl p-2.5 text-center border border-surface-container-high/50">
-                    <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Grasas</span>
-                    <span class="font-numeric-hero text-base sm:text-lg font-black text-on-surface">11g</span>
-                    <span class="text-[10px] text-on-surface-variant block">Saludables</span>
-                  </div>
-                </div>
-
-                <ul class="text-xs space-y-1.5 text-on-surface-variant">
-                  <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary text-[16px]">done</span>
-                    <span>La <strong>quinoa</strong> aporta fibra prebiótica y carbohidratos de absorción lenta.</span>
-                  </li>
-                  <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary text-[16px]">done</span>
-                    <span>La <strong>pechuga de pollo</strong> cubre el 40% de tu meta de proteína diaria.</span>
-                  </li>
-                </ul>
+                <button type="button" class="quick-prompt-btn px-3 py-1.5 rounded-full bg-surface-container-lowest border border-surface-container-high hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-xs font-semibold text-on-surface-variant hover:text-emerald-600 transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer" data-prompt="¿Cómo debo calcular los carbohidratos de 2 tacos de maíz con carne asada?">
+                  <span>🌮 Tacos con carne asada</span>
+                </button>
               </div>
             </div>
           </div>
@@ -682,8 +1233,8 @@ window.APP_VIEWS = {
 
         </div>
 
-        <!-- BARRA INFERIOR DE ENTRADA DE MENSAJES (CHIP + INPUT BARRA FIJA) -->
-        <div class="shrink-0 w-full pt-2 pb-24 lg:pb-4 bg-surface z-20">
+        <!-- VENTANA FLOTANTE INFERIOR DE ENTRADA (MÓVIL: Flotante sobre la barra inferior | DESKTOP: Barra estática en el chat) -->
+        <div id="chat-floating-dock" class="chat-floating-dock shrink-0 w-full pt-2 pb-24 lg:pb-4 bg-surface z-20">
           
           <!-- PREVISUALIZACIÓN DE FOTO ADJUNTADA (Oculta hasta seleccionar imagen) -->
           <div id="image-preview-bar" class="hidden mb-2 p-2 bg-surface-container-lowest rounded-2xl border border-primary-container/30 shadow-sm flex items-center justify-between animate-message">
@@ -753,6 +1304,9 @@ window.APP_VIEWS = {
     init: function() {
       (function() {
         const chatForm = document.getElementById('chat-form');
+        if (!chatForm || chatForm.dataset.initialized === 'true') return;
+        chatForm.dataset.initialized = 'true';
+
         const chatInput = document.getElementById('chat-input');
         const photoFileInput = document.getElementById('photo-file-input');
         const btnTriggerCamera = document.getElementById('btn-trigger-camera');
@@ -770,6 +1324,7 @@ window.APP_VIEWS = {
 
         let selectedImageDataUrl = null;
         let selectedFileName = '';
+        let isSubmitting = false;
 
         // Función para autoscrollear al último mensaje
         function scrollToBottom() {
@@ -796,6 +1351,16 @@ window.APP_VIEWS = {
         btnTriggerCamera.addEventListener('click', () => {
           photoFileInput.click();
         });
+
+        // Abrir automáticamente la cámara o selector si se solicitó desde Escanear con IA
+        if (sessionStorage.getItem('dia_auto_open_camera') === 'true') {
+          sessionStorage.removeItem('dia_auto_open_camera');
+          setTimeout(() => {
+            if (photoFileInput) {
+              try { photoFileInput.click(); } catch(e) {}
+            }
+          }, 80);
+        }
 
         // Manejar selección de foto
         photoFileInput.addEventListener('change', (e) => {
@@ -836,8 +1401,11 @@ window.APP_VIEWS = {
 
         // Conectar botones de sugerencias rápidas
         quickPromptBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isSubmitting) return;
             const prompt = btn.getAttribute('data-prompt');
+            if (!prompt) return;
             chatInput.value = prompt;
             chatForm.requestSubmit();
           });
@@ -866,43 +1434,88 @@ window.APP_VIEWS = {
         chatInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+            if (isSubmitting) return;
             if (e.isComposing || e.keyCode === 229) return;
             if (lastCompositionEndAt !== null && Math.abs(e.timeStamp - lastCompositionEndAt) < 50) return;
             chatForm.requestSubmit();
           }
         });
 
+        // Conexión directa al motor QVAC en Node.js
+        async function procesarEnServidorNode(texto, imagenBase64) {
+          try {
+            const backendUrl = window.location.protocol.startsWith('http')
+              ? '/api/analizar'
+              : 'http://localhost:3000/api/analizar';
+
+            const respuesta = await fetch(backendUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                mensaje: texto,
+                imagen: imagenBase64,
+                usaInsulina: localStorage.getItem('dia_insulina') === 'true'
+              })
+            });
+
+            if (!respuesta.ok) {
+              throw new Error('Respuesta no exitosa del servidor');
+            }
+
+            const data = await respuesta.json();
+            return data.textoRespuesta;
+          } catch (error) {
+            console.error("Error conectando con QVAC backend:", error);
+            return "Lo siento, no pude comunicarme con el servidor local de IA QVAC. Asegúrate de que `node server/server.js` esté ejecutándose.\n\n⚠️ *Aviso: Recuerda que soy un modelo de Inteligencia Artificial y puedo cometer errores. Esta información no sustituye el criterio profesional. Siempre debes consultar con tu médico antes de realizar cambios en tu tratamiento o alimentación.*";
+          }
+        }
+
         // Enviar mensaje al enviar el formulario
-        chatForm.addEventListener('submit', (e) => {
+        chatForm.addEventListener('submit', async (e) => {
           e.preventDefault();
+          if (isSubmitting) return;
+
           const text = chatInput.value.trim();
           const hasImage = !!selectedImageDataUrl;
 
           if (!text && !hasImage) return;
 
-          // 1. Renderizar mensaje del usuario
-          renderUserMessage(text, selectedImageDataUrl);
+          isSubmitting = true;
+          try {
+            // 1. Renderizar mensaje del usuario
+            renderUserMessage(text, selectedImageDataUrl);
 
-          // Guardar referencia para simular IA
-          const submittedText = text;
-          const submittedImage = selectedImageDataUrl;
+            const submittedText = text;
+            const submittedImage = selectedImageDataUrl;
 
-          // Limpiar input y adjuntos
-          chatInput.value = '';
-          clearImageSelection();
-          scrollToBottom();
+            // Limpiar input y adjuntos
+            chatInput.value = '';
+            clearImageSelection();
+            scrollToBottom();
 
-          // 2. Mostrar indicador de escritura y simular respuesta de la IA
-          typingIndicator.classList.remove('hidden');
-          typingIndicator.classList.add('flex');
-          scrollToBottom();
+            // 2. Mostrar indicador de escritura
+            typingIndicator.classList.remove('hidden');
+            typingIndicator.classList.add('flex');
+            scrollToBottom();
 
-          setTimeout(() => {
+            // 3. Ejecutar inferencia en el modelo local Qvac
+            const respuestaIA = await procesarEnServidorNode(submittedText, submittedImage);
+
             typingIndicator.classList.add('hidden');
             typingIndicator.classList.remove('flex');
-            renderAiResponse(submittedText, submittedImage);
+
+            // 4. Renderizar la respuesta real de Qvac
+            renderAiResponse(respuestaIA, submittedText, hasImage);
             scrollToBottom();
-          }, 1200);
+          } catch (err) {
+            console.error('Error al procesar mensaje:', err);
+            if (typingIndicator) {
+              typingIndicator.classList.add('hidden');
+              typingIndicator.classList.remove('flex');
+            }
+          } finally {
+            isSubmitting = false;
+          }
         });
 
         function renderUserMessage(text, imageUrl) {
@@ -938,88 +1551,15 @@ window.APP_VIEWS = {
           dynamicMessages.appendChild(wrapper);
         }
 
-        function renderAiResponse(queryText, withImage) {
+        function renderAiResponse(aiText, queryText, withImage) {
           const wrapper = document.createElement('div');
           wrapper.className = 'flex items-start gap-3 animate-message';
 
-          let responseBodyHtml = '';
-
-          if (withImage) {
-            // Respuesta de visión de plato
-            responseBodyHtml = `
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                  <span class="font-bold text-sm text-on-surface">DIA NutriBot</span>
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-fixed/30 text-primary">
-                    <span class="material-symbols-outlined text-[13px]">image_search</span> Reconocimiento visual
-                  </span>
-                </div>
-                <span class="text-[11px] text-on-surface-variant/80">${getCurrentTime()}</span>
-              </div>
-              <p class="text-sm leading-relaxed mb-3">
-                He examinado la imagen que subiste. He detectado los siguientes ingredientes principales: <strong>Salmón fresco a la plancha</strong>, <strong>espárragos salteados</strong> y <strong>arroz integral con semillas de sésamo</strong>.
-              </p>
-
-              <!-- Resumen nutricional generado -->
-              <div class="grid grid-cols-4 gap-2 py-1 mb-3">
-                <div class="bg-surface-container-low rounded-2xl p-2.5 text-center border border-surface-container-high/50">
-                  <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Calorías</span>
-                  <span class="font-numeric-hero text-base sm:text-lg font-black text-on-surface">~520</span>
-                  <span class="text-[10px] text-on-surface-variant block">kcal est.</span>
-                </div>
-                <div class="bg-primary-fixed/25 rounded-2xl p-2.5 text-center border border-primary-fixed/60">
-                  <span class="text-[10px] uppercase font-bold text-primary block">Proteína</span>
-                  <span class="font-numeric-hero text-base sm:text-lg font-black text-primary">38g</span>
-                  <span class="text-[10px] text-primary/80 block">Alta</span>
-                </div>
-                <div class="bg-tertiary-fixed/30 rounded-2xl p-2.5 text-center border border-tertiary-fixed/50">
-                  <span class="text-[10px] uppercase font-bold text-tertiary block">Carbos</span>
-                  <span class="font-numeric-hero text-base sm:text-lg font-black text-tertiary">35g</span>
-                  <span class="text-[10px] text-tertiary/80 block">Fibra 6g</span>
-                </div>
-                <div class="bg-surface-container-low rounded-2xl p-2.5 text-center border border-surface-container-high/50">
-                  <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Grasas</span>
-                  <span class="font-numeric-hero text-base sm:text-lg font-black text-on-surface">19g</span>
-                  <span class="text-[10px] text-on-surface-variant block">Omega-3</span>
-                </div>
-              </div>
-
-              <div class="p-3 rounded-2xl bg-primary-fixed/15 border border-primary-container/20 flex items-center justify-between">
-                <span class="text-xs font-semibold text-on-surface">¿Deseas registrar este plato en tu diario de hoy?</span>
-                <button type="button" class="px-3 py-1.5 rounded-xl bg-primary-container text-on-primary text-xs font-bold shadow-sm hover:brightness-105 active:scale-95 transition-all">
-                  + Registrar plato
-                </button>
-              </div>
-            `;
-          } else {
-            // Respuesta a consulta de texto
-            const lower = (queryText || '').toLowerCase();
-            let advice = 'Es un alimento muy balanceado. Recuerda mantener un consumo adecuado de agua y controlar las porciones de acuerdo con tus calorías diarias recomendadas.';
-
-            if (lower.includes('avena') || lower.includes('desayuno')) {
-              advice = 'La avena con plátano y nueces aporta aproximadamente <strong>360-410 kcal</strong>, 12g de proteína, 58g de carbohidratos saludables y grasas insaturadas de las nueces. Es una de las mejores combinaciones para energía sostenida.';
-            } else if (lower.includes('cena') || lower.includes('ligera')) {
-              advice = 'Para una cena de <strong>&lt; 400 kcal</strong>, te sugiero: Pechuga de pavo o tofu salteado con calabacines, champiñones y una cucharadita de aceite de oliva virgen extra. Te aportará 28g de proteína y facilitará una digestión ligera antes de dormir.';
-            } else if (lower.includes('macro') || lower.includes('balance')) {
-              advice = 'Hoy llevas acumulado el <strong>68% de tus proteínas</strong> y el <strong>72% de tus carbohidratos</strong>. Para tu cena te convendría priorizar fuentes magras de proteína con vegetales verdes para no exceder las grasas.';
-            }
-
-            responseBodyHtml = `
-              <div class="flex items-center justify-between mb-2">
-                <div class="flex items-center gap-2">
-                  <span class="font-bold text-sm text-on-surface">DIA NutriBot</span>
-                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-fixed/30 text-primary">
-                    <span class="material-symbols-outlined text-[13px]">auto_awesome</span> Respuesta IA
-                  </span>
-                </div>
-                <span class="text-[11px] text-on-surface-variant/80">${getCurrentTime()}</span>
-              </div>
-              <p class="text-sm leading-relaxed mb-2">${advice}</p>
-              <div class="flex items-center gap-3 pt-2 text-xs text-on-surface-variant/80 border-t border-surface-container-high/50">
-                <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">check</span> Basado en tu perfil metabólico</span>
-              </div>
-            `;
-          }
+          let htmlContent = escapeHtml(aiText)
+            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary font-bold">$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/(?:^|\n)\*\s+(.*?)(?=\n|$)/g, '<br/>• $1')
+            .replace(/\n/g, '<br/>');
 
           wrapper.innerHTML = `
             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm mt-0.5">
@@ -1027,14 +1567,78 @@ window.APP_VIEWS = {
             </div>
             <div class="flex-1 max-w-2xl">
               <div class="p-4 sm:p-5 rounded-3xl rounded-tl-sm bg-surface-container-lowest border border-surface-container-high/60 shadow-sm text-on-surface">
-                ${responseBodyHtml}
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-sm text-on-surface">DIA NutriBot</span>
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-fixed/30 text-primary">
+                      <span class="material-symbols-outlined text-[13px]">auto_awesome</span> Qvac Llama 3.2
+                    </span>
+                  </div>
+                  <span class="text-[11px] text-on-surface-variant/80">${getCurrentTime()}</span>
+                </div>
+                <div class="ai-response-text text-sm leading-relaxed mb-3 text-on-surface">
+                  ${htmlContent}
+                </div>
+                <!-- Botones interactivos para agregar o descartar del historial -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-surface-container-high/40 action-buttons-container">
+                  <span class="text-xs font-medium text-on-surface-variant">¿Deseas registrar este alimento en tu historial?</span>
+                  <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button type="button" class="btn-add-history px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm flex items-center gap-1 cursor-pointer active:scale-95">
+                      <span class="material-symbols-outlined text-[14px]">check</span> Sí, agregar
+                    </button>
+                    <button type="button" class="btn-skip-history px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer active:scale-95">
+                      No, solo era duda
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           `;
+
+          const btnAdd = wrapper.querySelector('.btn-add-history');
+          const btnSkip = wrapper.querySelector('.btn-skip-history');
+          const actionContainer = wrapper.querySelector('.action-buttons-container');
+
+          if (btnAdd) {
+            btnAdd.addEventListener('click', () => {
+              try {
+                const historialPlatos = JSON.parse(localStorage.getItem('dia_historial_platos') || '[]');
+                historialPlatos.push({
+                  alimento: queryText || 'Consulta nutricional',
+                  resultado: aiText,
+                  fecha: new Date().toISOString()
+                });
+                localStorage.setItem('dia_historial_platos', JSON.stringify(historialPlatos));
+              } catch (e) {
+                console.error("Error guardando en historial local:", e);
+              }
+
+              if (actionContainer) {
+                actionContainer.innerHTML = `
+                  <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
+                    <span class="material-symbols-outlined text-[16px]">task_alt</span> ¡Agregado a tu historial de comida!
+                  </div>
+                `;
+              }
+            });
+          }
+
+          if (btnSkip) {
+            btnSkip.addEventListener('click', () => {
+              if (actionContainer) {
+                actionContainer.innerHTML = `
+                  <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                    <span class="material-symbols-outlined text-[16px]">info</span> Consulta descartada del historial.
+                  </div>
+                `;
+              }
+            });
+          }
+
           dynamicMessages.appendChild(wrapper);
 
           // Guardar interacción en el historial del asistente
-          recordInteractionToHistory(queryText, withImage, typeof advice !== 'undefined' ? advice : '');
+          recordInteractionToHistory(queryText, withImage, aiText);
         }
 
         function recordInteractionToHistory(queryText, withImage, adviceText) {
@@ -1048,33 +1652,6 @@ window.APP_VIEWS = {
 
             let category = 'Consulta IA';
             let icon = 'smart_toy';
-            let calories = 0;
-            let macros = null;
-            let aiMsgText = adviceText || '';
-
-            if (withImage) {
-              category = 'Visión IA';
-              icon = 'photo_camera';
-              calories = 520;
-              aiMsgText = 'He examinado la imagen que subiste. He detectado Salmón fresco a la plancha, espárragos salteados y arroz integral (~520 kcal, 38g proteína).';
-              macros = { calorias: 520, proteina: 38, carbos: 35, grasas: 19 };
-            } else {
-              const lower = (queryText || '').toLowerCase();
-              if (lower.includes('avena') || lower.includes('desayuno')) {
-                category = 'Desayuno';
-                icon = 'breakfast_dining';
-                calories = 395;
-                macros = { calorias: 395, proteina: 12, carbos: 58, grasas: 14 };
-              } else if (lower.includes('cena') || lower.includes('ligera')) {
-                category = 'Cena';
-                icon = 'dinner_dining';
-                calories = 360;
-                macros = { calorias: 360, proteina: 28, carbos: 18, grasas: 9 };
-              } else if (lower.includes('macro') || lower.includes('balance')) {
-                category = 'Balance Macros';
-                icon = 'monitoring';
-              }
-            }
 
             if (!chat) {
               const baseTitle = queryText ? queryText.trim() : (withImage ? 'Análisis de foto de plato' : 'Consulta Nutricional');
@@ -1087,7 +1664,6 @@ window.APP_VIEWS = {
                 primeraSolicitud: queryText || (withImage ? 'Analiza esta foto de mi plato' : 'Consulta nutricional'),
                 fechaCreacion: now.toISOString(),
                 categoria: category,
-                calorias: calories,
                 icono: icon,
                 hasImage: !!withImage,
                 mensajes: []
@@ -1103,9 +1679,8 @@ window.APP_VIEWS = {
             });
             chat.mensajes.push({
               sender: 'ai',
-              text: aiMsgText,
-              time: timeStr,
-              macros: macros
+              text: adviceText,
+              time: timeStr
             });
 
             localStorage.setItem(historyKey, JSON.stringify(history));
@@ -1121,6 +1696,377 @@ window.APP_VIEWS = {
         }
 
       })();
+    }
+  },
+  'recordatorios.html': {
+    id: 'recordatorios',
+    title: 'DIA - Recordatorios de Comidas',
+    headerTitle: 'Recordatorios',
+    mainClass: 'flex-1 px-4 sm:px-6 lg:px-8 py-5 lg:py-7 max-w-7xl w-full mx-auto pb-28 lg:pb-12',
+    html: `
+      <!-- ENCABEZADO PRINCIPAL DE LA VISTA -->
+      <div class="p-5 sm:p-7 bg-surface-container-lowest rounded-3xl border border-surface-container-high/60 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6">
+        <div class="flex items-center gap-4">
+          <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-3xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-lg shadow-primary-container/30 shrink-0">
+            <span class="material-symbols-outlined text-[30px] sm:text-[34px]">notifications_active</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold font-headline-xl text-on-surface">Recordatorios de Comidas</h1>
+              <span id="rec-total-badge" class="px-3 py-0.5 rounded-full text-xs font-bold bg-primary-fixed/40 text-primary border border-primary-container/30">
+                0 Activos
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-on-surface-variant mt-1 max-w-2xl">
+              Configura alertas precisas para tu Desayuno, Almuerzo, Cena y Refacción. Mantén tus horarios de insulina y glucemia bajo control.
+            </p>
+          </div>
+        </div>
+
+        <!-- ACCIONES PRINCIPALES -->
+        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+          <button 
+            id="btn-test-notif-page" 
+            type="button" 
+            class="px-4 py-3 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface border border-surface-container-high text-xs sm:text-sm font-bold flex items-center gap-2 transition-all active:scale-95 cursor-pointer shrink-0"
+            title="Probar notificación nativa del navegador en PC"
+          >
+            <span class="material-symbols-outlined text-primary text-[20px]">notification_important</span>
+            <span class="hidden sm:inline">Probar en PC</span>
+            <span class="sm:hidden">Probar</span>
+          </button>
+
+          <button 
+            id="btn-open-create-reminder-page" 
+            type="button" 
+            class="flex-1 sm:flex-none px-5 py-3 rounded-2xl bg-gradient-to-r from-primary-container to-secondary text-on-primary font-headline-md text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer shrink-0 font-bold"
+          >
+            <span class="material-symbols-outlined text-[20px]">add_alarm</span>
+            <span>Nuevo Recordatorio</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- BANNER DE ESTADO DE NOTIFICACIONES PC & ESTADÍSTICAS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- Tarjeta de Permisos de PC -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-surface-container-high/60 shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-primary">laptop_mac</span>
+              Notificaciones PC
+            </span>
+            <span id="pc-notif-status-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">
+              Comprobando...
+            </span>
+          </div>
+          <p class="text-xs text-on-surface-variant">
+            Avisos sonoros y emergentes en tu navegador para que nunca olvides comer a tiempo.
+          </p>
+          <div class="pt-1">
+            <button id="btn-request-pc-perm" type="button" class="w-full py-2 px-3 rounded-xl bg-primary-container/15 hover:bg-primary-container/25 text-primary text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px]">notifications_active</span>
+              <span>Activar notificaciones</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta de Próxima Comida -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-surface-container-high/60 shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-amber-500">schedule</span>
+              Próximo Recordatorio
+            </span>
+            <span id="rec-next-type-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">
+              Pendiente
+            </span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span id="rec-next-time" class="text-2xl sm:text-3xl font-black text-on-surface font-headline-xl">--:--</span>
+            <span id="rec-next-name" class="text-xs font-bold text-on-surface-variant">Sin programar</span>
+          </div>
+          <p id="rec-next-anticipation" class="text-[11px] text-on-surface-variant/80">
+            Avisará con 15 minutos de anticipación.
+          </p>
+        </div>
+
+        <!-- Tarjeta de Frecuencia y Consistencia -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-surface-container-high/60 shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-emerald-600">health_and_safety</span>
+              Impacto Glucémico
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+              Recomendado
+            </span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Mantener horarios regulares para tus 4 comidas reduce hasta un <strong>40%</strong> la variabilidad glucémica en diabetes.
+          </p>
+          <div class="flex items-center gap-1.5 text-[11px] text-primary font-bold">
+            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+            <span>Horarios estables = Mejor control</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARRA DE FILTROS POR COMIDA -->
+      <div class="flex items-center justify-between gap-3 mb-6 flex-wrap">
+        <div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-2xl border border-surface-container-high/80 overflow-x-auto max-w-full no-scrollbar">
+          <button type="button" data-filter="todos" class="btn-rec-filter px-3.5 py-1.5 rounded-xl text-xs font-bold bg-surface-container-lowest text-primary shadow-xs transition-all cursor-pointer">
+            Todos
+          </button>
+          <button type="button" data-filter="Desayuno" class="btn-rec-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer flex items-center gap-1">
+            <span>🌅</span>
+            <span>Desayuno</span>
+          </button>
+          <button type="button" data-filter="Almuerzo" class="btn-rec-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer flex items-center gap-1">
+            <span>☀️</span>
+            <span>Almuerzo</span>
+          </button>
+          <button type="button" data-filter="Cena" class="btn-rec-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer flex items-center gap-1">
+            <span>🌙</span>
+            <span>Cena</span>
+          </button>
+          <button type="button" data-filter="Refacción" class="btn-rec-filter px-3.5 py-1.5 rounded-xl text-xs font-bold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer flex items-center gap-1">
+            <span>🍎</span>
+            <span>Refacción</span>
+          </button>
+        </div>
+
+        <span id="rec-counter-text" class="text-xs text-on-surface-variant font-medium">
+          Mostrando recordatorios
+        </span>
+      </div>
+
+      <!-- GRID / LISTA DE RECORDATORIOS -->
+      <div id="reminders-list-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5 mb-8">
+        <!-- Render dinámico desde initRecordatoriosView -->
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- MODAL PARA CREAR / EDITAR RECORDATORIO DE COMIDA        -->
+      <!-- ======================================================== -->
+      <div id="modal-crear-recordatorio" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-xs">
+        <div class="relative w-full max-w-lg bg-surface-container-lowest rounded-3xl p-5 sm:p-7 shadow-2xl border border-surface-container-high/80 z-10 flex flex-col max-h-[94vh] overflow-y-auto animate-message">
+          
+          <!-- Encabezado del modal -->
+          <div class="flex items-center justify-between pb-4 border-b border-surface-container-high/60">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/25">
+                <span class="material-symbols-outlined text-[24px]">alarm_on</span>
+              </div>
+              <div>
+                <h3 id="modal-recordatorio-titulo" class="font-headline-md text-lg sm:text-xl text-on-surface font-extrabold">Nuevo Recordatorio de Comida</h3>
+                <p class="text-xs text-on-surface-variant">Programa cuándo comer y con cuánto tiempo de anticipación avisarte.</p>
+              </div>
+            </div>
+            <button id="btn-close-modal-rec" type="button" aria-label="Cerrar" class="w-9 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+          </div>
+
+          <!-- Formulario de Recordatorio -->
+          <form id="form-recordatorio" class="flex flex-col gap-5 py-4">
+            <input type="hidden" id="rec-id" value="" />
+
+            <!-- 1. TÍTULO DEL RECORDATORIO: Desayuno, Almuerzo, Cena, Refacción -->
+            <div>
+              <label class="block text-xs font-bold text-on-surface mb-2">
+                Tipo de Comida (Título del recordatorio) <span class="text-error">*</span>
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <label class="meal-radio-card cursor-pointer block">
+                  <input type="radio" name="rec-titulo" value="Desayuno" class="sr-only" />
+                  <div class="meal-option-box p-3 rounded-2xl border border-surface-container-high bg-surface-container-low hover:border-primary/50 text-center transition-all flex flex-col items-center gap-1.5 select-none">
+                    <span class="text-xl">🌅</span>
+                    <span class="text-xs font-bold text-on-surface">Desayuno</span>
+                  </div>
+                </label>
+
+                <label class="meal-radio-card cursor-pointer block">
+                  <input type="radio" name="rec-titulo" value="Almuerzo" class="sr-only" checked />
+                  <div class="meal-option-box p-3 rounded-2xl border border-surface-container-high bg-surface-container-low hover:border-primary/50 text-center transition-all flex flex-col items-center gap-1.5 select-none">
+                    <span class="text-xl">☀️</span>
+                    <span class="text-xs font-bold text-on-surface">Almuerzo</span>
+                  </div>
+                </label>
+
+                <label class="meal-radio-card cursor-pointer block">
+                  <input type="radio" name="rec-titulo" value="Cena" class="sr-only" />
+                  <div class="meal-option-box p-3 rounded-2xl border border-surface-container-high bg-surface-container-low hover:border-primary/50 text-center transition-all flex flex-col items-center gap-1.5 select-none">
+                    <span class="text-xl">🌙</span>
+                    <span class="text-xs font-bold text-on-surface">Cena</span>
+                  </div>
+                </label>
+
+                <label class="meal-radio-card cursor-pointer block">
+                  <input type="radio" name="rec-titulo" value="Refacción" class="sr-only" />
+                  <div class="meal-option-box p-3 rounded-2xl border border-surface-container-high bg-surface-container-low hover:border-primary/50 text-center transition-all flex flex-col items-center gap-1.5 select-none">
+                    <span class="text-xl">🍎</span>
+                    <span class="text-xs font-bold text-on-surface">Refacción</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. HORA Y DÍA -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <label for="rec-hora" class="text-xs font-bold text-on-surface">
+                    Hora de la comida <span class="text-error">*</span>
+                  </label>
+                  <span id="rec-hora-format-badge" class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-primary-fixed/40 text-primary border border-primary-container/30">
+                    Formato: 12 Horas (AM/PM)
+                  </span>
+                </div>
+                <input 
+                  type="time" 
+                  id="rec-hora" 
+                  required 
+                  value="12:30" 
+                  class="w-full px-4 py-3 rounded-2xl bg-surface-container-low border border-surface-container-high text-base text-on-surface focus:outline-none focus:border-primary font-bold transition-all cursor-pointer"
+                />
+                <div class="flex items-center justify-between mt-1.5 px-1">
+                  <span id="rec-hora-preview" class="text-[11px] text-on-surface-variant font-medium">
+                    Vista previa: <strong class="text-on-surface font-bold">12:30 PM</strong>
+                  </span>
+                </div>
+              </div>
+
+              <!-- 3. RECORDAR CON ANTICIPACIÓN (15m, 30m, 1h) -->
+              <div>
+                <label for="rec-anticipacion" class="block text-xs font-bold text-on-surface mb-1.5">
+                  Recordar con anticipación <span class="text-error">*</span>
+                </label>
+                <select 
+                  id="rec-anticipacion" 
+                  required 
+                  class="w-full px-4 py-3 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface focus:outline-none focus:border-primary font-medium transition-all cursor-pointer"
+                >
+                  <option value="15" selected>⏰ 15 minutos antes (Recomendado)</option>
+                  <option value="30">⏰ 30 minutos antes</option>
+                  <option value="60">⏰ 1 hora antes</option>
+                  <option value="0">🔔 A la hora exacta</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- SELECCIÓN DE DÍAS -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-bold text-on-surface">Días activos</label>
+                <div class="flex items-center gap-1">
+                  <button type="button" id="btn-days-all" class="text-[11px] px-2 py-0.5 rounded-md bg-surface-container text-primary font-bold hover:bg-surface-container-high transition-colors cursor-pointer">Todos</button>
+                  <button type="button" id="btn-days-weekdays" class="text-[11px] px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-semibold hover:bg-surface-container-high transition-colors cursor-pointer">L - V</button>
+                  <button type="button" id="btn-days-weekend" class="text-[11px] px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant font-semibold hover:bg-surface-container-high transition-colors cursor-pointer">Fin de semana</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-7 gap-1.5 text-center">
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Lunes" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Lun
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Martes" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Mar
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Miércoles" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Mié
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Jueves" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Jue
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Viernes" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Vie
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Sábado" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Sáb
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="checkbox" name="rec-dias" value="Domingo" class="sr-only day-checkbox" checked />
+                  <div class="day-box py-2 rounded-xl border border-surface-container-high bg-surface-container-low text-xs font-bold text-on-surface-variant hover:border-primary transition-all select-none">
+                    Dom
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- NOTA / SUGERENCIA PERSONALIZADA (OPCIONAL) -->
+            <div>
+              <label for="rec-nota" class="block text-xs font-bold text-on-surface mb-1.5">
+                Nota personal o recordatorio médico (opcional)
+              </label>
+              <input 
+                type="text" 
+                id="rec-nota" 
+                placeholder="Ej: Beber agua, medir glucosa antes de comer, preparar ensalada..." 
+                class="w-full px-4 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-xs sm:text-sm text-on-surface focus:outline-none focus:border-primary transition-all font-medium"
+              />
+            </div>
+
+            <!-- PIE DE ACCIONES DEL FORMULARIO -->
+            <div class="pt-3 border-t border-surface-container-high/60 flex items-center justify-end gap-2.5">
+              <button 
+                type="button" 
+                id="btn-cancel-modal-rec" 
+                class="px-4 py-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface font-bold text-sm transition-all cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="px-6 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-sm flex items-center gap-1.5 shadow-md hover:brightness-105 active:scale-95 transition-all cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-[19px]">save</span>
+                <span>Guardar Recordatorio</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- MODAL DE CONFIRMACIÓN PARA ELIMINAR RECORDATORIO -->
+      <div id="modal-confirm-delete-rec" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+        <div class="bg-surface-container-lowest rounded-3xl border border-surface-container-high max-w-md w-full p-6 shadow-2xl animate-message">
+          <div class="w-12 h-12 rounded-2xl bg-error/10 text-error flex items-center justify-center mb-4">
+            <span class="material-symbols-outlined text-[28px]">delete_forever</span>
+          </div>
+          <h3 class="text-lg font-bold font-headline-md text-on-surface mb-2">¿Eliminar este recordatorio?</h3>
+          <p id="delete-rec-info-text" class="text-sm text-on-surface-variant leading-relaxed mb-6">
+            Ya no recibirás alertas de navegador ni avisos para este tiempo de comida.
+          </p>
+          <div class="flex items-center justify-end gap-3">
+            <button id="btn-cancel-delete-rec" type="button" class="px-4 py-2.5 rounded-xl bg-surface-container text-on-surface-variant hover:text-on-surface font-semibold text-sm transition-colors cursor-pointer">Cancelar</button>
+            <button id="btn-confirm-delete-rec" type="button" class="px-5 py-2.5 rounded-xl bg-error text-on-error font-bold text-sm shadow-sm hover:brightness-110 active:scale-95 transition-all cursor-pointer">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    `,
+    init: function () {
+      if (typeof window.initRecordatoriosView === 'function') {
+        window.initRecordatoriosView();
+      }
     }
   }
 };
@@ -1263,15 +2209,63 @@ window.initMiProgreso = function() {
 
     if (activePeriod === 'dia') {
       if (dateOffset === 0) {
+        const storeTotals = (window.PlatosStore && typeof window.PlatosStore.getTodayTotals === 'function')
+          ? window.PlatosStore.getTodayTotals()
+          : null;
+
+        let cCal = 0, cProt = 0, cCarb = 0, cFat = 0, cFib = 0;
+        let byCat = {
+          Desayuno: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 },
+          Almuerzo: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 },
+          Cena: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 },
+          Snack: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 }
+        };
+
+        if (storeTotals) {
+          cCal = storeTotals.calorias || 0;
+          cProt = storeTotals.proteinas || 0;
+          cCarb = storeTotals.carbs || 0;
+          cFat = storeTotals.grasas || 0;
+          cFib = storeTotals.fibra || 0;
+          if (storeTotals.byCategory) {
+            Object.keys(storeTotals.byCategory).forEach(cat => {
+              const catData = storeTotals.byCategory[cat];
+              if (byCat[cat]) {
+                byCat[cat].carbs = catData.carbs || 0;
+                byCat[cat].protein = catData.protein || 0;
+                byCat[cat].fat = catData.fat || 0;
+                byCat[cat].kcal = catData.kcal || 0;
+                byCat[cat].count = (catData.items && catData.items.length) || 0;
+              }
+            });
+          }
+        }
+
+        const remainingKcal = Math.max(0, GOALS.calorias - cCal);
+        const protPct = Math.round((cProt / GOALS.proteinas) * 100);
+        let insightMsg = '';
+        if (cCal === 0) {
+          insightMsg = 'Aún no has registrado platillos hoy. Registra tus comidas para monitorear tus macros y progreso en tiempo real.';
+        } else {
+          insightMsg = `Has registrado ${cCal} kcal hoy. Estás a ${remainingKcal} kcal de tu meta calórica diaria con ${cProt}g de proteína (${protPct}% de tu meta).`;
+        }
+
         return {
-          totals: { calorias: 1640, proteinas: 135, carbs: 220, grasas: 52, fibra: 28, agua: 2.4 },
+          totals: {
+            calorias: cCal,
+            proteinas: cProt,
+            carbs: cCarb,
+            grasas: cFat,
+            fibra: cFib,
+            agua: +(1.5 + Math.min(1.5, cCal / 1500)).toFixed(1)
+          },
           bars: [
-            { label: 'Desayuno', time: '08:30', carbs: 65, protein: 38, fat: 14, kcal: 538 },
-            { label: 'Almuerzo', time: '13:45', carbs: 92, protein: 58, fat: 21, kcal: 789 },
-            { label: 'Merienda', time: '17:15', carbs: 35, protein: 14, fat: 6, kcal: 250 },
-            { label: 'Cena', time: 'Pendiente', carbs: 28, protein: 25, fat: 11, kcal: 311 }
+            { label: 'Desayuno', time: byCat.Desayuno.count > 0 ? `${byCat.Desayuno.count} reg.` : 'Pendiente', carbs: byCat.Desayuno.carbs, protein: byCat.Desayuno.protein, fat: byCat.Desayuno.fat, kcal: byCat.Desayuno.kcal },
+            { label: 'Almuerzo', time: byCat.Almuerzo.count > 0 ? `${byCat.Almuerzo.count} reg.` : 'Pendiente', carbs: byCat.Almuerzo.carbs, protein: byCat.Almuerzo.protein, fat: byCat.Almuerzo.fat, kcal: byCat.Almuerzo.kcal },
+            { label: 'Snack', time: byCat.Snack.count > 0 ? `${byCat.Snack.count} reg.` : 'Pendiente', carbs: byCat.Snack.carbs, protein: byCat.Snack.protein, fat: byCat.Snack.fat, kcal: byCat.Snack.kcal },
+            { label: 'Cena', time: byCat.Cena.count > 0 ? `${byCat.Cena.count} reg.` : 'Pendiente', carbs: byCat.Cena.carbs, protein: byCat.Cena.protein, fat: byCat.Cena.fat, kcal: byCat.Cena.kcal }
           ],
-          insight: '¡Gran consistencia! Estás a 460 kcal de tu objetivo calórico diario con un excelente balance de proteínas (90%).'
+          insight: insightMsg
         };
       } else {
         const cal = Math.round(1800 + variation * 400);
@@ -1610,6 +2604,531 @@ window.initMiProgreso = function() {
     });
   }
 
+  window.addEventListener('dia_platos_updated', () => {
+    if (document.getElementById('chart-svg-wrapper')) {
+      updateView();
+    }
+  });
+
   updateView();
+};
+
+// Auto-inicialización si se accede directamente a mi_progreso.html
+if (typeof document !== 'undefined') {
+  const initProgresoOnLoad = () => {
+    const rawPath = window.location.pathname.split('/').pop() || '';
+    const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+    if ((rawPath === 'mi_progreso.html' || hash === 'progreso') && typeof window.initMiProgreso === 'function') {
+      window.initMiProgreso();
+    }
+    if ((rawPath === 'recordatorios.html' || hash === 'recordatorios') && typeof window.initRecordatoriosView === 'function') {
+      window.initRecordatoriosView();
+    }
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgresoOnLoad);
+  } else {
+    initProgresoOnLoad();
+  }
+}
+
+/**
+ * Controlador global para la vista de Recordatorios de Comidas
+ */
+window.initRecordatoriosView = function () {
+  if (!window.DiaRecordatorios) return;
+
+  let currentFilter = 'todos';
+  let deletingId = null;
+
+  const grid = document.getElementById('reminders-list-grid');
+  const badgeTotal = document.getElementById('rec-total-badge');
+  const counterText = document.getElementById('rec-counter-text');
+  const nextTimeEl = document.getElementById('rec-next-time');
+  const nextNameEl = document.getElementById('rec-next-name');
+  const nextTypeBadge = document.getElementById('rec-next-type-badge');
+  const nextAnticipationEl = document.getElementById('rec-next-anticipation');
+  const filterBtns = document.querySelectorAll('.btn-rec-filter');
+
+  const modal = document.getElementById('modal-crear-recordatorio');
+  const form = document.getElementById('form-recordatorio');
+  const btnCloseModal = document.getElementById('btn-close-modal-rec');
+  const btnCancelModal = document.getElementById('btn-cancel-modal-rec');
+  const btnOpenCreate = document.getElementById('btn-open-create-reminder-page');
+  const btnTestNotif = document.getElementById('btn-test-notif-page');
+  const btnRequestPerm = document.getElementById('btn-request-pc-perm');
+
+  const modalDelete = document.getElementById('modal-confirm-delete-rec');
+  const btnConfirmDelete = document.getElementById('btn-confirm-delete-rec');
+  const btnCancelDelete = document.getElementById('btn-cancel-delete-rec');
+  const deleteInfoText = document.getElementById('delete-rec-info-text');
+
+  // Helper formato dinámico (12h / 24h)
+  function formatTime(timeStr) {
+    if (window.DiaRecordatorios && typeof window.DiaRecordatorios.formatTime === 'function') {
+      return window.DiaRecordatorios.formatTime(timeStr);
+    }
+    if (!timeStr) return '--:--';
+    const [h, m] = timeStr.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const hours12 = h % 12 || 12;
+    const minutesStr = String(m).padStart(2, '0');
+    return `${hours12}:${minutesStr} ${period}`;
+  }
+
+  // Sincronizar UI de estilos para los radio buttons de tipo de comida
+  function syncMealRadioStyles() {
+    if (!form) return;
+    const radios = form.querySelectorAll('input[name="rec-titulo"]');
+    radios.forEach((r) => {
+      const box = r.closest('label').querySelector('.meal-option-box');
+      if (!box) return;
+      if (r.checked) {
+        box.classList.add('border-primary', 'bg-primary-container/10', 'ring-2', 'ring-primary-container/30', 'shadow-sm');
+        box.classList.remove('bg-surface-container-low', 'border-surface-container-high');
+      } else {
+        box.classList.remove('border-primary', 'bg-primary-container/10', 'ring-2', 'ring-primary-container/30', 'shadow-sm');
+        box.classList.add('bg-surface-container-low', 'border-surface-container-high');
+      }
+    });
+  }
+
+  // Sincronizar UI de estilos para los checkboxes de días
+  function syncDayCheckboxStyles() {
+    if (!form) return;
+    const checkboxes = form.querySelectorAll('input[name="rec-dias"]');
+    checkboxes.forEach((chk) => {
+      const box = chk.closest('label').querySelector('.day-box');
+      if (!box) return;
+      if (chk.checked) {
+        box.classList.add('bg-primary-container', 'text-on-primary', 'border-primary-container', 'shadow-xs');
+        box.classList.remove('bg-surface-container-low', 'text-on-surface-variant', 'border-surface-container-high');
+      } else {
+        box.classList.remove('bg-primary-container', 'text-on-primary', 'border-primary-container', 'shadow-xs');
+        box.classList.add('bg-surface-container-low', 'text-on-surface-variant', 'border-surface-container-high');
+      }
+    });
+  }
+
+  // Actualizar Próximo Recordatorio del día
+  function updateUpcomingReminder(reminders) {
+    const activeList = reminders.filter((r) => r.activo);
+    if (activeList.length === 0) {
+      if (nextTimeEl) nextTimeEl.textContent = '--:--';
+      if (nextNameEl) nextNameEl.textContent = 'Sin activos';
+      if (nextTypeBadge) {
+        nextTypeBadge.textContent = 'Pausados';
+        nextTypeBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant';
+      }
+      if (nextAnticipationEl) nextAnticipationEl.textContent = 'Todos los recordatorios están desactivados.';
+      return;
+    }
+
+    const now = new Date();
+    const currentDayName = window.DiaRecordatorios.diasSemana[now.getDay()];
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    // Filtrar los que aplican hoy
+    const todayReminders = activeList.filter((r) => !Array.isArray(r.dias) || r.dias.includes(currentDayName));
+
+    // Buscar el próximo en lo que queda del día
+    let next = null;
+    let minDiff = Infinity;
+
+    todayReminders.forEach((r) => {
+      const [h, m] = (r.hora || '00:00').split(':').map(Number);
+      const rMinutes = h * 60 + m;
+      const diff = rMinutes - currentMinutes;
+      if (diff >= 0 && diff < minDiff) {
+        minDiff = diff;
+        next = r;
+      }
+    });
+
+    // Si ya pasaron todos hoy, tomar el primero de mañana
+    if (!next) {
+      const sorted = [...activeList].sort((a, b) => a.hora.localeCompare(b.hora));
+      next = sorted[0];
+    }
+
+    if (next) {
+      if (nextTimeEl) nextTimeEl.textContent = formatTime(next.hora);
+      if (nextNameEl) nextNameEl.textContent = next.titulo;
+      if (nextTypeBadge) {
+        const config = window.DiaRecordatorios.tiposComida[next.titulo] || window.DiaRecordatorios.tiposComida.Almuerzo;
+        nextTypeBadge.textContent = next.titulo;
+        nextTypeBadge.className = `px-2.5 py-0.5 rounded-full text-[11px] font-bold ${config.colorBadge}`;
+      }
+      if (nextAnticipationEl) {
+        nextAnticipationEl.textContent = next.anticipacion > 0
+          ? `Te avisará ${next.anticipacion} minutos antes de comer.`
+          : 'Te avisará a la hora exacta de la comida.';
+      }
+    }
+  }
+
+  // Renderizar tarjetas de recordatorios
+  function renderList() {
+    if (!grid) return;
+    const allReminders = window.DiaRecordatorios.store.getAll();
+    const activeCount = allReminders.filter((r) => r.activo).length;
+
+    if (badgeTotal) {
+      badgeTotal.textContent = `${activeCount} de ${allReminders.length} Activos`;
+    }
+
+    updateUpcomingReminder(allReminders);
+    window.DiaRecordatorios.updatePermissionUI();
+
+    // Filtrar según botón activo
+    let filtered = allReminders;
+    if (currentFilter !== 'todos') {
+      filtered = allReminders.filter((r) => r.titulo.toLowerCase() === currentFilter.toLowerCase());
+    }
+
+    // Orden cronológico por hora
+    filtered.sort((a, b) => (a.hora || '').localeCompare(b.hora || ''));
+
+    if (counterText) {
+      counterText.textContent = `Mostrando ${filtered.length} recordatorio${filtered.length === 1 ? '' : 's'}`;
+    }
+
+    if (filtered.length === 0) {
+      grid.className = 'col-span-full mb-8';
+      grid.innerHTML = `
+        <div class="p-8 sm:p-12 rounded-3xl bg-surface-container-lowest border border-surface-container-high/60 text-center shadow-xs">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-3xl bg-primary-container/15 text-primary flex items-center justify-center shadow-sm">
+            <span class="material-symbols-outlined text-[36px]">alarm_off</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-on-surface mb-1">
+            ${currentFilter === 'todos' ? 'No tienes recordatorios creados' : `No hay recordatorios para ${currentFilter}`}
+          </h3>
+          <p class="text-xs sm:text-sm text-on-surface-variant max-w-md mx-auto mb-6">
+            Programa alertas para tus comidas principales y mantén regularidad en tus tomas de glucosa y alimentos.
+          </p>
+          <button type="button" class="btn-create-first-rec px-6 py-3 rounded-2xl bg-primary-container text-on-primary font-bold text-sm shadow-md hover:brightness-105 active:scale-95 transition-all inline-flex items-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">add_alarm</span>
+            <span>Crear Recordatorio</span>
+          </button>
+        </div>
+      `;
+
+      const btnFirst = grid.querySelector('.btn-create-first-rec');
+      if (btnFirst) {
+        btnFirst.addEventListener('click', () => window.DiaRecordatorios.openCreateModal());
+      }
+      return;
+    }
+
+    grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 xl:gap-5 mb-8';
+
+    const DIAS_KEYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const DIAS_SHORT = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+
+    grid.innerHTML = filtered
+      .map((item) => {
+        const config = window.DiaRecordatorios.tiposComida[item.titulo] || window.DiaRecordatorios.tiposComida.Almuerzo;
+        const horaFormatted = formatTime(item.hora);
+        const anticipacionTxt = item.anticipacion > 0 ? `⏰ Avisar ${item.anticipacion} min antes` : '🔔 A la hora exacta';
+
+        const diasHtml = DIAS_KEYS.map((dKey, idx) => {
+          const isSelected = Array.isArray(item.dias) && item.dias.includes(dKey);
+          return `
+            <span class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-bold ${
+              isSelected ? 'bg-primary-container text-on-primary shadow-2xs' : 'bg-surface-container text-on-surface-variant/40'
+            }">
+              ${DIAS_SHORT[idx]}
+            </span>
+          `;
+        }).join('');
+
+        return `
+          <div class="relative rounded-3xl bg-surface-container-lowest border ${item.activo ? config.colorBorder : 'border-surface-container-high/60 opacity-80'} p-5 sm:p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group">
+            
+            <!-- Fila superior: Tipo de comida y Toggle activo -->
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl ${config.colorBg} ${config.colorText} flex items-center justify-center shrink-0 shadow-2xs">
+                  <span class="material-symbols-outlined text-[22px]">${config.icono}</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm sm:text-base text-on-surface font-headline-md">${item.titulo}</h4>
+                  <span class="text-[11px] font-semibold text-on-surface-variant">${anticipacionTxt}</span>
+                </div>
+              </div>
+
+              <!-- Switch Activo / Inactivo -->
+              <label class="relative inline-flex items-center cursor-pointer select-none" title="${item.activo ? 'Desactivar recordatorio' : 'Activar recordatorio'}">
+                <input type="checkbox" class="sr-only toggle-rec-active" data-id="${item.id}" ${item.activo ? 'checked' : ''} />
+                <div class="w-11 h-6 bg-surface-container-high rounded-full peer peer-checked:bg-primary-container transition-colors"></div>
+                <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5 shadow-xs"></div>
+              </label>
+            </div>
+
+            <!-- Hora destacada -->
+            <div class="my-1">
+              <div class="flex items-baseline gap-2">
+                <span class="text-3xl sm:text-4xl font-black text-on-surface font-headline-xl tracking-tight">${horaFormatted}</span>
+                <span class="text-xs font-bold text-on-surface-variant">(${item.hora} hrs)</span>
+              </div>
+              ${item.nota ? `<p class="text-xs text-on-surface-variant mt-1.5 italic bg-surface-container-low/50 p-2 rounded-xl border border-surface-container-high/40">"${item.nota}"</p>` : ''}
+            </div>
+
+            <!-- Días de la semana activos -->
+            <div class="flex items-center gap-1 pt-1 border-t border-surface-container-high/40">
+              ${diasHtml}
+            </div>
+
+            <!-- Botones de Acción de la tarjeta -->
+            <div class="pt-3 border-t border-surface-container-high/40 flex items-center justify-between gap-2">
+              <button 
+                type="button" 
+                class="btn-test-single-rec px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                data-id="${item.id}"
+                title="Probar sonido y notificación de este recordatorio"
+              >
+                <span class="material-symbols-outlined text-[16px] text-primary">notifications_active</span>
+                <span>Probar</span>
+              </button>
+
+              <div class="flex items-center gap-1.5">
+                <button 
+                  type="button" 
+                  class="btn-edit-rec w-8 h-8 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary flex items-center justify-center transition-all cursor-pointer"
+                  data-id="${item.id}"
+                  title="Editar este recordatorio"
+                >
+                  <span class="material-symbols-outlined text-[18px]">edit</span>
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-delete-rec w-8 h-8 rounded-xl bg-surface-container hover:bg-error/15 text-on-surface-variant hover:text-error flex items-center justify-center transition-all cursor-pointer"
+                  data-id="${item.id}"
+                  title="Eliminar este recordatorio"
+                >
+                  <span class="material-symbols-outlined text-[18px]">delete</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+      })
+      .join('');
+
+    // Vincular switches de activación
+    grid.querySelectorAll('.toggle-rec-active').forEach((toggle) => {
+      toggle.addEventListener('change', (e) => {
+        const id = toggle.getAttribute('data-id');
+        const newState = window.DiaRecordatorios.store.toggle(id);
+        window.DiaRecordatorios.showToast(
+          newState ? 'Recordatorio activado 🔔' : 'Recordatorio pausado ⏸️',
+          'info'
+        );
+        renderList();
+      });
+    });
+
+    // Vincular prueba de recordatorio individual
+    grid.querySelectorAll('.btn-test-single-rec').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const item = window.DiaRecordatorios.store.getById(id);
+        if (item) {
+          const config = window.DiaRecordatorios.tiposComida[item.titulo] || window.DiaRecordatorios.tiposComida.Almuerzo;
+          const anticipacionTxt = item.anticipacion > 0 ? ` (Aviso con ${item.anticipacion} min de antelación)` : '';
+          window.DiaRecordatorios.engine.sendBrowserNotification(
+            `🍽️ ${item.titulo} - ${formatTime(item.hora)}${anticipacionTxt}`,
+            item.nota || config.sugerencia,
+            `test-${item.id}`
+          );
+        }
+      });
+    });
+
+    // Vincular edición
+    grid.querySelectorAll('.btn-edit-rec').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const item = window.DiaRecordatorios.store.getById(id);
+        if (item) {
+          window.DiaRecordatorios.openCreateModal(item);
+        }
+      });
+    });
+
+    // Vincular eliminación
+    grid.querySelectorAll('.btn-delete-rec').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const item = window.DiaRecordatorios.store.getById(id);
+        if (item && modalDelete) {
+          deletingId = id;
+          if (deleteInfoText) {
+            deleteInfoText.textContent = `¿Estás seguro de que deseas eliminar el recordatorio de "${item.titulo}" a las ${formatTime(item.hora)}?`;
+          }
+          modalDelete.classList.remove('hidden');
+          modalDelete.classList.add('flex');
+        }
+      });
+    });
+  }
+
+  // Vincular botones de filtro
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => {
+        b.classList.remove('bg-surface-container-lowest', 'text-primary', 'shadow-xs');
+        b.classList.add('text-on-surface-variant');
+      });
+      btn.classList.add('bg-surface-container-lowest', 'text-primary', 'shadow-xs');
+      btn.classList.remove('text-on-surface-variant');
+      currentFilter = btn.getAttribute('data-filter') || 'todos';
+      renderList();
+    });
+  });
+
+  // Modal Abrir / Cerrar
+  if (btnOpenCreate) {
+    btnOpenCreate.addEventListener('click', () => window.DiaRecordatorios.openCreateModal());
+  }
+  if (btnCloseModal) {
+    btnCloseModal.addEventListener('click', () => window.DiaRecordatorios.closeCreateModal());
+  }
+  if (btnCancelModal) {
+    btnCancelModal.addEventListener('click', () => window.DiaRecordatorios.closeCreateModal());
+  }
+
+  // Probar notificación de PC
+  if (btnTestNotif) {
+    btnTestNotif.addEventListener('click', () => window.DiaRecordatorios.engine.testNotification());
+  }
+  if (btnRequestPerm) {
+    btnRequestPerm.addEventListener('click', () => window.DiaRecordatorios.engine.requestPermission());
+  }
+
+  // Confirmar eliminación
+  if (btnConfirmDelete) {
+    btnConfirmDelete.addEventListener('click', () => {
+      if (deletingId) {
+        window.DiaRecordatorios.store.delete(deletingId);
+        window.DiaRecordatorios.showToast('Recordatorio eliminado correctamente 🗑️', 'info');
+        deletingId = null;
+      }
+      if (modalDelete) {
+        modalDelete.classList.add('hidden');
+        modalDelete.classList.remove('flex');
+      }
+      renderList();
+    });
+  }
+  if (btnCancelDelete) {
+    btnCancelDelete.addEventListener('click', () => {
+      deletingId = null;
+      if (modalDelete) {
+        modalDelete.classList.add('hidden');
+        modalDelete.classList.remove('flex');
+      }
+    });
+  }
+
+  // Botones de selección rápida de días en modal
+  const btnDaysAll = document.getElementById('btn-days-all');
+  const btnDaysWeekdays = document.getElementById('btn-days-weekdays');
+  const btnDaysWeekend = document.getElementById('btn-days-weekend');
+
+  if (btnDaysAll) {
+    btnDaysAll.addEventListener('click', () => {
+      form.querySelectorAll('input[name="rec-dias"]').forEach((chk) => (chk.checked = true));
+      syncDayCheckboxStyles();
+    });
+  }
+  if (btnDaysWeekdays) {
+    btnDaysWeekdays.addEventListener('click', () => {
+      form.querySelectorAll('input[name="rec-dias"]').forEach((chk) => {
+        chk.checked = chk.value !== 'Sábado' && chk.value !== 'Domingo';
+      });
+      syncDayCheckboxStyles();
+    });
+  }
+  if (btnDaysWeekend) {
+    btnDaysWeekend.addEventListener('click', () => {
+      form.querySelectorAll('input[name="rec-dias"]').forEach((chk) => {
+        chk.checked = chk.value === 'Sábado' || chk.value === 'Domingo';
+      });
+      syncDayCheckboxStyles();
+    });
+  }
+
+  // Listener para radios y checkboxes del formulario
+  if (form) {
+    form.querySelectorAll('input[name="rec-titulo"]').forEach((r) => {
+      r.addEventListener('change', syncMealRadioStyles);
+    });
+    form.querySelectorAll('input[name="rec-dias"]').forEach((chk) => {
+      chk.addEventListener('change', syncDayCheckboxStyles);
+    });
+
+    // Envío del formulario
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('rec-id').value;
+      const radioChecked = form.querySelector('input[name="rec-titulo"]:checked');
+      const titulo = radioChecked ? radioChecked.value : 'Almuerzo';
+      const hora = document.getElementById('rec-hora').value || '12:30';
+      const anticipacion = Number(document.getElementById('rec-anticipacion').value) || 0;
+      const nota = (document.getElementById('rec-nota').value || '').trim();
+
+      const selectedDays = [];
+      form.querySelectorAll('input[name="rec-dias"]:checked').forEach((chk) => {
+        selectedDays.push(chk.value);
+      });
+
+      const recordatorioData = {
+        titulo: titulo,
+        hora: hora,
+        dias: selectedDays.length > 0 ? selectedDays : [...window.DiaRecordatorios.diasSemana],
+        anticipacion: anticipacion,
+        nota: nota,
+        activo: true
+      };
+
+      if (id) {
+        window.DiaRecordatorios.store.update(id, recordatorioData);
+        window.DiaRecordatorios.showToast(`Recordatorio de ${titulo} actualizado ✨`, 'success');
+      } else {
+        window.DiaRecordatorios.store.add(recordatorioData);
+        window.DiaRecordatorios.showToast(`¡Nuevo recordatorio de ${titulo} guardado! 🔔`, 'success');
+      }
+
+      window.DiaRecordatorios.closeCreateModal();
+      renderList();
+    });
+  }
+
+  // Escuchar cambios de otros eventos
+  window.addEventListener('dia_recordatorios_updated', () => {
+    if (document.getElementById('reminders-list-grid')) {
+      renderList();
+    }
+  });
+
+  window.addEventListener('dia_time_format_changed', () => {
+    if (document.getElementById('reminders-list-grid')) {
+      renderList();
+      if (window.DiaRecordatorios && typeof window.DiaRecordatorios.updateModalTimeFormatHint === 'function') {
+        window.DiaRecordatorios.updateModalTimeFormatHint();
+      }
+    }
+  });
+
+  // Render inicial
+  renderList();
+  syncMealRadioStyles();
+  syncDayCheckboxStyles();
+  if (window.DiaRecordatorios && typeof window.DiaRecordatorios.updateModalTimeFormatHint === 'function') {
+    window.DiaRecordatorios.updateModalTimeFormatHint();
+  }
 };
 
