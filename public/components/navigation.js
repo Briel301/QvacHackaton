@@ -97,6 +97,14 @@ function switchAppView(targetHref, e) {
     document.querySelectorAll('app-bottom-nav').forEach((n) => n.render());
     document.querySelectorAll('app-topbar').forEach((t) => t.render());
 
+    // Sincronizar configuraciones de unidades e idioma en la nueva vista
+    if (window.DiaSettings) {
+      try {
+        window.DiaSettings.applyUnits();
+        window.DiaSettings.applyLanguage(window.DiaSettings.getSettings().language);
+      } catch (e) {}
+    }
+
     // Ejecutar inicializadores interactivos (ej. chat de IA)
     if (typeof view.init === 'function') {
       try {
@@ -183,7 +191,7 @@ class AppSidebar extends HTMLElement {
           </a>
 
           <!-- Banner / Acceso Rápido Asistente IA en Sidebar -->
-          <a href="asistente.html" class="nav-link relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-primary-fixed-dim/30 via-surface-container-low to-surface-container border ${isAsistente ? 'border-primary-container ring-2 ring-primary-container/40 shadow-md' : 'border-primary-fixed/50'} mb-6 group cursor-pointer hover:border-primary-container/60 hover:shadow-md transition-all">
+          <a id="sidebar-assistant-banner" href="asistente.html" class="nav-link sidebar-assistant-banner relative overflow-hidden rounded-2xl p-4 bg-gradient-to-br from-primary-fixed-dim/30 via-surface-container-low to-surface-container border ${isAsistente ? 'border-primary-container ring-2 ring-primary-container/40 shadow-md' : 'border-primary-fixed/50'} mb-6 group cursor-pointer hover:border-primary-container/60 hover:shadow-md transition-all">
             <div class="flex items-center justify-between mb-2 pointer-events-none">
               <div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-[20px]">photo_camera</span>
@@ -348,14 +356,14 @@ class AppTopbar extends HTMLElement {
             </button>
             
             <!-- Ajustes y Preferencias -->
-            <button aria-label="Ajustes y preferencias" class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <button id="btn-open-settings-desktop-asistente" aria-label="Ajustes y preferencias" class="btn-settings w-10 h-10 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-[20px]">settings</span>
             </button>
 
             <!-- Perfil de usuario -->
             <div class="flex items-center gap-3 pl-3 ml-1 border-l border-surface-container-high/70">
               <div class="flex flex-col text-right">
-                <span class="font-label-sm text-[11px] text-on-surface-variant">¡Buenos días!</span>
+                <span class="font-label-sm text-[11px] text-on-surface-variant app-user-greeting">¡Buenos días!</span>
                 <span class="font-title-sm text-[14px] font-bold text-on-surface">[Nombre del Usuario]</span>
               </div>
               <div class="relative w-10 h-10 rounded-full overflow-hidden shadow-sm bg-surface-container shrink-0 ring-2 ring-primary/20" title="[Foto de perfil]">
@@ -381,7 +389,7 @@ class AppTopbar extends HTMLElement {
             </button>
             
             <!-- Ajustes y Preferencias -->
-            <button aria-label="Ajustes y preferencias" class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+            <button id="btn-open-settings-desktop" aria-label="Ajustes y preferencias" class="btn-settings w-10 h-10 rounded-full bg-surface-container-lowest shadow-[0_2px_8px_rgba(15,23,42,0.06)] flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-[20px]">settings</span>
             </button>
 

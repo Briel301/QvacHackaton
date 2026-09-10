@@ -4,6 +4,7 @@ const cors = require('cors');
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+const path = require('path');
 const { analizarPlatillo, inicializarModelo } = require('./qvac'); 
 
 const app = express();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '20mb' })); 
 app.use(express.urlencoded({ limit: '20mb', extended: true }));
+app.use(express.static(path.join(__dirname, '../public')));
 
 const pool = mysql.createPool(process.env.DATABASE_URL || {
     host: process.env.DB_HOST,

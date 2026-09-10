@@ -12,7 +12,7 @@
     <script src="tailwind.cdn.js" defer></script>
     <script src="components/views.js"></script>
     <script src="components/navigation.js"></script>
-    
+    <script src="components/settings.js"></script>
     <script src="components/Js/main.js" type="module"></script>
   </head>
   <body class="bg-surface font-body-md text-body-md text-on-surface flex min-h-screen">
@@ -279,8 +279,8 @@
                 </div>
                 <div class="flex flex-col sm:items-end">
                   <div class="flex items-center gap-1">
-                    <span class="font-headline-md text-lg text-primary font-black">1,640</span>
-                    <span class="font-body-md text-on-surface-variant font-medium">/ 2,100 kcal</span>
+                    <span class="consumed-calories-val font-headline-md text-lg text-primary font-black">1,640</span>
+                    <span class="target-calories-total font-body-md text-on-surface-variant font-medium">/ 2,100 kcal</span>
                   </div>
                   <div class="w-36 h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
                     <div class="h-full bg-primary-container rounded-full" style="width: 78%;"></div>
@@ -289,7 +289,7 @@
               </div>
               
               <!-- Lista de Comidas del Día -->
-              <div class="flex flex-col gap-space-sm">
+              <div id="mis-comidas-container" class="flex flex-col gap-space-sm">
                 <!-- Card: Desayuno -->
                 <div class="group flex items-center justify-between p-card-padding bg-surface-container-lowest rounded-2xl shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-md hover:bg-surface-container-low/60 border border-surface-container-high/30 transition-all">
                   <div class="flex items-center gap-space-md">
@@ -432,8 +432,8 @@
                 <div class="flex flex-col">
                   <span class="font-body-sm text-xs text-on-surface-variant">Calorías restantes</span>
                   <div class="flex items-baseline gap-1 mt-0.5">
-                    <span class="font-headline-lg text-2xl font-black text-primary">460</span>
-                    <span class="font-body-sm text-xs text-on-surface-variant font-semibold">kcal libres</span>
+                    <span class="remaining-calories-val font-headline-lg text-2xl font-black text-primary">460</span>
+                    <span class="remaining-calories-unit font-body-sm text-xs text-on-surface-variant font-semibold">kcal libres</span>
                   </div>
                 </div>
                 <div class="w-9 h-9 rounded-full bg-primary-container/20 text-primary flex items-center justify-center">
@@ -451,8 +451,8 @@
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                   <span class="font-label-sm text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Total</span>
-                  <span class="font-headline-md text-xl font-black text-on-surface leading-tight">1,640</span>
-                  <span class="font-body-sm text-[11px] text-on-surface-variant font-semibold">kcal consumidas</span>
+                  <span class="consumed-calories-val font-headline-md text-xl font-black text-on-surface leading-tight">1,640</span>
+                  <span class="consumed-calories-unit font-body-sm text-[11px] text-on-surface-variant font-semibold">kcal consumidas</span>
                 </div>
               </div>
 
@@ -465,7 +465,7 @@
                       <span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Carbohidratos</span>
                     </div>
-                    <span class="font-title-sm font-bold text-on-surface">220g <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span></span>
+                    <span class="macro-carbs-val font-title-sm font-bold text-on-surface">220g <span class="text-on-surface-variant font-normal text-[11px]">(50%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
                     <div class="h-full bg-[#10b981] rounded-full" style="width: 50%;"></div>
@@ -479,7 +479,7 @@
                       <span class="w-2.5 h-2.5 rounded-full bg-[#6bff8f]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Proteínas</span>
                     </div>
-                    <span class="font-title-sm font-bold text-on-surface">135g <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span></span>
+                    <span class="macro-prot-val font-title-sm font-bold text-on-surface">135g <span class="text-on-surface-variant font-normal text-[11px]">(30%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
                     <div class="h-full bg-[#6bff8f] rounded-full" style="width: 30%;"></div>
@@ -493,7 +493,7 @@
                       <span class="w-2.5 h-2.5 rounded-full bg-[#ffb95f]"></span>
                       <span class="font-title-sm text-on-surface font-semibold">Grasas</span>
                     </div>
-                    <span class="font-title-sm font-bold text-on-surface">52g <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span></span>
+                    <span class="macro-fat-val font-title-sm font-bold text-on-surface">52g <span class="text-on-surface-variant font-normal text-[11px]">(20%)</span></span>
                   </div>
                   <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
                     <div class="h-full bg-[#ffb95f] rounded-full" style="width: 20%;"></div>
@@ -567,5 +567,42 @@
     </div>
 
     <app-bottom-nav></app-bottom-nav>
+
+    <!-- ======================================================== -->
+    <!-- MODAL DE CONFIGURACIONES DE LA APLICACIÓN -->
+    <!-- ======================================================== -->
+    <div id="dia-settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="dia-settings-title">
+      <div id="dia-settings-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300"></div>
+
+      <div class="relative w-full max-w-xl bg-surface-container-lowest rounded-3xl p-5 sm:p-7 shadow-2xl border border-surface-container-high/80 z-10 flex flex-col max-h-[92vh] overflow-y-auto transition-transform duration-300 scale-95">
+        
+        <!-- HEADER DEL MODAL -->
+        <div class="flex items-center justify-between pb-4 border-b border-surface-container-high/60">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary-container/25">
+              <span class="material-symbols-outlined text-[24px]">settings</span>
+            </div>
+            <div>
+              <h2 id="dia-settings-title" class="font-headline-md text-lg sm:text-xl text-on-surface font-extrabold">Configuraciones de DIA</h2>
+              <p id="dia-settings-subtitle" class="font-body-sm text-xs text-on-surface-variant">Personaliza tu experiencia, unidades de medida y preferencias.</p>
+            </div>
+          </div>
+          <button id="btn-close-settings-modal" type="button" aria-label="Cerrar modal" class="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[22px]">close</span>
+          </button>
+        </div>
+
+        <!-- CUERPO DE OPCIONES (Sincronizado por settings.js) -->
+        <div id="dia-settings-body" class="flex flex-col gap-6 py-5"></div>
+
+        <!-- PIE DE ACCIONES -->
+        <div class="pt-4 border-t border-surface-container-high/60 flex items-center justify-end">
+          <button id="btn-done-settings" type="button" class="px-6 py-2.5 rounded-xl bg-primary-container hover:bg-secondary text-on-primary font-bold text-sm shadow-md shadow-primary-container/25 active:scale-95 transition-all cursor-pointer">
+            Listo
+          </button>
+        </div>
+
+      </div>
+    </div>
   </body>
 </html>
