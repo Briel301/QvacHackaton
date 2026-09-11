@@ -135,7 +135,7 @@
       </header>
 
       <!-- HEADER MÓVIL -->
-      <div class="lg:hidden shrink-0 flex items-center justify-between px-4 pt-safe py-3 bg-surface/90 backdrop-blur-md sticky top-0 z-30 border-b border-surface-container-high/60">
+      <div class="lg:hidden shrink-0 flex items-center justify-between px-4 pt-safe py-3 bg-surface/90 dark:bg-[#0b1120]/95 backdrop-blur-md sticky top-0 z-30 border-b border-surface-container-high/60 dark:border-slate-800/80">
         <div id="user-profile-header-area-mobile" class="flex items-center gap-3 cursor-pointer">
           <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center shadow-md">
             <span class="material-symbols-outlined text-[22px]">smart_toy</span>
@@ -203,6 +203,9 @@
               <div class="w-2 h-2 rounded-full bg-primary-container typing-dot"></div>
             </div>
           </div>
+
+          <!-- ESPACIADOR INFERIOR PARA QUE EL INPUT FLOTANTE EN MÓVIL NUNCA TAPE EL ÚLTIMO MENSAJE NI LOS BOTONES -->
+          <div class="chat-bottom-spacer shrink-0 w-full pointer-events-none" aria-hidden="true"></div>
         </div>
 
         <!-- VENTANA FLOTANTE INFERIOR DE ENTRADA (MÓVIL: Flotante sobre la barra inferior | DESKTOP: Barra estática en el chat) -->
