@@ -45,3 +45,4 @@ jobs:
           node --check public/components/recordatorios.js
           node --check public/components/Js/asistente.js
           node --check public/components/Js/main.js
+          node --check public/sw.js

@@ -520,6 +520,18 @@ if (typeof window !== 'undefined' && 'customElements' in window) {
   }
 }
 
+// Registro automático del Service Worker para PWA y soporte offline
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./sw.js')
+      .then(() => {})
+      .catch((err) => {
+        console.debug('Aviso Service Worker:', err);
+      });
+  });
+}
+
 // Soporte para entornos modulares futuros con Node.js / Vite / Webpack
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { AppSidebar, AppBottomNav, AppTopbar, switchAppView };
