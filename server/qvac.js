@@ -13,6 +13,7 @@ async function inicializarModelo() {
         
         modeloCargadoId = await qvac.loadModel({
             modelSrc: qvac.LLAMA_3_2_1B_INST_Q4_0_SHARD,
+            modelConfig: { ctx_size: 8192 },
             onProgress: (progress) => {
                 if (progress.total > 0) {
                     const porcentaje = Math.round((progress.loaded / progress.total) * 100);
@@ -36,11 +37,20 @@ async function inicializarModelo() {
     }
 }
 
-async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina) {
+async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina, edad, peso, altura, genero, tipoDiabetes) {
     let instruccionesSistema = `Eres DIA NutriBot, un asistente nutricional inteligente especializado en personas con diabetes.
 Responde de forma concisa, profesional, motivadora y estructurada en español.
+
+Ten en cuenta el siguiente perfil del usuario para personalizar tus recomendaciones:
+- Tipo de diabetes: ${tipoDiabetes || 'No especificado'}
+- Edad: ${edad ? edad + ' años' : 'No especificada'}
+- Género: ${genero || 'No especificado'}
+- Peso: ${peso ? peso + ' lbs' : 'No especificado'}
+- Altura: ${altura ? altura + ' m' : 'No especificada'}
+- Uso de insulina: ${usaInsulina ? 'Sí' : 'No'}
+
 Incluye siempre las siguientes secciones obligatorias:
-1. **Veredicto:** Indica con claridad si el alimento es una opción recomendada, con moderación o desaconsejada para alguien con diabetes y la razón nutricional.
+1. **Veredicto:** Indica con claridad si el alimento es una opción recomendada, con moderación o desaconsejada considerando su perfil y la razón nutricional.
 2. **Estimación Nutricional:** Aporta una estimación rápida de calorías, carbohidratos (g), proteínas (g) y grasas (g).
 3. **Impacto Glucémico:** Breve explicación del índice/carga glucémica esperada.`;
 
@@ -109,4 +119,114 @@ Incluye siempre las siguientes secciones obligatorias:
     }
 }
 
-module.exports = { analizarPlatillo, inicializarModelo };
+async function extraerDatosComida(textoAcumulado) {
+    const prompt = `Actúa como un nutriólogo experto. Lee el siguiente registro de alimentos consumidos y extrae la información nutricional sumada y desglosada.
+Devuelve ÚNICAMENTE un JSON válido siguiendo EXACTAMENTE esta estructura, pero reemplazando los valores de ejemplo por los DATOS REALES extraídos del texto:
+
+{
+  "total_calorias": 520, 
+  "total_carbohidratos": 35.0,
+  "total_proteina": 26.0,
+  "total_grasas": 36.0,
+  "total_azucar": 0.0,
+  "total_fibra": 0.0,
+  "total_sodio": 0.0,
+  "descripcion_comida": "Breve resumen de todos los alimentos",
+  "alimentos": [
+    {
+      "nombre": "Nombre real del alimento (ej. Hamburguesa de McDonald's)",
+      "descripcion": "Detalles o ingredientes (ej. contiene queso, dos tortas de carne, aderezos)",
+      "cantidad": 1.0,
+      "medida": "pieza / gramos / porción",
+      "carbohidratos": 35.0,
+      "proteina": 20.0,
+      "grasas": 24.0,
+      "azucar": 0.0,
+      "fibra": 0.0
+    }
+  ]
+}
+
+REGLAS IMPORTANTES:
+1. No uses nombres genéricos como "Nombre del alimento". Usa el nombre real mencionado en el texto.
+2. Suma correctamente los totales de todos los alimentos en los campos "total_".
+3. Si un dato nutricional no se menciona, pon 0.0.
+
+Texto a analizar:
+${textoAcumulado}`;
+
+    try {
+        const modelId = await inicializarModelo();
+        const result = await qvac.completion({
+            modelId: modelId,
+            history: [{ role: "user", content: prompt }],
+            stream: false,
+            max_tokens: 800,
+            temperature: 0.1,
+            threads: 4
+        });
+
+        let textoFinal = "{}";
+        if (result.text) {
+            textoFinal = await result.text;
+        } else if (result.choices && result.choices.length > 0) {
+            textoFinal = result.choices[0].message.content;
+        }
+        
+        if (typeof textoFinal !== 'string') {
+            textoFinal = String(textoFinal);
+        }
+        
+        // Limpiar backticks de markdown por si acaso
+        textoFinal = textoFinal.replace(/```json/gi, '').replace(/```/g, '').trim();
+        
+        let firstBrace = textoFinal.indexOf('{');
+        if (firstBrace !== -1) {
+            let braceCount = 0;
+            let endBrace = -1;
+            let inString = false;
+            let escape = false;
+            for (let i = firstBrace; i < textoFinal.length; i++) {
+                let char = textoFinal[i];
+                if (escape) {
+                    escape = false;
+                    continue;
+                }
+                if (char === '\\') {
+                    escape = true;
+                    continue;
+                }
+                if (char === '"') {
+                    inString = !inString;
+                    continue;
+                }
+                if (!inString) {
+                    if (char === '{') braceCount++;
+                    else if (char === '}') {
+                        braceCount--;
+                        if (braceCount === 0) {
+                            endBrace = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (endBrace !== -1) {
+                const pureJson = textoFinal.substring(firstBrace, endBrace + 1);
+                return JSON.parse(pureJson);
+            }
+        }
+        
+        // Fallback: usar regex agresivo
+        const match = textoFinal.match(/\{[\s\S]*\}/);
+        if (match) {
+            return JSON.parse(match[0]);
+        }
+        return JSON.parse(textoFinal);
+    } catch (error) {
+        console.error("❌ Error extrayendo datos JSON con IA:", error);
+        return null;
+    }
+}
+
+module.exports = { analizarPlatillo, extraerDatosComida, inicializarModelo };

@@ -96,19 +96,3 @@ Abre en tu navegador: **[http://localhost:3000](http://localhost:3000)**
 1. **Ramas protegidas:** No hacer commits directos con código en pruebas sobre `main`.
 2. **Feature branches:** Trabajar en ramas específicas (`feat/nombre-tarea`) y abrir Pull Requests hacia `desarrollo`.
 3. **Validación automática (CI):** Cada Pull Request se comprueba con GitHub Actions para garantizar que no existan errores de sintaxis y que nunca se suban `node_modules/` ni credenciales `.env`.
-
----
-
-## 📋 Reglas Obligatorias para Agentes IA y Colaboradores
-
-Cualquier agente de Inteligencia Artificial (o desarrollador) que interactúe con este repositorio debe acatar estrictamente las siguientes directrices:
-
-### 1. Commits Atómicos Obligatorios (Prohibidos los "Mega-Commits")
-- **Prohibido agrupar múltiples soluciones en un solo commit:** Si durante una sesión de trabajo se resuelven varios problemas o se implementan varias características distintas, **está terminantemente prohibido hacer un solo commit genérico** tipo *"hice esto, esto y aquello"*.
-- **Picking y Atomicidad:** Se deben realizar commits individuales, atómicos y descriptivos para cada tarea concreta resuelta.
-- **Commits incrementales y regulares:** A medida que se avance en el repositorio y cada módulo pase sus pruebas, se debe realizar inmediatamente el commit correspondiente en vez de postergarlo todo al final de la sesión.
-
-### 2. Respeto Estricto de la Arquitectura y Limpieza
-- **Frontend:** Exclusivamente dentro de la carpeta `public/` (servido por Express).
-- **Backend:** En la carpeta `server/` con arquitectura de endpoints resilientes (modo fallback si la base de datos no está activa).
-- **Control de Fugas:** Prohibido terminantemente committear `node_modules/`, archivos `.env` con credenciales reales o binarios pesados.

@@ -167,8 +167,38 @@
     saveAll: function (chats) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+        this.syncToServer(chats);
       } catch (e) {
         console.error('Error al guardar historial de chats:', e);
+      }
+    },
+    syncToServer: async function (chats) {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        await fetch('/api/historial-chat/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_persona: idPersona, chats: chats })
+        });
+      } catch (e) {
+        console.error('Error sincronizando historial al servidor:', e);
+      }
+    },
+    syncFromServer: async function () {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        const res = await fetch(`/api/historial-chat/${idPersona}`);
+        if (res.ok) {
+          const dbChats = await res.json();
+          // Solo sobrescribimos si hay chats del server, o si el server dice explícitamente 0 chats (pero evitamos borrar defaults en primer inicio si el usuario no tiene DB aún)
+          // Wait, si vacían el historial, deben devolver array vacío, que es correcto
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dbChats));
+          window.dispatchEvent(new CustomEvent('dia_chat_history_updated'));
+        }
+      } catch (e) {
+        console.error('Error obteniendo historial del servidor:', e);
       }
     },
     getById: function (id) {
@@ -252,7 +282,12 @@
   /**
    * Inicializador principal de la vista Historial
    */
-  window.initHistorialView = function () {
+  window.initHistorialView = async function () {
+    // Sincronizar desde BD al iniciar
+    if (localStorage.getItem('dia_id_persona')) {
+      await ChatHistoryStore.syncFromServer();
+    }
+    
     const container = document.getElementById('historial-chats-grid');
     if (!container) return;
 
@@ -795,6 +830,8 @@
         closeDeleteModal();
       }
     });
+
+    window.addEventListener('dia_chat_history_updated', render);
 
     // Render inicial
     render();
