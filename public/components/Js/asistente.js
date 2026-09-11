@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const chatInput = document.getElementById('chat-input');
         const photoFileInput = document.getElementById('photo-file-input');
+        const galleryFileInput = document.getElementById('gallery-file-input');
         const btnTriggerCamera = document.getElementById('btn-trigger-camera');
+        const btnTriggerGallery = document.getElementById('btn-trigger-gallery');
         const cameraAttachedBadge = document.getElementById('camera-attached-badge');
         const imagePreviewBar = document.getElementById('image-preview-bar');
         const previewImageElement = document.getElementById('preview-image-element');
@@ -24,6 +26,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let selectedImageDataUrl = null;
         let selectedFileName = '';
         let isSubmitting = false;
+
+        function disableChat() {
+            if (chatInput) {
+                chatInput.disabled = true;
+                chatInput.placeholder = "Selecciona una opción arriba...";
+            }
+            if (btnTriggerCamera) btnTriggerCamera.disabled = true;
+            const submitBtn = chatForm.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+        }
+
+        function enableChat() {
+            if (chatInput) {
+                chatInput.disabled = false;
+                chatInput.placeholder = "Escribe aquí...";
+            }
+            if (btnTriggerCamera) btnTriggerCamera.disabled = false;
+            const submitBtn = chatForm.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = false;
+        }
 
         // -- Funciones Utilitarias del Chat --
         function scrollToBottom() {
@@ -83,6 +105,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnTriggerCamera) {
             btnTriggerCamera.addEventListener('click', () => photoFileInput.click());
         }
+        if (btnTriggerGallery) {
+            btnTriggerGallery.addEventListener('click', () => galleryFileInput.click());
+        }
 
         // Abrir automáticamente la cámara o selector si se solicitó desde Escanear con IA
         if (sessionStorage.getItem('dia_auto_open_camera') === 'true') {
@@ -94,33 +119,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 80);
         }
 
-        if (photoFileInput) {
-            photoFileInput.addEventListener('change', (e) => {
-                const file = e.target.files && e.target.files[0];
-                if (!file) return;
+        const handleFileChange = (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
 
-                selectedFileName = file.name;
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    selectedImageDataUrl = event.target.result;
-                    if(previewImageElement) previewImageElement.src = selectedImageDataUrl;
-                    if(previewFilename) previewFilename.textContent = selectedFileName;
-                    
-                    if(imagePreviewBar) {
-                        imagePreviewBar.classList.remove('hidden');
-                        imagePreviewBar.classList.add('flex');
+            selectedFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                selectedImageDataUrl = event.target.result;
+                if(previewImageElement) previewImageElement.src = selectedImageDataUrl;
+                if(previewFilename) previewFilename.textContent = selectedFileName;
+                
+                if(imagePreviewBar) {
+                    imagePreviewBar.classList.remove('hidden');
+                    imagePreviewBar.classList.add('flex');
+                }
+                if(cameraAttachedBadge) cameraAttachedBadge.classList.remove('hidden');
+                
+                if(chatInput) {
+                    chatInput.focus();
+                    if (!chatInput.value.trim()) {
+                        chatInput.value = 'Mi platillo tiene los siguientes ingredientes: ';
                     }
-                    if(cameraAttachedBadge) cameraAttachedBadge.classList.remove('hidden');
-                    
-                    if(chatInput) {
-                        chatInput.focus();
-                        if (!chatInput.value.trim()) {
-                            chatInput.value = 'Mi platillo tiene los siguientes ingredientes: ';
-                        }
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
+                }
+            };
+            reader.readAsDataURL(file);
+        };
+
+        if (photoFileInput) {
+            photoFileInput.addEventListener('change', handleFileChange);
+        }
+        if (galleryFileInput) {
+            galleryFileInput.addEventListener('change', handleFileChange);
         }
 
         if (btnRemoveImage) {
@@ -152,9 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // -- Conexión al Backend (Soporta Local y Túneles externos) --
         async function procesarEnServidorNode(texto, imagenBase64) {
             try {
-                const backendUrl = window.location.protocol.startsWith('http')
-                    ? '/api/analizar'
-                    : 'http://localhost:3000/api/analizar';
+                let backendUrl = '/api/analizar';
+                const hostname = window.location.hostname;
+
+                if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                    if (window.location.port !== '3000' && window.location.port !== '') {
+                        backendUrl = 'http://localhost:3000/api/analizar';
+                    }
+                } else if (window.location.protocol === 'file:') {
+                    backendUrl = 'http://localhost:3000/api/analizar';
+                } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+                    const newHostname = hostname.replace('-5500.', '-3000.');
+                    backendUrl = `https://${newHostname}/api/analizar`;
+                }
 
                 const respuesta = await fetch(backendUrl, {
                     method: 'POST',
@@ -162,7 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({
                         mensaje: texto,
                         imagen: imagenBase64,
-                        usaInsulina: localStorage.getItem('dia_insulina') === 'true'
+                        usaInsulina: localStorage.getItem('dia_insulina') === 'true',
+                        edad: localStorage.getItem('dia_edad'),
+                        peso: localStorage.getItem('dia_peso'),
+                        altura: localStorage.getItem('dia_altura'),
+                        genero: localStorage.getItem('dia_genero'),
+                        tipoDiabetesId: localStorage.getItem('dia_tipo_diabetes')
                     })
                 });
                 
@@ -297,6 +342,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     chat.mensajes.push(userMsg, aiMsg);
                 }
                 localStorage.setItem(historyKey, JSON.stringify(history));
+                
+                const idPersona = localStorage.getItem('dia_id_persona');
+                if (idPersona) {
+                    fetch('/api/historial-chat/sync', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_persona: idPersona, chats: history })
+                    }).catch(e => console.warn('Error syncing history to server:', e));
+                }
             } catch (e) {
                 console.warn('Error registrando en dia_chat_history:', e);
             }
@@ -340,33 +394,219 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnSkip = wrapper.querySelector('.btn-skip-history');
             const actionContainer = wrapper.querySelector('.action-buttons-container');
 
-            btnAdd.addEventListener('click', () => {
-                // Lógica opcional: Guardar en localStorage para tu vista de "Mis Platos" o "Historial"
-                try {
-                    const historialPlatos = JSON.parse(localStorage.getItem('dia_historial_platos') || '[]');
-                    historialPlatos.push({
-                        alimento: userQuery || 'Consulta nutricional',
-                        resultado: aiText,
-                        fecha: new Date().toISOString()
-                    });
-                    localStorage.setItem('dia_historial_platos', JSON.stringify(historialPlatos));
-                } catch (e) {
-                    console.error("Error guardando en historial local:", e);
-                }
+            // Bloquear input hasta que el usuario decida
+            disableChat();
 
+            function doSaveMeal() {
                 actionContainer.innerHTML = `
-                  <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
-                    <span class="material-symbols-outlined text-[16px]">task_alt</span> ¡Agregado a tu historial de comida!
+                  <div class="flex items-center gap-1.5 text-blue-500 text-xs font-bold py-1">
+                    <span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Generando resumen de tu comida...
                   </div>
                 `;
+                (async () => {
+                    try {
+                        let baseUrl = '';
+                        const hostname = window.location.hostname;
+                        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                            if (window.location.port !== '3000' && window.location.port !== '') baseUrl = 'http://localhost:3000';
+                        } else if (window.location.protocol === 'file:') {
+                            baseUrl = 'http://localhost:3000';
+                        } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+                            baseUrl = `https://${hostname.replace('-5500.', '-3000.')}`;
+                        }
+
+                        const finalMealText = sessionStorage.getItem('dia_current_meal_text') || '';
+                        
+                        // 1. Obtener Previsualización
+                        const prevRes = await fetch(`${baseUrl}/api/comidas/previsualizar`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ textoAcumulado: finalMealText })
+                        });
+
+                        if (!prevRes.ok) throw new Error("Error al generar resumen.");
+                        const prevData = await prevRes.json();
+                        let datosExtraidos = prevData.datos_extraidos;
+
+                        // 2. Renderizar Resumen Editable
+                        function renderSummary() {
+                            if (datosExtraidos.alimentos.length === 0) {
+                                actionContainer.innerHTML = `
+                                  <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                                    <span class="material-symbols-outlined text-[16px]">info</span> No hay alimentos para guardar. Comida cancelada.
+                                  </div>
+                                `;
+                                sessionStorage.removeItem('dia_current_meal_text');
+                                enableChat();
+                                return;
+                            }
+
+                            // Recalcular totales
+                            datosExtraidos.total_calorias = 0;
+                            datosExtraidos.total_carbohidratos = 0;
+                            datosExtraidos.alimentos.forEach(a => {
+                                datosExtraidos.total_calorias += ((a.carbohidratos * 4) + (a.proteina * 4) + (a.grasas * 9)) || 0;
+                                datosExtraidos.total_carbohidratos += a.carbohidratos || 0;
+                            });
+
+                            let html = `
+                              <div class="flex flex-col gap-2 w-full mt-2 bg-surface-container-low p-3 rounded-2xl border border-outline-variant/30">
+                                <span class="text-xs font-bold text-on-surface">Resumen de tu comida (Verifica los datos)</span>
+                                <div class="flex flex-col gap-1.5">
+                            `;
+                            
+                            datosExtraidos.alimentos.forEach((alim, idx) => {
+                                html += `
+                                  <div class="flex items-center justify-between bg-surface-container rounded-lg p-2">
+                                    <div class="flex flex-col">
+                                      <span class="text-xs font-semibold text-on-surface-variant">${alim.nombre}</span>
+                                      <span class="text-[10px] text-on-surface-variant/70">${alim.carbohidratos}g carbs.</span>
+                                    </div>
+                                    <button type="button" class="btn-remove-food text-red-500 hover:bg-red-500/10 p-1 rounded-md" data-idx="${idx}">
+                                      <span class="material-symbols-outlined text-[16px]">delete</span>
+                                    </button>
+                                  </div>
+                                `;
+                            });
+
+                            html += `
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                  <span class="text-xs font-medium text-on-surface-variant">Total: ~${Math.round(datosExtraidos.total_calorias)} kcal | ${Math.round(datosExtraidos.total_carbohidratos)}g carbs</span>
+                                  <button type="button" class="btn-confirm-save px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm active:scale-95">Confirmar y Guardar</button>
+                                </div>
+                              </div>
+                            `;
+
+                            actionContainer.innerHTML = html;
+
+                            // Botones Eliminar
+                            actionContainer.querySelectorAll('.btn-remove-food').forEach(btn => {
+                                btn.addEventListener('click', (e) => {
+                                    const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+                                    datosExtraidos.alimentos.splice(idx, 1);
+                                    renderSummary();
+                                });
+                            });
+
+                            // Botón Confirmar
+                            actionContainer.querySelector('.btn-confirm-save').addEventListener('click', async () => {
+                                actionContainer.innerHTML = `
+                                  <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
+                                    <span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Guardando en base de datos...
+                                  </div>
+                                `;
+                                try {
+                                    const idPersona = localStorage.getItem('dia_id_persona') || 1; 
+                                    const saveRes = await fetch(`${baseUrl}/api/comidas/guardar`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            id_persona: idPersona,
+                                            datosExtraidos: datosExtraidos
+                                        })
+                                    });
+
+                                    if (saveRes.ok) {
+                                        actionContainer.innerHTML = `
+                                          <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
+                                            <span class="material-symbols-outlined text-[16px]">task_alt</span> ¡Comida y detalles guardados con éxito!
+                                          </div>
+                                        `;
+                                        sessionStorage.removeItem('dia_current_meal_text');
+                                        
+                                        // Refrescar el dashboard si la función existe globalmente
+                                        if (typeof initDashboard === 'function') {
+                                            initDashboard();
+                                        }
+                                        // Refrescar mi_progreso
+                                        window.dispatchEvent(new Event('dia_platos_updated'));
+                                    } else {
+                                        throw new Error("Error en servidor al guardar.");
+                                    }
+                                } catch (err) {
+                                    console.error(err);
+                                    actionContainer.innerHTML = `
+                                      <div class="flex items-center gap-1.5 text-red-500 text-xs font-bold py-1">
+                                        <span class="material-symbols-outlined text-[16px]">error</span> Error al guardar: ${err.message}
+                                      </div>
+                                    `;
+                                } finally {
+                                    enableChat();
+                                }
+                            });
+                        }
+                        
+                        renderSummary();
+
+                    } catch (err) {
+                        console.error(err);
+                        actionContainer.innerHTML = `
+                          <div class="flex items-center gap-1.5 text-red-500 text-xs font-bold py-1">
+                            <span class="material-symbols-outlined text-[16px]">error</span> Error de conexión: ${err.message}.
+                          </div>
+                        `;
+                        enableChat();
+                    }
+                })();
+            }
+
+            btnAdd.addEventListener('click', () => {
+                let currentMealText = sessionStorage.getItem('dia_current_meal_text') || '';
+                currentMealText += `\n\nUsuario: ${userQuery}\nIA: ${aiText}`;
+                sessionStorage.setItem('dia_current_meal_text', currentMealText);
+
+                actionContainer.innerHTML = `
+                  <div class="flex flex-col gap-2 w-full mt-2">
+                    <span class="text-xs font-medium text-on-surface-variant">¿Vas a comer algo más para añadirlo en esta misma comida?</span>
+                    <div class="flex items-center gap-2 justify-end">
+                      <button type="button" class="btn-more-yes px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer shadow-sm active:scale-95">Sí, agregar más</button>
+                      <button type="button" class="btn-more-no px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer active:scale-95">No, es todo (Guardar)</button>
+                    </div>
+                  </div>
+                `;
+
+                actionContainer.querySelector('.btn-more-yes').addEventListener('click', () => {
+                    actionContainer.innerHTML = `
+                      <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                        <span class="material-symbols-outlined text-[16px]">info</span> Por favor, sube la foto o describe tu siguiente alimento abajo.
+                      </div>
+                    `;
+                    enableChat();
+                });
+
+                actionContainer.querySelector('.btn-more-no').addEventListener('click', doSaveMeal);
             });
 
             btnSkip.addEventListener('click', () => {
-                actionContainer.innerHTML = `
-                  <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
-                    <span class="material-symbols-outlined text-[16px]">info</span> Consulta descartada del historial.
-                  </div>
-                `;
+                const pendingMeal = sessionStorage.getItem('dia_current_meal_text');
+                if (pendingMeal) {
+                    actionContainer.innerHTML = `
+                      <div class="flex flex-col gap-2 w-full mt-2">
+                        <span class="text-xs font-medium text-on-surface-variant">Consulta descartada. ¿Vas a comer algo más para tu comida pendiente?</span>
+                        <div class="flex items-center gap-2 justify-end">
+                          <button type="button" class="btn-more-yes px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer shadow-sm active:scale-95">Sí, agregar más</button>
+                          <button type="button" class="btn-more-no px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer active:scale-95">No, es todo (Guardar)</button>
+                        </div>
+                      </div>
+                    `;
+                    actionContainer.querySelector('.btn-more-yes').addEventListener('click', () => {
+                        actionContainer.innerHTML = `
+                          <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                            <span class="material-symbols-outlined text-[16px]">info</span> Por favor, sube la foto o describe tu siguiente alimento abajo.
+                          </div>
+                        `;
+                        enableChat();
+                    });
+                    actionContainer.querySelector('.btn-more-no').addEventListener('click', doSaveMeal);
+                } else {
+                    actionContainer.innerHTML = `
+                      <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                        <span class="material-symbols-outlined text-[16px]">info</span> Consulta descartada del historial.
+                      </div>
+                    `;
+                    enableChat();
+                }
             });
 
             dynamicMessages.appendChild(wrapper);

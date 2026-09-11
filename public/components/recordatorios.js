@@ -85,8 +85,38 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
         this.notifyChange();
+        this.syncToServer(list);
       } catch (e) {
         console.error('[RecordatoriosStore] Error al guardar:', e);
+      }
+    },
+
+    syncToServer: async function (list) {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        await fetch('/api/recordatorios/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_persona: idPersona, recordatorios: list })
+        });
+      } catch (e) {
+        console.error('Error syncing reminders to server:', e);
+      }
+    },
+
+    syncFromServer: async function () {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        const res = await fetch(`/api/recordatorios/${idPersona}`);
+        if (res.ok) {
+          const dbList = await res.json();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dbList));
+          this.notifyChange();
+        }
+      } catch (e) {
+        console.error('Error fetching reminders from server:', e);
       }
     },
 
@@ -822,10 +852,18 @@
 
   // Inicializar al cargar el DOM
   if (typeof document !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => DiaRecordatorios.init());
-    } else {
+    const startInit = () => {
       DiaRecordatorios.init();
+      // Solo sincronizar del servidor si ya hay un ID de persona (ha completado el onboarding)
+      if (localStorage.getItem('dia_id_persona')) {
+        DiaRecordatorios.store.syncFromServer();
+      }
+    };
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startInit);
+    } else {
+      startInit();
     }
   }
 })();

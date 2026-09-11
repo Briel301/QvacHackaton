@@ -847,8 +847,8 @@ window.APP_VIEWS = {
                 </div>
               </div>
 
-              <!-- 3. CATEGORÍA Y CALORÍAS (EN 2 COLUMNAS) -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- 3. CATEGORÍA (1 COLUMNA) -->
+              <div class="grid grid-cols-1 gap-3">
                 <div>
                   <label for="plato-categoria" class="block text-xs font-bold text-on-surface mb-1.5">
                     Categoría
@@ -862,20 +862,6 @@ window.APP_VIEWS = {
                     <option value="Cena">Cena</option>
                     <option value="Snack">Snack / Refacción</option>
                   </select>
-                </div>
-
-                <div>
-                  <label for="plato-calorias" class="block text-xs font-bold text-on-surface mb-1.5">
-                    Calorías estimadas (kcal)
-                  </label>
-                  <input 
-                    type="number" 
-                    id="plato-calorias" 
-                    min="0" 
-                    max="5000" 
-                    placeholder="Ej. 480" 
-                    class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all font-medium" 
-                  />
                 </div>
               </div>
 
@@ -1262,18 +1248,27 @@ window.APP_VIEWS = {
           <form id="chat-form" class="relative flex items-center bg-surface-container-lowest rounded-full p-1.5 sm:p-2 border border-surface-container-high/80 shadow-[0_4px_20px_rgba(15,23,42,0.06)] focus-within:border-primary-container focus-within:ring-2 focus-within:ring-primary-container/20 transition-all">
             
             <!-- INPUT DE ARCHIVO OCULTO -->
-            <input type="file" id="photo-file-input" accept="image/*" class="hidden" />
+            <input type="file" id="photo-file-input" accept="image/*" capture="environment" class="hidden" />
+            <input type="file" id="gallery-file-input" accept="image/*" class="hidden" />
 
             <!-- 1. ÍCONO DE CÁMARA A LA IZQUIERDA PARA SUBIR FOTO -->
             <button 
               type="button" 
               id="btn-trigger-camera" 
-              aria-label="Subir o tomar foto de alimento" 
-              title="Subir foto de alimento"
+              aria-label="Tomar foto de alimento" 
+              title="Tomar foto de alimento"
               class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 active:scale-95 flex items-center justify-center shrink-0 transition-all cursor-pointer">
               <span class="material-symbols-outlined text-[24px]">photo_camera</span>
               <!-- Indicador badge si hay foto cargada -->
               <span id="camera-attached-badge" class="hidden absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-primary-container rounded-full ring-2 ring-surface-container-lowest"></span>
+            </button>
+            <button 
+              type="button" 
+              id="btn-trigger-gallery" 
+              aria-label="Subir foto de galería" 
+              title="Subir foto de galería"
+              class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary-fixed/20 active:scale-95 flex items-center justify-center shrink-0 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[24px]">image</span>
             </button>
 
             <!-- 2. CAMPO DE TEXTO CENTRAL -->
@@ -1354,10 +1349,20 @@ window.APP_VIEWS = {
           return `${hours}:${minutes} ${ampm}`;
         }
 
+        const galleryFileInput = document.getElementById('gallery-file-input');
+        const btnTriggerGallery = document.getElementById('btn-trigger-gallery');
+
         // Disparar selector de cámara / archivo
-        btnTriggerCamera.addEventListener('click', () => {
-          photoFileInput.click();
-        });
+        if (btnTriggerCamera) {
+          btnTriggerCamera.addEventListener('click', () => {
+            photoFileInput.click();
+          });
+        }
+        if (btnTriggerGallery) {
+          btnTriggerGallery.addEventListener('click', () => {
+            galleryFileInput.click();
+          });
+        }
 
         // Abrir automáticamente la cámara o selector si se solicitó desde Escanear con IA
         if (sessionStorage.getItem('dia_auto_open_camera') === 'true') {
@@ -1369,8 +1374,7 @@ window.APP_VIEWS = {
           }, 80);
         }
 
-        // Manejar selección de foto
-        photoFileInput.addEventListener('change', (e) => {
+        const handleFileChange = (e) => {
           const file = e.target.files && e.target.files[0];
           if (!file) return;
 
@@ -1388,7 +1392,15 @@ window.APP_VIEWS = {
             }
           };
           reader.readAsDataURL(file);
-        });
+        };
+
+        // Manejar selección de foto
+        if (photoFileInput) {
+          photoFileInput.addEventListener('change', handleFileChange);
+        }
+        if (galleryFileInput) {
+          galleryFileInput.addEventListener('change', handleFileChange);
+        }
 
         // Quitar foto seleccionada
         btnRemoveImage.addEventListener('click', () => {
@@ -1451,9 +1463,19 @@ window.APP_VIEWS = {
         // Conexión directa al motor QVAC en Node.js
         async function procesarEnServidorNode(texto, imagenBase64) {
           try {
-            const backendUrl = window.location.protocol.startsWith('http')
-              ? '/api/analizar'
-              : 'http://localhost:3000/api/analizar';
+            let backendUrl = '/api/analizar';
+            const hostname = window.location.hostname;
+
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                if (window.location.port !== '3000' && window.location.port !== '') {
+                    backendUrl = 'http://localhost:3000/api/analizar';
+                }
+            } else if (window.location.protocol === 'file:') {
+                backendUrl = 'http://localhost:3000/api/analizar';
+            } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+                const newHostname = hostname.replace('-5500.', '-3000.');
+                backendUrl = `https://${newHostname}/api/analizar`;
+            }
 
             const respuesta = await fetch(backendUrl, {
               method: 'POST',
@@ -1461,7 +1483,12 @@ window.APP_VIEWS = {
               body: JSON.stringify({
                 mensaje: texto,
                 imagen: imagenBase64,
-                usaInsulina: localStorage.getItem('dia_insulina') === 'true'
+                usaInsulina: localStorage.getItem('dia_insulina') === 'true',
+                edad: localStorage.getItem('dia_edad'),
+                peso: localStorage.getItem('dia_peso'),
+                altura: localStorage.getItem('dia_altura'),
+                genero: localStorage.getItem('dia_genero'),
+                tipoDiabetesId: localStorage.getItem('dia_tipo_diabetes')
               })
             });
 
@@ -1606,39 +1633,235 @@ window.APP_VIEWS = {
           const btnSkip = wrapper.querySelector('.btn-skip-history');
           const actionContainer = wrapper.querySelector('.action-buttons-container');
 
-          if (btnAdd) {
-            btnAdd.addEventListener('click', () => {
-              try {
-                const historialPlatos = JSON.parse(localStorage.getItem('dia_historial_platos') || '[]');
-                historialPlatos.push({
-                  alimento: queryText || 'Consulta nutricional',
-                  resultado: aiText,
-                  fecha: new Date().toISOString()
-                });
-                localStorage.setItem('dia_historial_platos', JSON.stringify(historialPlatos));
-              } catch (e) {
-                console.error("Error guardando en historial local:", e);
-              }
+          function disableChat() {
+              if (chatInput) chatInput.disabled = true;
+              if (btnTriggerCamera) btnTriggerCamera.disabled = true;
+              chatInput.placeholder = "Por favor toma una decisión arriba...";
+          }
 
-              if (actionContainer) {
+          function enableChat() {
+              if (chatInput) chatInput.disabled = false;
+              if (btnTriggerCamera) btnTriggerCamera.disabled = false;
+              chatInput.placeholder = "Pregúntale a DIA o describe tu comida...";
+              chatInput.focus();
+          }
+
+          if (btnAdd) {
+            // Bloquear input hasta que el usuario decida
+            disableChat();
+
+            function doSaveMeal() {
                 actionContainer.innerHTML = `
-                  <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
-                    <span class="material-symbols-outlined text-[16px]">task_alt</span> ¡Agregado a tu historial de comida!
+                  <div class="flex items-center gap-1.5 text-blue-500 text-xs font-bold py-1">
+                    <span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Generando resumen de tu comida...
                   </div>
                 `;
-              }
+                (async () => {
+                    try {
+                        let baseUrl = '';
+                        const hostname = window.location.hostname;
+                        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                            if (window.location.port !== '3000' && window.location.port !== '') baseUrl = 'http://localhost:3000';
+                        } else if (window.location.protocol === 'file:') {
+                            baseUrl = 'http://localhost:3000';
+                        } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+                            baseUrl = `https://${hostname.replace('-5500.', '-3000.')}`;
+                        }
+
+                        const finalMealText = sessionStorage.getItem('dia_current_meal_text') || '';
+                        
+                        // 1. Obtener Previsualización
+                        const prevRes = await fetch(`${baseUrl}/api/comidas/previsualizar`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ textoAcumulado: finalMealText })
+                        });
+
+                        if (!prevRes.ok) throw new Error("Error al generar resumen.");
+                        const prevData = await prevRes.json();
+                        let datosExtraidos = prevData.datos_extraidos;
+
+                        // 2. Renderizar Resumen Editable
+                        function renderSummary() {
+                            if (datosExtraidos.alimentos.length === 0) {
+                                actionContainer.innerHTML = `
+                                  <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                                    <span class="material-symbols-outlined text-[16px]">info</span> No hay alimentos para guardar. Comida cancelada.
+                                  </div>
+                                `;
+                                sessionStorage.removeItem('dia_current_meal_text');
+                                enableChat();
+                                return;
+                            }
+
+                            // Recalcular totales
+                            datosExtraidos.total_calorias = 0;
+                            datosExtraidos.total_carbohidratos = 0;
+                            datosExtraidos.alimentos.forEach(a => {
+                                datosExtraidos.total_calorias += ((a.carbohidratos * 4) + (a.proteina * 4) + (a.grasas * 9)) || 0;
+                                datosExtraidos.total_carbohidratos += a.carbohidratos || 0;
+                            });
+
+                            let html = `
+                              <div class="flex flex-col gap-2 w-full mt-2 bg-surface-container-low p-3 rounded-2xl border border-outline-variant/30">
+                                <span class="text-xs font-bold text-on-surface">Resumen de tu comida (Verifica los datos)</span>
+                                <div class="flex flex-col gap-1.5">
+                            `;
+                            
+                            datosExtraidos.alimentos.forEach((alim, idx) => {
+                                html += `
+                                  <div class="flex items-center justify-between bg-surface-container rounded-lg p-2">
+                                    <div class="flex flex-col">
+                                      <span class="text-xs font-semibold text-on-surface-variant">${alim.nombre}</span>
+                                      <span class="text-[10px] text-on-surface-variant/70">${alim.carbohidratos}g carbs.</span>
+                                    </div>
+                                    <button type="button" class="btn-remove-food text-red-500 hover:bg-red-500/10 p-1 rounded-md" data-idx="${idx}">
+                                      <span class="material-symbols-outlined text-[16px]">delete</span>
+                                    </button>
+                                  </div>
+                                `;
+                            });
+
+                            html += `
+                                </div>
+                                <div class="flex items-center justify-between mt-1">
+                                  <span class="text-xs font-medium text-on-surface-variant">Total: ~${Math.round(datosExtraidos.total_calorias)} kcal | ${Math.round(datosExtraidos.total_carbohidratos)}g carbs</span>
+                                  <button type="button" class="btn-confirm-save px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm active:scale-95">Confirmar y Guardar</button>
+                                </div>
+                              </div>
+                            `;
+
+                            actionContainer.innerHTML = html;
+
+                            // Botones Eliminar
+                            actionContainer.querySelectorAll('.btn-remove-food').forEach(btn => {
+                                btn.addEventListener('click', (e) => {
+                                    const idx = parseInt(e.currentTarget.getAttribute('data-idx'));
+                                    datosExtraidos.alimentos.splice(idx, 1);
+                                    renderSummary();
+                                });
+                            });
+
+                            // Botón Confirmar
+                            actionContainer.querySelector('.btn-confirm-save').addEventListener('click', async () => {
+                                actionContainer.innerHTML = `
+                                  <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
+                                    <span class="material-symbols-outlined text-[16px] animate-spin">sync</span> Guardando en base de datos...
+                                  </div>
+                                `;
+                                try {
+                                    const idPersona = localStorage.getItem('dia_id_persona') || 1; 
+                                    const saveRes = await fetch(`${baseUrl}/api/comidas/guardar`, {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            id_persona: idPersona,
+                                            datosExtraidos: datosExtraidos
+                                        })
+                                    });
+
+                                    if (saveRes.ok) {
+                                        actionContainer.innerHTML = `
+                                          <div class="flex items-center gap-1.5 text-emerald-600 text-xs font-bold py-1">
+                                            <span class="material-symbols-outlined text-[16px]">task_alt</span> ¡Comida y detalles guardados con éxito!
+                                          </div>
+                                        `;
+                                        sessionStorage.removeItem('dia_current_meal_text');
+                                        
+                                        // Refrescar el dashboard si la función existe globalmente
+                                        if (typeof initDashboard === 'function') {
+                                            initDashboard();
+                                        }
+                                        // Refrescar mi_progreso
+                                        window.dispatchEvent(new Event('dia_platos_updated'));
+                                    } else {
+                                        throw new Error("Error en servidor al guardar.");
+                                    }
+                                } catch (err) {
+                                    console.error(err);
+                                    actionContainer.innerHTML = `
+                                      <div class="flex items-center gap-1.5 text-red-500 text-xs font-bold py-1">
+                                        <span class="material-symbols-outlined text-[16px]">error</span> Error al guardar: ${err.message}
+                                      </div>
+                                    `;
+                                } finally {
+                                    enableChat();
+                                }
+                            });
+                        }
+                        
+                        renderSummary();
+
+                    } catch (err) {
+                        console.error(err);
+                        actionContainer.innerHTML = `
+                          <div class="flex items-center gap-1.5 text-red-500 text-xs font-bold py-1">
+                            <span class="material-symbols-outlined text-[16px]">error</span> Error de conexión: ${err.message}.
+                          </div>
+                        `;
+                        enableChat();
+                    }
+                })();
+            }
+
+            btnAdd.addEventListener('click', () => {
+                let currentMealText = sessionStorage.getItem('dia_current_meal_text') || '';
+                currentMealText += `\n\nUsuario: ${queryText}\nIA: ${aiText}`;
+                sessionStorage.setItem('dia_current_meal_text', currentMealText);
+
+                actionContainer.innerHTML = `
+                  <div class="flex flex-col gap-2 w-full mt-2">
+                    <span class="text-xs font-medium text-on-surface-variant">¿Vas a comer algo más para añadirlo en esta misma comida?</span>
+                    <div class="flex items-center gap-2 justify-end">
+                      <button type="button" class="btn-more-yes px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer shadow-sm active:scale-95">Sí, agregar más</button>
+                      <button type="button" class="btn-more-no px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer active:scale-95">No, es todo (Guardar)</button>
+                    </div>
+                  </div>
+                `;
+
+                actionContainer.querySelector('.btn-more-yes').addEventListener('click', () => {
+                    actionContainer.innerHTML = `
+                      <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                        <span class="material-symbols-outlined text-[16px]">info</span> Por favor, sube la foto o describe tu siguiente alimento abajo.
+                      </div>
+                    `;
+                    enableChat();
+                });
+
+                actionContainer.querySelector('.btn-more-no').addEventListener('click', doSaveMeal);
             });
           }
 
           if (btnSkip) {
             btnSkip.addEventListener('click', () => {
-              if (actionContainer) {
-                actionContainer.innerHTML = `
-                  <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
-                    <span class="material-symbols-outlined text-[16px]">info</span> Consulta descartada del historial.
-                  </div>
-                `;
-              }
+                const pendingMeal = sessionStorage.getItem('dia_current_meal_text');
+                if (pendingMeal) {
+                    actionContainer.innerHTML = `
+                      <div class="flex flex-col gap-2 w-full mt-2">
+                        <span class="text-xs font-medium text-on-surface-variant">Consulta descartada. ¿Vas a comer algo más para tu comida pendiente?</span>
+                        <div class="flex items-center gap-2 justify-end">
+                          <button type="button" class="btn-more-yes px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer shadow-sm active:scale-95">Sí, agregar más</button>
+                          <button type="button" class="btn-more-no px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm cursor-pointer active:scale-95">No, es todo (Guardar)</button>
+                        </div>
+                      </div>
+                    `;
+                    actionContainer.querySelector('.btn-more-yes').addEventListener('click', () => {
+                        actionContainer.innerHTML = `
+                          <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                            <span class="material-symbols-outlined text-[16px]">info</span> Por favor, sube la foto o describe tu siguiente alimento abajo.
+                          </div>
+                        `;
+                        enableChat();
+                    });
+                    actionContainer.querySelector('.btn-more-no').addEventListener('click', doSaveMeal);
+                } else {
+                    actionContainer.innerHTML = `
+                      <div class="flex items-center gap-1.5 text-on-surface-variant/70 text-xs py-1">
+                        <span class="material-symbols-outlined text-[16px]">info</span> Consulta descartada del historial.
+                      </div>
+                    `;
+                    enableChat();
+                }
             });
           }
 
@@ -1691,6 +1914,15 @@ window.APP_VIEWS = {
             });
 
             localStorage.setItem(historyKey, JSON.stringify(history));
+
+            const idPersona = localStorage.getItem('dia_id_persona');
+            if (idPersona) {
+                fetch('/api/historial-chat/sync', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_persona: idPersona, chats: history })
+                }).catch(e => console.warn('Error syncing history to server:', e));
+            }
           } catch (err) {
             console.warn('Error al sincronizar historial:', err);
           }
@@ -2115,6 +2347,27 @@ window.initMiProgreso = function() {
     agua: 3.0
   };
 
+  try {
+      const edad = parseInt(localStorage.getItem('dia_edad')) || 30;
+      const peso = parseFloat(localStorage.getItem('dia_peso')) || 70;
+      const altura = parseFloat(localStorage.getItem('dia_altura')) || 170;
+      const generoId = localStorage.getItem('dia_genero') || localStorage.getItem('dia_genero_id') || '1';
+      const generoNombre = localStorage.getItem('dia_genero_nombre') || '';
+
+      let bmr = 0;
+      if (generoId === '1' || generoNombre.toLowerCase().includes('masculino')) {
+          bmr = 10 * peso + 6.25 * altura - 5 * edad + 5;
+      } else {
+          bmr = 10 * peso + 6.25 * altura - 5 * edad - 161;
+      }
+      const goalCal = Math.round(bmr * 1.2);
+      GOALS.calorias = goalCal;
+      // Proporciones saludables: 50% carbs, 25% prot, 25% grasas
+      GOALS.carbs = Math.round((goalCal * 0.50) / 4);
+      GOALS.proteinas = Math.round((goalCal * 0.25) / 4);
+      GOALS.grasas = Math.round((goalCal * 0.25) / 9);
+  } catch(e) {}
+
   const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
@@ -2210,16 +2463,12 @@ window.initMiProgreso = function() {
     }
   }
 
-  function generateNutritionData() {
+  async function generateNutritionData() {
     const seed = Math.abs((dateOffset * 37) + (activePeriod === 'dia' ? 11 : activePeriod === 'semana' ? 23 : 47)) % 100;
     const variation = (seed - 50) / 100;
 
     if (activePeriod === 'dia') {
       if (dateOffset === 0) {
-        const storeTotals = (window.PlatosStore && typeof window.PlatosStore.getTodayTotals === 'function')
-          ? window.PlatosStore.getTodayTotals()
-          : null;
-
         let cCal = 0, cProt = 0, cCarb = 0, cFat = 0, cFib = 0;
         let byCat = {
           Desayuno: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 },
@@ -2228,24 +2477,41 @@ window.initMiProgreso = function() {
           Snack: { carbs: 0, protein: 0, fat: 0, kcal: 0, count: 0 }
         };
 
-        if (storeTotals) {
-          cCal = storeTotals.calorias || 0;
-          cProt = storeTotals.proteinas || 0;
-          cCarb = storeTotals.carbs || 0;
-          cFat = storeTotals.grasas || 0;
-          cFib = storeTotals.fibra || 0;
-          if (storeTotals.byCategory) {
-            Object.keys(storeTotals.byCategory).forEach(cat => {
-              const catData = storeTotals.byCategory[cat];
-              if (byCat[cat]) {
-                byCat[cat].carbs = catData.carbs || 0;
-                byCat[cat].protein = catData.protein || 0;
-                byCat[cat].fat = catData.fat || 0;
-                byCat[cat].kcal = catData.kcal || 0;
-                byCat[cat].count = (catData.items && catData.items.length) || 0;
-              }
-            });
-          }
+        try {
+            const idPersona = localStorage.getItem('dia_id_persona') || 1;
+            let baseUrl = '';
+            const hostname = window.location.hostname;
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                if (window.location.port !== '3000' && window.location.port !== '') baseUrl = 'http://localhost:3000';
+            } else if (window.location.protocol === 'file:') {
+                baseUrl = 'http://localhost:3000';
+            } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+                baseUrl = `https://${hostname.replace('-5500.', '-3000.')}`;
+            }
+
+            const res = await fetch(`${baseUrl}/api/comidas/hoy/${idPersona}`);
+            if (res.ok) {
+                const data = await res.json();
+                cCal = data.resumen.calorias || 0;
+                cCarb = data.resumen.carbohidratos || 0;
+                cProt = data.resumen.proteinas || 0;
+                cFat = data.resumen.grasas || 0;
+
+                data.comidas.forEach(c => {
+                    let cat = 'Snack';
+                    if (c.id_tipocomida === 1) cat = 'Desayuno';
+                    else if (c.id_tipocomida === 2) cat = 'Almuerzo';
+                    else if (c.id_tipocomida === 3) cat = 'Cena';
+
+                    byCat[cat].kcal += Number(c.total_calorias || 0);
+                    byCat[cat].carbs += Number(c.total_carbohidratos || 0);
+                    byCat[cat].protein += Number(c.total_proteina || 0);
+                    byCat[cat].fat += Number(c.total_grasas || 0);
+                    byCat[cat].count++;
+                });
+            }
+        } catch (e) {
+            console.error("Error obteniendo platos de hoy para progreso:", e);
         }
 
         const remainingKcal = Math.max(0, GOALS.calorias - cCal);
@@ -2349,7 +2615,7 @@ window.initMiProgreso = function() {
     const cardCalSub = document.getElementById('card-calorias-sub');
     if (cardCalSub) cardCalSub.textContent = `${calPct}% Meta`;
     const cardCalGoal = document.getElementById('card-calorias-goal');
-    if (cardCalGoal) cardCalGoal.textContent = `Meta ${GOALS.calorias}`;
+    if (cardCalGoal) cardCalGoal.textContent = `Meta ${GOALS.calorias.toLocaleString('es-ES')}`;
     const cardCalBar = document.getElementById('card-calorias-bar');
     if (cardCalBar) cardCalBar.style.width = `${calPct}%`;
 
@@ -2534,10 +2800,10 @@ window.initMiProgreso = function() {
     });
   }
 
-  function updateView() {
+  async function updateView() {
     updatePeriodLabel();
 
-    const data = generateNutritionData();
+    const data = await generateNutritionData();
 
     if (activePeriod === 'dia') {
       chartMainTitle.textContent = 'Distribución de Macronutrientes por Comida';
