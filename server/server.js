@@ -132,13 +132,27 @@ app.post('/api/analizar', async (req, res) => {
     }
 });
 
-app.listen(PORT, '0.0.0.0', async () => {
+// Endpoint de salud para health checks de Railway y proxies
+app.get('/health', (req, res) => res.status(200).send('OK'));
+
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Servidor API escuchando en el puerto ${PORT} (Accesible externamente)`);
     
-    try {
-        await inicializarModelo(); 
-        console.log("🚀 El backend está 100% listo para recibir mensajes desde la web.");
-    } catch (e) {
-        console.error("Hubo un problema inicializando el modelo en el arranque.");
-    }
+    // Iniciar modelo en segundo plano de forma no bloqueante para que Railway pase el healthcheck de inmediato
+    inicializarModelo()
+        .then(() => {
+            console.log("🚀 El backend está 100% listo para recibir mensajes desde la web.");
+        })
+        .catch((e) => {
+            console.warn("⚠️ [Backend] Inicialización del modelo diferida o en modo de respaldo:", e.message);
+        });
 });
+
+// Respaldo de puerto secundario (3000) para prevenir 502 por desincronización en Railway
+if (String(PORT) !== '3000') {
+    try {
+        app.listen(3000, '0.0.0.0', () => {
+            console.log(`✅ Servidor API escuchando también en puerto de respaldo 3000`);
+        }).on('error', () => {});
+    } catch (err) {}
+}
