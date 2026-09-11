@@ -36,8 +36,44 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(platos));
         this.notifyChange();
+        this.syncToServer(platos);
       } catch (e) {
         console.error('Error al guardar en LocalStorage:', e);
+      }
+    },
+    syncToServer: async function(platos) {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        const res = await fetch('/api/platillos/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_persona: idPersona, platillos: platos })
+        });
+        if (res.ok) {
+          console.log('[Mis Platos] Sincronizado con éxito al servidor.');
+          // Recargar para obtener los datos actualizados (ej. calorías calculadas por IA)
+          await this.syncFromServer();
+          // syncFromServer ya llama a this.notifyChange(), lo que disparará el renderizado
+        } else {
+          console.error('[Mis Platos] Error sincronizando platos.', await res.text());
+        }
+      } catch (err) {
+        console.error('[Mis Platos] Fallo de red sincronizando platos:', err);
+      }
+    },
+    syncFromServer: async function() {
+      const idPersona = localStorage.getItem('dia_id_persona');
+      if (!idPersona) return;
+      try {
+        const res = await fetch(`/api/platillos/${idPersona}`);
+        if (res.ok) {
+          const dbPlatos = await res.json();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dbPlatos));
+          this.notifyChange();
+        }
+      } catch (e) {
+        console.error('Error obteniendo platillos del servidor:', e);
       }
     },
     notifyChange: function () {
@@ -144,7 +180,10 @@
   };
 
   // Controlador de la vista
-  function initMisPlatos() {
+  async function initMisPlatos() {
+    if (localStorage.getItem('dia_id_persona')) {
+      await PlatosStore.syncFromServer();
+    }
     const gridContainer = document.getElementById('platos-grid');
     const emptyState = document.getElementById('platos-empty-state');
     const searchInput = document.getElementById('platos-search');
@@ -396,8 +435,9 @@
       inputId.value = plato.id;
       inputNombre.value = plato.nombre || '';
       inputDescripcion.value = plato.descripcion || '';
-      inputCalorias.value = plato.calorias || '';
-      selectCategoria.value = plato.categoria || 'Almuerzo';
+      if (inputCalorias) inputCalorias.value = plato.calorias || '';
+      if (selectCategoria) selectCategoria.value = plato.categoria || 'Almuerzo';
+      
       if (inputCarbs) inputCarbs.value = plato.carbohidratos !== undefined && plato.carbohidratos !== null ? plato.carbohidratos : '';
       if (inputProtein) inputProtein.value = plato.proteinas !== undefined && plato.proteinas !== null ? plato.proteinas : '';
       if (inputFat) inputFat.value = plato.grasas !== undefined && plato.grasas !== null ? plato.grasas : '';
@@ -551,13 +591,9 @@
         const proteinas = inputProtein && inputProtein.value !== '' ? parseFloat(inputProtein.value) : 0;
         const grasas = inputFat && inputFat.value !== '' ? parseFloat(inputFat.value) : 0;
         const fibra = inputFibra && inputFibra.value !== '' ? parseFloat(inputFibra.value) : 0;
-        let caloriasVal = inputCalorias && inputCalorias.value !== '' ? parseInt(inputCalorias.value, 10) : null;
+        let caloriasVal = 0; // Se calculará en el backend con QVAC
 
-        if ((!caloriasVal || isNaN(caloriasVal)) && (carbohidratos > 0 || proteinas > 0 || grasas > 0)) {
-          caloriasVal = Math.round((carbohidratos * 4) + (proteinas * 4) + (grasas * 9));
-        }
-
-        const categoria = selectCategoria.value || 'Almuerzo';
+        const categoria = selectCategoria ? selectCategoria.value : 'Almuerzo';
         const id = inputId.value;
 
         if (!nombre) {

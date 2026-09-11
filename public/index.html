@@ -215,63 +215,18 @@
 
             <!-- 2. Sección Calendario Semanal -->
             <div class="flex flex-col gap-space-sm">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between px-1 mb-2">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-on-surface-variant text-[20px]">calendar_today</span>
-                  <h3 class="font-headline-md text-headline-md text-on-surface">Septiembre 2026</h3>
-                  <span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Semana 37</span>
-                </div>
-                <div class="flex items-center gap-space-xs">
-                  <span class="hidden sm:inline font-title-sm text-body-sm text-on-surface-variant font-medium">06 – 12 Sep</span>
-                  <div class="flex items-center gap-1 bg-surface-container-low rounded-full p-0.5">
-                    <button aria-label="Semana anterior" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
-                      <span class="material-symbols-outlined text-[18px]">chevron_left</span>
-                    </button>
-                    <button aria-label="Semana siguiente" class="w-7 h-7 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container active:scale-95 transition-all">
-                      <span class="material-symbols-outlined text-[18px]">chevron_right</span>
-                    </button>
-                  </div>
+                  <h3 id="dashboard-calendar-month" class="font-headline-md text-headline-md text-on-surface">Cargando...</h3>
+                  <span id="dashboard-calendar-week" class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-[11px] font-bold uppercase tracking-wider"></span>
                 </div>
               </div>
 
               <!-- Tira Semanal de Días -->
               <div class="bg-surface-container-lowest rounded-2xl p-card-padding shadow-[0_4px_20px_-2px_rgba(15,23,42,0.05)] border border-surface-container-high/30">
-                <div class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center">
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">DOM</span>
-                    <span class="font-title-sm text-title-sm text-on-surface font-bold">06</span>
-                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">LUN</span>
-                    <span class="font-title-sm text-title-sm text-on-surface font-bold">07</span>
-                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">MAR</span>
-                    <span class="font-title-sm text-title-sm text-on-surface font-bold">08</span>
-                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1 py-2 rounded-2xl bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(16,185,129,0.4)] scale-105">
-                    <span class="text-[10px] font-black uppercase tracking-wider text-on-primary/90">● HOY</span>
-                    <span class="font-title-sm text-title-sm text-on-primary font-extrabold">09</span>
-                    <span class="text-[11px] font-bold text-on-primary/95">1,640 kcal</span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant">JUE</span>
-                    <span class="font-title-sm text-title-sm text-on-surface-variant">10</span>
-                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant">VIE</span>
-                    <span class="font-title-sm text-title-sm text-on-surface-variant">11</span>
-                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
-                  </button>
-                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
-                    <span class="font-label-md text-label-md text-on-surface-variant">SÁB</span>
-                    <span class="font-title-sm text-title-sm text-on-surface-variant">12</span>
-                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
-                  </button>
+                <div id="dashboard-calendar-days" class="grid grid-cols-7 gap-1.5 sm:gap-2 text-center">
+                   <!-- Generado dinámicamente -->
                 </div>
               </div>
             </div>
@@ -485,7 +440,7 @@
               </button>
             </div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 gap-3">
             <div>
               <label for="plato-categoria" class="block text-xs font-bold text-on-surface mb-1.5">Categoría</label>
               <select id="plato-categoria" class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface focus:outline-none focus:border-primary transition-all font-medium cursor-pointer">
@@ -494,10 +449,6 @@
                 <option value="Cena">Cena</option>
                 <option value="Snack">Snack / Refacción</option>
               </select>
-            </div>
-            <div>
-              <label for="plato-calorias" class="block text-xs font-bold text-on-surface mb-1.5">Calorías estimadas (kcal)</label>
-              <input type="number" id="plato-calorias" min="0" max="5000" placeholder="Ej. 480" class="w-full px-3.5 py-2.5 rounded-2xl bg-surface-container-low border border-surface-container-high text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all font-medium" />
             </div>
           </div>
 

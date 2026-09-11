@@ -141,6 +141,10 @@ function switchAppView(targetHref, e) {
       }
     }
 
+    if (typeof window.loadUserData === 'function') {
+      window.loadUserData();
+    }
+
     // Scroll inmediato arriba
     window.scrollTo({ top: 0, behavior: 'instant' });
 
@@ -383,8 +387,8 @@ class AppTopbar extends HTMLElement {
             <!-- Perfil de usuario -->
             <div class="flex items-center gap-3 pl-3 ml-1 border-l border-surface-container-high/70">
               <div class="flex flex-col text-right">
-                <span class="font-label-sm text-[11px] text-on-surface-variant app-user-greeting">¡Buenos días!</span>
-                <span class="font-title-sm text-[14px] font-bold text-on-surface">[Nombre del Usuario]</span>
+                <span id="top-right-saludo" class="font-label-sm text-[11px] text-on-surface-variant app-user-greeting">¡Buenos días!</span>
+                <span id="top-right-nombre" class="font-title-sm text-[14px] font-bold text-on-surface">[Nombre del Usuario]</span>
               </div>
               <div class="relative w-10 h-10 rounded-full overflow-hidden shadow-sm bg-surface-container shrink-0 ring-2 ring-primary/20" title="[Foto de perfil]">
                 <img alt="[Foto de perfil de usuario]" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Crect width='80' height='80' fill='%23e2e8f0'/%3E%3Ccircle cx='40' cy='31' r='14' fill='%2394a3b8'/%3E%3Cpath d='M16 68c0-13.255 10.745-24 24-24s24 10.745 24 24z' fill='%2394a3b8'/%3E%3C/svg%3E" />
@@ -416,8 +420,8 @@ class AppTopbar extends HTMLElement {
             <!-- Perfil de usuario -->
             <div class="flex items-center gap-3 pl-3 ml-1 border-l border-surface-container-high/70">
               <div class="flex flex-col text-right">
-                <span class="font-label-sm text-[11px] text-on-surface-variant">¡Buenos días!</span>
-                <span class="font-title-sm text-[14px] font-bold text-on-surface">[Nombre del Usuario]</span>
+                <span id="top-right-saludo" class="font-label-sm text-[11px] text-on-surface-variant">¡Buenos días!</span>
+                <span id="top-right-nombre" class="font-title-sm text-[14px] font-bold text-on-surface">[Nombre del Usuario]</span>
               </div>
               <div class="relative w-10 h-10 rounded-full overflow-hidden shadow-sm bg-surface-container shrink-0 ring-2 ring-primary/20" title="[Foto de perfil]">
                 <img alt="[Foto de perfil de usuario]" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' width='80' height='80'%3E%3Crect width='80' height='80' fill='%23e2e8f0'/%3E%3Ccircle cx='40' cy='31' r='14' fill='%2394a3b8'/%3E%3Cpath d='M16 68c0-13.255 10.745-24 24-24s24 10.745 24 24z' fill='%2394a3b8'/%3E%3C/svg%3E" />

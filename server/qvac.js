@@ -7,7 +7,7 @@ let qvacDisponible = true;
 const ADVERTENCIA_MEDICA = `⚠️ *Aviso: Recuerda que soy un modelo de Inteligencia Artificial y puedo cometer errores. Esta información no sustituye el criterio profesional. Siempre debes consultar con tu médico antes de realizar cambios en tu tratamiento o alimentación.*`;
 
 // Motor de Respaldo Clínico Nutricional Inteligente (Modo Resiliente Cloud)
-function generarRespuestaNutricionalFallback(mensajeUsuario, imagenBase64, usaInsulina) {
+function generarRespuestaNutricionalFallback(mensajeUsuario, imagenBase64, usaInsulina, edad, peso, altura, genero, tipoDiabetes) {
     const texto = (mensajeUsuario || '').toLowerCase().trim();
     
     let caloriasEst = 360;
@@ -84,6 +84,48 @@ function generarRespuestaNutricionalFallback(mensajeUsuario, imagenBase64, usaIn
     return salida;
 }
 
+// Fallback para extracción de datos en formato JSON para la base de datos
+function extraerDatosComidaFallback(textoAcumulado) {
+    const texto = (textoAcumulado || '').toLowerCase();
+    let carbs = 35.0;
+    let prot = 24.0;
+    let grasas = 12.0;
+    let calorias = 360;
+    let nombre = "Comida balanceada";
+
+    if (texto.includes('pollo')) { nombre = "Pechuga de pollo con guarnición"; carbs = 22.0; prot = 34.0; grasas = 8.0; calorias = 300; }
+    else if (texto.includes('pescado') || texto.includes('atun')) { nombre = "Filete de pescado con vegetales"; carbs = 14.0; prot = 32.0; grasas = 7.0; calorias = 260; }
+    else if (texto.includes('carne')) { nombre = "Corte de carne magra"; carbs = 12.0; prot = 30.0; grasas = 15.0; calorias = 320; }
+    else if (texto.includes('ensalada')) { nombre = "Ensalada verde con aderezo ligero"; carbs = 10.0; prot = 6.0; grasas = 5.0; calorias = 140; }
+    else if (texto.includes('arroz') || texto.includes('pasta')) { nombre = "Porción de carbohidratos complejos"; carbs = 52.0; prot = 10.0; grasas = 5.0; calorias = 340; }
+    else if (texto.includes('hamburguesa') || texto.includes('pizza')) { nombre = "Comida rápida / pizza"; carbs = 75.0; prot = 18.0; grasas = 30.0; calorias = 650; }
+
+    return {
+        total_calorias: calorias,
+        total_carbohidratos: carbs,
+        total_proteina: prot,
+        total_grasas: grasas,
+        total_azucar: 2.0,
+        total_fibra: 4.0,
+        total_sodio: 220.0,
+        descripcion_comida: nombre,
+        alimentos: [
+            {
+                nombre: nombre,
+                descripcion: "Porción calculada según registro nutricional",
+                cantidad: 1.0,
+                medida: "porción",
+                carbohidratos: carbs,
+                proteina: prot,
+                grasas: grasas,
+                azucar: 2.0,
+                fibra: 4.0,
+                calorias: calorias
+            }
+        ]
+    };
+}
+
 async function inicializarModelo() {
     if (!qvacDisponible) return null;
     if (modeloCargadoId) return modeloCargadoId;
@@ -96,6 +138,7 @@ async function inicializarModelo() {
             
             modeloCargadoId = await qvac.loadModel({
                 modelSrc: qvac.LLAMA_3_2_1B_INST_Q4_0_SHARD,
+                modelConfig: { ctx_size: 8192 },
                 onProgress: (progress) => {
                     if (progress.total > 0) {
                         const porcentaje = Math.round((progress.loaded / progress.total) * 100);
@@ -120,7 +163,7 @@ async function inicializarModelo() {
     return await cargandoPromise;
 }
 
-async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina) {
+async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina, edad, peso, altura, genero, tipoDiabetes) {
     // 1. Intentar inferencia local con QVAC si está disponible
     if (qvacDisponible) {
         try {
@@ -128,8 +171,17 @@ async function analizarPlatillo(mensajeUsuario, imagenBase64, usaInsulina) {
             if (modelId) {
                 let instruccionesSistema = `Eres DIA NutriBot, un asistente nutricional inteligente especializado en personas con diabetes.
 Responde de forma concisa, profesional, motivadora y estructurada en español.
+
+Ten en cuenta el siguiente perfil del usuario para personalizar tus recomendaciones:
+- Tipo de diabetes: ${tipoDiabetes || 'No especificado'}
+- Edad: ${edad ? edad + ' años' : 'No especificada'}
+- Género: ${genero || 'No especificado'}
+- Peso: ${peso ? peso + ' lbs' : 'No especificado'}
+- Altura: ${altura ? altura + ' m' : 'No especificada'}
+- Uso de insulina: ${usaInsulina ? 'Sí' : 'No'}
+
 Incluye siempre las siguientes secciones obligatorias:
-1. **Veredicto:** Indica con claridad si el alimento es una opción recomendada, con moderación o desaconsejada para alguien con diabetes y la razón nutricional.
+1. **Veredicto:** Indica con claridad si el alimento es una opción recomendada, con moderación o desaconsejada considerando su perfil y la razón nutricional.
 2. **Estimación Nutricional:** Aporta una estimación rápida de calorías, carbohidratos (g), proteínas (g) y grasas (g).
 3. **Impacto Glucémico:** Breve explicación del índice/carga glucémica esperada.`;
 
@@ -192,7 +244,126 @@ Incluye siempre las siguientes secciones obligatorias:
 
     // 2. Modo Resiliente Cloud (Fallback Nutricional Inteligente)
     console.log("🛡️ [Backend] Generando respuesta mediante Modo Resiliente Nutricional.");
-    return generarRespuestaNutricionalFallback(mensajeUsuario, imagenBase64, usaInsulina);
+    return generarRespuestaNutricionalFallback(mensajeUsuario, imagenBase64, usaInsulina, edad, peso, altura, genero, tipoDiabetes);
 }
 
-module.exports = { analizarPlatillo, inicializarModelo };
+async function extraerDatosComida(textoAcumulado) {
+    if (!qvacDisponible) {
+        console.log("🛡️ [Backend] Extrayendo datos de comida en Modo Resiliente.");
+        return extraerDatosComidaFallback(textoAcumulado);
+    }
+
+    const prompt = `Actúa como un nutriólogo experto. Lee el siguiente registro de alimentos consumidos y extrae la información nutricional sumada y desglosada.
+Devuelve ÚNICAMENTE un JSON válido siguiendo EXACTAMENTE esta estructura, pero reemplazando los valores de ejemplo por los DATOS REALES extraídos del texto:
+
+{
+  "total_calorias": 520, 
+  "total_carbohidratos": 35.0,
+  "total_proteina": 26.0,
+  "total_grasas": 36.0,
+  "total_azucar": 0.0,
+  "total_fibra": 0.0,
+  "total_sodio": 0.0,
+  "descripcion_comida": "Breve resumen de todos los alimentos",
+  "alimentos": [
+    {
+      "nombre": "Nombre real del alimento (ej. Hamburguesa de McDonald's)",
+      "descripcion": "Detalles o ingredientes (ej. contiene queso, dos tortas de carne, aderezos)",
+      "cantidad": 1.0,
+      "medida": "pieza / gramos / porción",
+      "carbohidratos": 35.0,
+      "proteina": 20.0,
+      "grasas": 24.0,
+      "azucar": 0.0,
+      "fibra": 0.0
+    }
+  ]
+}
+
+REGLAS IMPORTANTES:
+1. No uses nombres genéricos como "Nombre del alimento". Usa el nombre real mencionado en el texto.
+2. Suma correctamente los totales de todos los alimentos en los campos "total_".
+3. Si un dato nutricional no se menciona, pon 0.0.
+
+Texto a analizar:
+${textoAcumulado}`;
+
+    try {
+        const modelId = await inicializarModelo();
+        if (!modelId) {
+            return extraerDatosComidaFallback(textoAcumulado);
+        }
+
+        const result = await qvac.completion({
+            modelId: modelId,
+            history: [{ role: "user", content: prompt }],
+            stream: false,
+            max_tokens: 800,
+            temperature: 0.1,
+            threads: 4
+        });
+
+        let textoFinal = "{}";
+        if (result && result.text) {
+            textoFinal = await result.text;
+        } else if (result && result.choices && result.choices.length > 0) {
+            textoFinal = result.choices[0].message.content;
+        }
+        
+        if (typeof textoFinal !== 'string') {
+            textoFinal = String(textoFinal);
+        }
+        
+        // Limpiar backticks de markdown por si acaso
+        textoFinal = textoFinal.replace(/```json/gi, '').replace(/```/g, '').trim();
+        
+        let firstBrace = textoFinal.indexOf('{');
+        if (firstBrace !== -1) {
+            let braceCount = 0;
+            let endBrace = -1;
+            let inString = false;
+            let escape = false;
+            for (let i = firstBrace; i < textoFinal.length; i++) {
+                let char = textoFinal[i];
+                if (escape) {
+                    escape = false;
+                    continue;
+                }
+                if (char === '\\') {
+                    escape = true;
+                    continue;
+                }
+                if (char === '"') {
+                    inString = !inString;
+                    continue;
+                }
+                if (!inString) {
+                    if (char === '{') braceCount++;
+                    else if (char === '}') {
+                        braceCount--;
+                        if (braceCount === 0) {
+                            endBrace = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (endBrace !== -1) {
+                const pureJson = textoFinal.substring(firstBrace, endBrace + 1);
+                return JSON.parse(pureJson);
+            }
+        }
+        
+        // Fallback: usar regex
+        const match = textoFinal.match(/\{[\s\S]*\}/);
+        if (match) {
+            return JSON.parse(match[0]);
+        }
+        return JSON.parse(textoFinal);
+    } catch (error) {
+        console.warn("⚠️ Error extrayendo datos JSON con IA, activando fallback:", error.message);
+        return extraerDatosComidaFallback(textoAcumulado);
+    }
+}
+
+module.exports = { analizarPlatillo, extraerDatosComida, inicializarModelo };

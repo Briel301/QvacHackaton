@@ -15,10 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const topRightNombre = document.getElementById('top-right-nombre');
 
     const getApiUrl = (endpoint) => {
-        if (window.location.protocol.startsWith('http')) {
-            return endpoint;
+        const hostname = window.location.hostname;
+        
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            if (window.location.port !== '3000' && window.location.port !== '') {
+                return `http://localhost:3000${endpoint}`;
+            }
+        } else if (window.location.protocol === 'file:') {
+            return `http://localhost:3000${endpoint}`;
+        } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+            const newHostname = hostname.replace('-5500.', '-3000.');
+            return `https://${newHostname}${endpoint}`;
         }
-        return `http://localhost:3000${endpoint}`;
+        
+        return endpoint;
     };
 
     async function cargarCatalogos() {
@@ -53,15 +63,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return "¡Buenas noches";
     }
 
-    const loadUserData = async () => {
+    window.loadUserData = async () => {
         const hasCompletedOnboarding = localStorage.getItem('dia_user_configured');
         const savedName = localStorage.getItem('dia_nombre');
+        const modalOnboarding = document.getElementById('onboarding-modal');
 
         if (hasCompletedOnboarding === 'true') {
             if (modalOnboarding) modalOnboarding.style.display = 'none';
             if (savedName) {
                 const primerNombre = savedName.trim().split(' ')[0];
                 const saludoActual = obtenerSaludoDinamico();
+                
+                const headerNombreDesktop = document.getElementById('header-nombre-desktop');
+                const headerNombreMovil = document.getElementById('header-nombre-movil');
+                const desktopSaludo = document.getElementById('desktop-saludo');
+                const mobileSaludo = document.getElementById('mobile-saludo');
+                const topRightSaludo = document.getElementById('top-right-saludo');
+                const topRightNombre = document.getElementById('top-right-nombre');
                 
                 // Actualizar nombres y saludos en la interfaz principal
                 if (headerNombreDesktop) headerNombreDesktop.textContent = savedName;
@@ -86,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    loadUserData();
+    window.loadUserData();
 
     if (formOnboarding) {
         formOnboarding.addEventListener('submit', async (e) => {
@@ -124,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('dia_id_persona', data.id_persona);
                 }
                 
-                loadUserData();
+                window.loadUserData();
 
                 modalOnboarding.classList.add('opacity-0');
                 setTimeout(() => {
@@ -331,6 +349,28 @@ function bindDashboardModalEvents() {
             });
         }
 
+        const selectHistorial = document.getElementById('plato-comida-historial');
+        if (selectHistorial) {
+            selectHistorial.addEventListener('change', (e) => {
+                const selectedOption = e.target.options[e.target.selectedIndex];
+                if (!selectedOption.value) return;
+                
+                const inputNombre = document.getElementById('plato-nombre');
+                if (inputNombre) inputNombre.value = selectedOption.text.split(' (')[0];
+                
+                const fotoUrl = selectedOption.getAttribute('data-foto');
+                if (fotoUrl) {
+                    if (inputFoto) inputFoto.value = fotoUrl;
+                    updatePreview(fotoUrl);
+                }
+                
+                const inputId = document.getElementById('plato-id');
+                if (inputId) inputId.value = 'plato-db-' + selectedOption.value; // Clave para actualizar
+                
+                selectHistorial.setAttribute('data-selected-cat', selectedOption.getAttribute('data-cat') || 'Almuerzo');
+            });
+        }
+
         if (btnRemovePreview) {
             btnRemovePreview.addEventListener('click', () => {
                 if (inputFoto) inputFoto.value = '';
@@ -360,12 +400,13 @@ function bindDashboardModalEvents() {
                 const p = parseFloat(protInput?.value) || 0;
                 const f = parseFloat(fatInput?.value) || 0;
                 const fib = parseFloat(document.getElementById('plato-fibra')?.value) || 0;
-                let cal = parseInt(calInput?.value, 10);
-                if (isNaN(cal) || cal <= 0) {
-                    cal = Math.round((c * 4) + (p * 4) + (f * 9));
-                }
+                
+                let cal = 0; // Calculado por QVAC en el backend
+                
+                const descripcionStr = document.getElementById('plato-descripcion')?.value?.trim() || '';
 
                 const nuevoPlato = {
+                    id: document.getElementById('plato-id')?.value || undefined,
                     nombre,
                     foto: inputFoto?.value?.trim() || '',
                     categoria: document.getElementById('plato-categoria')?.value || 'Almuerzo',
@@ -374,32 +415,111 @@ function bindDashboardModalEvents() {
                     proteinas: p,
                     grasas: f,
                     fibra: fib,
-                    descripcion: document.getElementById('plato-descripcion')?.value?.trim() || '',
+                    descripcion: descripcionStr,
                     fecha: new Date().toISOString()
                 };
 
                 if (window.PlatosStore) {
-                    window.PlatosStore.add(nuevoPlato);
+                    if (nuevoPlato.id) {
+                        window.PlatosStore.update(nuevoPlato.id, nuevoPlato);
+                    } else {
+                        window.PlatosStore.add(nuevoPlato);
+                    }
                 }
                 cerrarModalPlatoDashboard();
                 form.reset();
+                if (previewContainer) previewContainer.classList.add('hidden');
+                currentImageData = '';
             });
         }
     }
 }
 
-function initDashboard() {
+async function initDashboard() {
     const misComidasContainer = document.getElementById('mis-comidas-container');
     const donutSvg = document.getElementById('dashboard-donut-svg');
     if (!misComidasContainer && !donutSvg) return;
 
-    // Obtener datos consolidados de PlatosStore
-    const totals = (window.PlatosStore && typeof window.PlatosStore.getTodayTotals === 'function')
-        ? window.PlatosStore.getTodayTotals()
-        : { calorias: 0, proteinas: 0, carbs: 0, grasas: 0, fibra: 0, platosHoy: [], byCategory: {} };
+    // Calcular Calorías Meta según perfil
+    let goalCal = 2100; // Valor por defecto
+    try {
+        const edad = parseInt(localStorage.getItem('dia_edad')) || 30;
+        const peso = parseFloat(localStorage.getItem('dia_peso')) || 70;
+        const altura = parseFloat(localStorage.getItem('dia_altura')) || 170;
+        const generoId = localStorage.getItem('dia_genero') || localStorage.getItem('dia_genero_id') || '1';
+        const generoNombre = localStorage.getItem('dia_genero_nombre') || '';
+
+        let bmr = 0;
+        if (generoId === '1' || generoNombre.toLowerCase().includes('masculino')) {
+            bmr = 10 * peso + 6.25 * altura - 5 * edad + 5;
+        } else {
+            bmr = 10 * peso + 6.25 * altura - 5 * edad - 161;
+        }
+        goalCal = Math.round(bmr * 1.2); // Factor de actividad sedentaria
+    } catch(e) {
+        console.error("Error calculando BMR:", e);
+    }
+
+    // Obtener datos del backend para hoy
+    let totals = { calorias: 0, proteinas: 0, carbs: 0, grasas: 0, fibra: 0, platosHoy: [], byCategory: {} };
+    try {
+        const idPersona = localStorage.getItem('dia_id_persona') || 1;
+        
+        const hostname = window.location.hostname;
+        let baseUrl = '';
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            if (window.location.port !== '3000' && window.location.port !== '') baseUrl = 'http://localhost:3000';
+        } else if (window.location.protocol === 'file:') {
+            baseUrl = 'http://localhost:3000';
+        } else if (hostname.includes('-5500.use2.devtunnels.ms') || hostname.match(/-5500\./)) {
+            baseUrl = `https://${hostname.replace('-5500.', '-3000.')}`;
+        }
+        
+        const res = await fetch(`${baseUrl}/api/comidas/hoy/${idPersona}`);
+        if (res.ok) {
+            const data = await res.json();
+            totals.calorias = data.resumen.calorias || 0;
+            totals.carbs = data.resumen.carbohidratos || 0;
+            totals.proteinas = data.resumen.proteinas || 0;
+            totals.grasas = data.resumen.grasas || 0;
+            
+            // Mapear los datos de BD a las propiedades que espera el UI
+            totals.platosHoy = data.comidas.map(c => {
+                let cat = 'Snack';
+                if (c.id_tipocomida === 1) cat = 'Desayuno';
+                else if (c.id_tipocomida === 2) cat = 'Almuerzo';
+                else if (c.id_tipocomida === 3) cat = 'Cena';
+
+                return {
+                    id: c.id_comida,
+                    nombre: c.descripcion_comida || 'Comida sin nombre',
+                    categoria: cat,
+                    calorias: c.total_calorias,
+                    carbohidratos: c.total_carbohidratos,
+                    proteinas: c.total_proteina,
+                    grasas: c.total_grasas, 
+                    foto: null // Aún no guardamos URL o la base64 directamente en lista
+                };
+            });
+            
+            // Agrupar por categoría
+            totals.platosHoy.forEach(plato => {
+                if (!totals.byCategory[plato.categoria]) {
+                    totals.byCategory[plato.categoria] = { kcal: 0, items: [] };
+                }
+                totals.byCategory[plato.categoria].kcal += Number(plato.calorias || 0);
+                totals.byCategory[plato.categoria].items.push(plato);
+            });
+        }
+    } catch(e) {
+        console.error("Error obteniendo comidas de hoy del backend:", e);
+        // Fallback a PlatosStore local si falla el backend
+        if (window.PlatosStore && typeof window.PlatosStore.getTodayTotals === 'function') {
+            totals = window.PlatosStore.getTodayTotals();
+        }
+    }
 
     const consumedCal = totals.calorias || 0;
-    const goalCal = 2100;
     const remainingCal = Math.max(0, goalCal - consumedCal);
     const pct = Math.min(100, Math.round((consumedCal / goalCal) * 100));
 
@@ -417,11 +537,12 @@ function initDashboard() {
 
     const consumedDisplay = isKj ? Math.round(consumedCal * 4.184).toLocaleString('es-ES') : consumedCal.toLocaleString('es-ES');
     const remainingDisplay = isKj ? Math.round(remainingCal * 4.184).toLocaleString('es-ES') : remainingCal.toLocaleString('es-ES');
+    const goalDisplay = isKj ? Math.round(goalCal * 4.184).toLocaleString('es-ES') : goalCal.toLocaleString('es-ES');
     const unitDisplay = isKj ? 'kJ' : 'kcal';
 
     // 1. Encabezado Desktop y Restante
-    const headerRemainingKcal = document.getElementById('header-remaining-kcal');
-    if (headerRemainingKcal) headerRemainingKcal.textContent = remainingDisplay;
+    const headerRemainingKcals = document.querySelectorAll('.header-remaining-kcal');
+    headerRemainingKcals.forEach(el => el.textContent = `${remainingDisplay} ${unitDisplay}`);
 
     const remainingKcalEls = document.querySelectorAll('.remaining-calories-val');
     remainingKcalEls.forEach(el => el.textContent = remainingDisplay);
@@ -441,7 +562,7 @@ function initDashboard() {
 
     const targetTotalEls = document.querySelectorAll('.target-calories-total');
     targetTotalEls.forEach(el => {
-        el.textContent = isKj ? '/ 8,786 kJ' : '/ 2,100 kcal';
+        el.textContent = `/ ${goalDisplay} ${unitDisplay}`;
     });
 
     // 3. Tarjeta de Racha y Progreso
@@ -516,16 +637,70 @@ function initDashboard() {
         if (barProt) barProt.style.width = `${protPct}%`;
         if (barFat) barFat.style.width = `${fatPct}%`;
 
-        const carbsStr = isOz ? (carbsG * 0.035274).toFixed(1) + ' oz' : `${carbsG}g`;
-        const protStr = isOz ? (protG * 0.035274).toFixed(1) + ' oz' : `${protG}g`;
-        const fatStr = isOz ? (fatG * 0.035274).toFixed(1) + ' oz' : `${fatG}g`;
+        const formatG = val => isOz ? (val * 0.035274).toFixed(1) + ' oz' : val + 'g';
 
-        if (valCarbs) valCarbs.innerHTML = `${carbsStr} <span class="text-on-surface-variant font-normal text-[11px]">(${carbsPct}%)</span>`;
-        if (valProt) valProt.innerHTML = `${protStr} <span class="text-on-surface-variant font-normal text-[11px]">(${protPct}%)</span>`;
-        if (valFat) valFat.innerHTML = `${fatStr} <span class="text-on-surface-variant font-normal text-[11px]">(${fatPct}%)</span>`;
+        if (valCarbs) valCarbs.innerHTML = `${formatG(carbsG)} <span class="text-on-surface-variant font-normal text-[11px]">(${carbsPct}%)</span>`;
+        if (valProt) valProt.innerHTML = `${formatG(protG)} <span class="text-on-surface-variant font-normal text-[11px]">(${protPct}%)</span>`;
+        if (valFat) valFat.innerHTML = `${formatG(fatG)} <span class="text-on-surface-variant font-normal text-[11px]">(${fatPct}%)</span>`;
     }
 
-    // 5. Mis comidas de hoy
+    // 5. Calendario Semanal
+    const calMonth = document.getElementById('dashboard-calendar-month');
+    const calWeek = document.getElementById('dashboard-calendar-week');
+    const calDaysContainer = document.getElementById('dashboard-calendar-days');
+    if (calMonth && calDaysContainer) {
+        const hoy = new Date();
+        const diasSemana = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        
+        calMonth.textContent = `${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+        
+        const startDate = new Date(hoy.getFullYear(), 0, 1);
+        const days = Math.floor((hoy - startDate) / (24 * 60 * 60 * 1000));
+        const weekNumber = Math.ceil(days / 7);
+        if (calWeek) calWeek.textContent = `Semana ${weekNumber}`;
+
+        const diffToSunday = hoy.getDay();
+        const sunday = new Date(hoy);
+        sunday.setDate(hoy.getDate() - diffToSunday);
+
+        let htmlDays = '';
+        for (let i = 0; i < 7; i++) {
+            const currentDay = new Date(sunday);
+            currentDay.setDate(sunday.getDate() + i);
+            const isToday = currentDay.getDate() === hoy.getDate() && currentDay.getMonth() === hoy.getMonth();
+            const esPasado = currentDay < hoy && !isToday;
+
+            if (isToday) {
+                htmlDays += `
+                  <button class="flex flex-col items-center gap-1 py-2 rounded-2xl bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(16,185,129,0.4)] scale-105">
+                    <span class="text-[10px] font-black uppercase tracking-wider text-on-primary/90">● HOY</span>
+                    <span class="font-title-sm text-title-sm text-on-primary font-extrabold">${String(currentDay.getDate()).padStart(2, '0')}</span>
+                    <span class="text-[11px] font-bold text-on-primary/95">${consumedDisplay} ${unitDisplay}</span>
+                  </button>
+                `;
+            } else if (esPasado) {
+                htmlDays += `
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant font-semibold">${diasSemana[i]}</span>
+                    <span class="font-title-sm text-title-sm text-on-surface font-bold">${String(currentDay.getDate()).padStart(2, '0')}</span>
+                    <span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: &quot;FILL&quot; 1">check_circle</span>
+                  </button>
+                `;
+            } else {
+                htmlDays += `
+                  <button class="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-surface-container-low transition-colors">
+                    <span class="font-label-md text-label-md text-on-surface-variant">${diasSemana[i]}</span>
+                    <span class="font-title-sm text-title-sm text-on-surface-variant">${String(currentDay.getDate()).padStart(2, '0')}</span>
+                    <span class="w-2 h-2 rounded-full bg-surface-container"></span>
+                  </button>
+                `;
+            }
+        }
+        calDaysContainer.innerHTML = htmlDays;
+    }
+
+    // 6. Mis comidas de hoy
     if (misComidasContainer) {
         const platos = totals.platosHoy || [];
         const bottomBtnContainer = document.getElementById('bottom-registrar-comida-container');
