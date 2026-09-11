@@ -1231,6 +1231,9 @@ window.APP_VIEWS = {
             </div>
           </div>
 
+          <!-- ESPACIADOR INFERIOR PARA QUE EL INPUT FLOTANTE EN MÓVIL NUNCA TAPE EL ÚLTIMO MENSAJE NI LOS BOTONES -->
+          <div class="chat-bottom-spacer shrink-0 w-full pointer-events-none" aria-hidden="true"></div>
+
         </div>
 
         <!-- VENTANA FLOTANTE INFERIOR DE ENTRADA (MÓVIL: Flotante sobre la barra inferior | DESKTOP: Barra estática en el chat) -->
@@ -1326,14 +1329,18 @@ window.APP_VIEWS = {
         let selectedFileName = '';
         let isSubmitting = false;
 
-        // Función para autoscrollear al último mensaje
+        // Función para autoscrollear al último mensaje garantizando visibilidad completa
         function scrollToBottom() {
-          setTimeout(() => {
+          if (!scrollContainer) return;
+          const doScroll = () => {
             scrollContainer.scrollTo({
               top: scrollContainer.scrollHeight,
               behavior: 'smooth'
             });
-          }, 50);
+          };
+          doScroll();
+          setTimeout(doScroll, 80);
+          setTimeout(doScroll, 220);
         }
 
         // Obtener hora en formato legible HH:MM
@@ -1581,12 +1588,12 @@ window.APP_VIEWS = {
                 </div>
                 <!-- Botones interactivos para agregar o descartar del historial -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-surface-container-high/40 action-buttons-container">
-                  <span class="text-xs font-medium text-on-surface-variant">¿Deseas registrar este alimento en tu historial?</span>
+                  <span class="text-xs font-semibold text-on-surface-variant">¿Deseas registrar este alimento en tu historial?</span>
                   <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                    <button type="button" class="btn-add-history px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm flex items-center gap-1 cursor-pointer active:scale-95">
-                      <span class="material-symbols-outlined text-[14px]">check</span> Sí, agregar
+                    <button type="button" class="btn-add-history flex-1 sm:flex-initial min-h-[38px] px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95">
+                      <span class="material-symbols-outlined text-[16px]">check</span> Sí, agregar
                     </button>
-                    <button type="button" class="btn-skip-history px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all cursor-pointer active:scale-95">
+                    <button type="button" class="btn-skip-history flex-1 sm:flex-initial min-h-[38px] px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-xs font-medium transition-all flex items-center justify-center cursor-pointer active:scale-95">
                       No, solo era duda
                     </button>
                   </div>
